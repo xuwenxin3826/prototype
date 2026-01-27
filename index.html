@@ -1,0 +1,3040 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>机器人后台管理平台</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1890ff;
+            --primary-light: #e6f7ff;
+            --success-color: #52c41a;
+            --warning-color: #faad14;
+            --error-color: #f5222d;
+            --info-color: #1890ff;
+            --bg-color: #f0f2f5;
+            --sidebar-bg: #001529;
+            --header-bg: #fff;
+            --card-bg: #fff;
+            --text-primary: #000000e0;
+            --text-secondary: #000000a6;
+            --border-color: #f0f0f0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 256px;
+            background-color: var(--sidebar-bg);
+            color: rgba(255, 255, 255, 0.85);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.65);
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .nav-item i {
+            font-size: 16px;
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* 主内容区样式 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            height: 64px;
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+	/* Cron帮助对话框样式 */
+.cron-help-dialog .el-message-box__content {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.cron-help-dialog code {
+    background-color: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    color: #e74c3c;
+}
+
+/* 任务创建对话框中的步骤预览 */
+.step-preview-item {
+    transition: all 0.3s;
+}
+
+.step-preview-item:hover {
+    background-color: #f0f9ff;
+}
+
+/* 表单字段提示 */
+.field-hint {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+}
+
+        /* 状态标签样式 */
+        .status-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff7e6;
+            color: #fa8c16;
+        }
+        
+        .status-assigned {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .status-executing {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .status-completed {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .status-cancelled {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+        }
+        
+        .status-aborted {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+        }
+        
+        .status-high-risk {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+            border: 1px solid #ff4d4f;
+        }
+        
+        /* 表格样式 */
+        .el-table {
+            font-size: 14px;
+        }
+        
+        .el-table .cell {
+            line-height: 1.5;
+        }
+        
+        /* 步骤进度样式 */
+        .step-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #d9d9d9;
+        }
+        
+        .step-dot.completed {
+            background-color: var(--success-color);
+        }
+        
+        .step-dot.executing {
+            background-color: var(--primary-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* 任务详情样式 */
+        .task-detail-section {
+            margin-bottom: 24px;
+        }
+        
+        .task-detail-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .task-detail-content {
+            background-color: #fafafa;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        
+        .detail-label {
+            width: 120px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            flex: 1;
+            color: var(--text-primary);
+        }
+        
+        /* 步骤列表样式 */
+        .step-list {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .step-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .step-item:last-child {
+            border-bottom: none;
+        }
+        
+        .step-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .step-index {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+/* 父菜单容器 */
+.nav-item-wrapper {
+    margin-bottom: 4px;
+}
+
+/* 带下拉箭头的菜单项 */
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.nav-item.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 父菜单高亮（当子菜单被选中时） */
+.nav-item.active-parent {
+    background-color: rgba(24, 144, 255, 0.2);
+    color: white;
+    border-right: 3px solid var(--primary-color);
+}
+
+/* 箭头图标 */
+.arrow-icon {
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s;
+    opacity: 0.7;
+}
+
+.arrow-icon.rotated {
+    transform: rotate(180deg);
+}
+
+/* 子菜单容器 */
+.sub-nav-menu {
+    background-color: rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 子菜单项 */
+.nav-item.sub-item {
+    padding: 10px 24px 10px 48px;  /* 左侧缩进 */
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    margin-left: 0;
+}
+
+.nav-item.sub-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.nav-item.sub-item.active {
+    background-color: rgba(24, 144, 255, 0.25);
+    color: #fff;
+    border-left-color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* 子菜单图标更小一些 */
+.nav-item.sub-item i {
+    font-size: 14px;
+    width: 18px;
+    margin-right: 8px;
+}
+
+/* 折叠状态下的侧边栏适配 */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 80px;
+    }
+    
+    .logo-text, .nav-text, .arrow-icon {
+        display: none;
+    }
+    
+    .nav-item {
+        justify-content: center;
+        padding: 16px 0;
+    }
+    
+    .nav-item i {
+        margin-right: 0;
+        font-size: 20px;
+    }
+    
+    /* 折叠时隐藏子菜单 */
+    .sub-nav-menu {
+        display: none !important;
+    }
+    
+    /* 或者改为悬浮展开（可选） */
+    .nav-item-wrapper:hover .sub-nav-menu {
+        display: block !important;
+        position: absolute;
+        left: 80px;
+        top: 0;
+        width: 160px;
+        background-color: #001529;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    }
+    
+    .nav-item.sub-item {
+        padding: 12px 16px;
+    }
+}
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo-text, .nav-text {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 16px 0;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="dashboard-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span class="logo-text">机器人管理平台</span>
+                </div>
+            </div>
+            
+            <!--div class="nav-menu">
+                <div 
+                    class="nav-item" 
+                    :class="{ active: activeNav === 'dashboard' }"
+                    @click="activeNav = 'dashboard'"
+                >
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="nav-text">仪表板</span>
+                </div>
+                
+                <div 
+                    class="nav-item" 
+                    :class="{ active: activeNav === 'templates' }"
+                    @click="activeNav = 'templates'"
+                >
+                    <i class="fas fa-clipboard-list"></i>
+                    <span class="nav-text">模板管理</span>
+                </div>
+                
+                <div 
+                    class="nav-item" 
+                    :class="{ active: activeNav === 'tasks' }"
+                    @click="activeNav = 'tasks'"
+                >
+                    <i class="fas fa-tasks"></i>
+                    <span class="nav-text">任务列表</span>
+                </div>
+                
+                <div 
+                    class="nav-item" 
+                    :class="{ active: activeNav === 'scheduling' }"
+                    @click="activeNav = 'scheduling'"
+                >
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="nav-text">任务调度</span>
+                </div>
+                
+                <div 
+                    class="nav-item" 
+                    :class="{ active: activeNav === 'monitoring' }"
+                    @click="activeNav = 'monitoring'"
+                >
+                    <i class="fas fa-eye"></i>
+                    <span class="nav-text">任务监控</span>
+                </div>
+                
+                <div 
+                    class="nav-item" 
+                    :class="{ active: activeNav === 'robots' }"
+                    @click="activeNav = 'robots'"
+                >
+                    <i class="fas fa-robot"></i>
+                    <span class="nav-text">机器人管理</span>
+                </div>
+                
+                <div 
+                    class="nav-item" 
+                    :class="{ active: activeNav === 'reports' }"
+                    @click="activeNav = 'reports'"
+                >
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="nav-text">报表分析</span>
+                </div>
+            </div-->
+		<div class="nav-menu">
+    <!-- 任务管理 - 包含子菜单 -->
+    <div class="nav-item-wrapper">
+        <div 
+            class="nav-item" 
+            :class="{ 
+                active: ['templates', 'tasks', 'scheduling', 'monitoring'].includes(activeNav),
+                expanded: expandedMenu === 'taskManagement'
+            }"
+            @click="toggleMenu('taskManagement')"
+        >
+            <i class="fas fa-tasks"></i>
+            <span class="nav-text">任务管理</span>
+            <i 
+                class="fas fa-chevron-down arrow-icon" 
+                :class="{ 'rotated': expandedMenu === 'taskManagement' }"
+            ></i>
+        </div>
+        
+        <!-- 子菜单 -->
+        <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
+            <div 
+                class="nav-item sub-item" 
+                :class="{ active: activeNav === 'templates' }"
+                @click.stop="activeNav = 'templates'"
+            >
+                <i class="fas fa-clipboard-list"></i>
+                <span class="nav-text">模板管理</span>
+            </div>
+            
+            <div 
+                class="nav-item sub-item" 
+                :class="{ active: activeNav === 'tasks' }"
+                @click.stop="activeNav = 'tasks'"
+            >
+                <i class="fas fa-list-ul"></i>
+                <span class="nav-text">任务列表</span>
+            </div>
+            
+            <div 
+                class="nav-item sub-item" 
+                :class="{ active: activeNav === 'scheduling' }"
+                @click.stop="activeNav = 'scheduling'"
+            >
+                <i class="fas fa-calendar-alt"></i>
+                <span class="nav-text">任务调度</span>
+            </div>
+            
+            <div 
+                class="nav-item sub-item" 
+                :class="{ active: activeNav === 'monitoring' }"
+                @click.stop="activeNav = 'monitoring'"
+            >
+                <i class="fas fa-eye"></i>
+                <span class="nav-text">任务监控</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 机器人管理 - 独立菜单 -->
+    <div 
+        class="nav-item" 
+        :class="{ active: activeNav === 'robots' }"
+        @click="activeNav = 'robots'"
+    >
+        <i class="fas fa-robot"></i>
+        <span class="nav-text">机器人管理</span>
+    </div>
+</div>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 顶部导航栏 -->
+            <div class="header">
+                <div class="header-left">
+                    <span class="header-title">{{ getPageTitle() }}</span>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <span>管理员</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 内容区 -->
+            <div class="content-wrapper">
+                <!-- 仪表板页面 -->
+                <!--div v-if="activeNav === 'dashboard'" class="dashboard-page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">系统概览</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="el-row" style="margin-bottom: 24px;">
+                                <div class="el-col el-col-6" style="padding: 0 12px;">
+                                    <div class="card" style="text-align: center; padding: 20px; background-color: #e6f7ff;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #1890ff;">{{ taskStats.total }}</div>
+                                        <div style="color: #666; margin-top: 8px;">总任务数</div>
+                                    </div>
+                                </div>
+                                <div class="el-col el-col-6" style="padding: 0 12px;">
+                                    <div class="card" style="text-align: center; padding: 20px; background-color: #f6ffed;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #52c41a;">{{ taskStats.executing }}</div>
+                                        <div style="color: #666; margin-top: 8px;">执行中</div>
+                                    </div>
+                                </div>
+                                <div class="el-col el-col-6" style="padding: 0 12px;">
+                                    <div class="card" style="text-align: center; padding: 20px; background-color: #fff7e6;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #fa8c16;">{{ taskStats.pending }}</div>
+                                        <div style="color: #666; margin-top: 8px;">待分配</div>
+                                    </div>
+                                </div>
+                                <div class="el-col el-col-6" style="padding: 0 12px;">
+                                    <div class="card" style="text-align: center; padding: 20px; background-color: #fff1f0;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #ff4d4f;">{{ taskStats.highRisk }}</div>
+                                        <div style="color: #666; margin-top: 8px;">高风险</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="el-row">
+                                <div class="el-col el-col-12" style="padding: 0 12px;">
+                                    <div class="card" style="padding: 20px;">
+                                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 16px;">任务状态分布</div>
+                                        <div id="taskStatusChart" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                                <div class="el-col el-col-12" style="padding: 0 12px;">
+                                    <div class="card" style="padding: 20px;">
+                                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 16px;">最近任务</div>
+                                        <el-table :data="recentTasks" style="width: 100%">
+                                            <el-table-column prop="id" label="任务ID" width="80"></el-table-column>
+                                            <el-table-column prop="name" label="任务名称"></el-table-column>
+                                            <el-table-column prop="robot" label="执行机器人" width="120"></el-table-column>
+                                            <el-table-column label="状态" width="100">
+                                                <template #default="scope">
+                                                    <span :class="'status-tag status-' + scope.row.status">{{ getStatusText(scope.row.status) }}</span>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div-->
+                
+                <!-- 模板管理页面 -->
+                <div v-if="activeNav === 'templates'" class="template-management-page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">模板管理</div>
+                            <div>
+                                <el-button type="primary" @click="showTemplateDialog('create')">
+                                    <i class="fas fa-plus"></i> 新增模板
+                                </el-button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="margin-bottom: 16px;">
+                                <el-input 
+                                    v-model="templateFilter.keyword" 
+                                    placeholder="搜索模板名称" 
+                                    style="width: 300px; margin-right: 16px;"
+                                    clearable
+                                    @change="filterTemplates"
+                                >
+                                    <template #prefix>
+                                        <i class="fas fa-search"></i>
+                                    </template>
+                                </el-input>
+                                
+                                <el-select 
+                                    v-model="templateFilter.robotGroup" 
+                                    placeholder="选择机器人组" 
+                                    clearable
+                                    @change="filterTemplates"
+                                >
+                                    <el-option 
+                                        v-for="group in robotGroups" 
+                                        :key="group.id" 
+                                        :label="group.name" 
+                                        :value="group.id"
+                                    ></el-option>
+                                </el-select>
+                            </div>
+                            
+                            <el-table :data="filteredTemplates" style="width: 100%">
+                                <el-table-column prop="name" label="模板名称" width="200"></el-table-column>
+                                <el-table-column prop="description" label="模板描述"></el-table-column>
+                                <el-table-column label="适用机器人组" width="150">
+                                    <template #default="scope">
+                                        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                            <el-tag 
+                                                v-for="groupId in scope.row.robotGroupIds" 
+                                                :key="groupId" 
+                                                size="small"
+                                            >
+                                                {{ getRobotGroupName(groupId) }}
+                                            </el-tag>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="字段数量" width="100">
+                                    <template #default="scope">
+                                        {{ scope.row.fields.length }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="步骤数量" width="100">
+                                    <template #default="scope">
+                                        {{ scope.row.steps.length }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="操作" width="200" fixed="right">
+                                    <template #default="scope">
+                                        <el-button size="small" @click="viewTemplate(scope.row)">查看</el-button>
+                                        <el-button size="small" @click="showTemplateDialog('edit', scope.row)">修改</el-button>
+                                        <el-button size="small" type="danger" @click="deleteTemplate(scope.row.id)">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务列表页面 -->
+                <div v-if="activeNav === 'tasks'" class="task-management-page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">任务列表</div>
+                            <div>
+                                <el-button type="primary" @click="showTaskDialog('process')">
+                                    <i class="fas fa-plus"></i> 创建完整流程任务
+                                </el-button>
+                                <el-button type="primary" plain @click="showTaskDialog('simple')">
+                                    <i class="fas fa-plus"></i> 创建简单动作任务
+                                </el-button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="margin-bottom: 16px;">
+                                <el-input 
+                                    v-model="taskFilter.keyword" 
+                                    placeholder="搜索任务名称" 
+                                    style="width: 300px; margin-right: 16px;"
+                                    clearable
+                                    @change="filterTasks"
+                                >
+                                    <template #prefix>
+                                        <i class="fas fa-search"></i>
+                                    </template>
+                                </el-input>
+                                
+                                <el-select 
+                                    v-model="taskFilter.status" 
+                                    placeholder="选择任务状态" 
+                                    clearable
+                                    @change="filterTasks"
+                                    style="margin-right: 16px;"
+                                >
+                                    <el-option label="待分配" value="pending"></el-option>
+                                    <el-option label="已分配" value="assigned"></el-option>
+                                    <el-option label="执行中" value="executing"></el-option>
+                                    <el-option label="已完成" value="completed"></el-option>
+                                    <el-option label="已中止" value="aborted"></el-option>
+                                    <el-option label="已取消" value="cancelled"></el-option>
+                                </el-select>
+                                
+                                <el-select 
+                                    v-model="taskFilter.robotId" 
+                                    placeholder="选择执行机器人" 
+                                    clearable
+                                    @change="filterTasks"
+                                    style="margin-right: 16px;"
+                                >
+                                    <el-option 
+                                        v-for="robot in robots" 
+                                        :key="robot.id" 
+                                        :label="robot.name" 
+                                        :value="robot.id"
+                                    ></el-option>
+                                </el-select>
+                                
+                                <el-select 
+                                    v-model="taskFilter.isHighRisk" 
+                                    placeholder="风险状态" 
+                                    clearable
+                                    @change="filterTasks"
+                                >
+                                    <el-option label="高风险" value="true"></el-option>
+                                    <el-option label="正常" value="false"></el-option>
+                                </el-select>
+                            </div>
+                            
+                            <el-table :data="filteredTasks" style="width: 100%">
+                                <el-table-column prop="id" label="任务ID" width="80"></el-table-column>
+                                <el-table-column prop="name" label="任务名称" width="200"></el-table-column>
+                                <el-table-column prop="templateName" label="模板名称" width="150"></el-table-column>
+                                <el-table-column label="任务类型" width="100">
+                                    <template #default="scope">
+                                        <el-tag size="small" :type="scope.row.type === 'process' ? '' : 'info'">
+                                            {{ scope.row.type === 'process' ? '流程任务' : '简单任务' }}
+                                        </el-tag>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="状态" width="120">
+                                    <template #default="scope">
+                                        <span :class="'status-tag status-' + scope.row.status">
+                                            {{ getStatusText(scope.row.status) }}
+                                            <span v-if="scope.row.isHighRisk" class="status-high-risk" style="margin-left: 4px;">高风险</span>
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="robotName" label="执行机器人" width="120"></el-table-column>
+                                <el-table-column label="优先级" width="80">
+                                    <template #default="scope">
+                                        <div v-if="scope.row.priority === 1" style="color: #ff4d4f; font-weight: bold;">高</div>
+                                        <div v-if="scope.row.priority === 2" style="color: #fa8c16; font-weight: bold;">中</div>
+                                        <div v-if="scope.row.priority === 3" style="color: #1890ff; font-weight: bold;">低</div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="组任务" width="80">
+                                    <template #default="scope">
+                                        <el-tag size="small" v-if="scope.row.isGroupTask">是</el-tag>
+                                        <span v-else>否</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="startTime" label="开始时间" width="180"></el-table-column>
+                                <el-table-column label="操作" width="200" fixed="right">
+                                    <template #default="scope">
+                                        <el-button size="small" @click="viewTaskDetail(scope.row)">详情</el-button>
+                                        <el-button 
+                                            size="small" 
+                                            @click="editTask(scope.row)"
+                                            :disabled="scope.row.status !== 'pending' && scope.row.status !== 'assigned'"
+                                        >修改</el-button>
+                                        <el-button 
+                                            size="small" 
+                                            type="danger" 
+                                            @click="cancelTask(scope.row.id)"
+                                            :disabled="scope.row.status !== 'pending' && scope.row.status !== 'assigned'"
+                                        >取消</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务调度页面 -->
+                <div v-if="activeNav === 'scheduling'" class="task-scheduling-page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">任务调度</div>
+                            <div>
+                                <el-button type="primary" @click="autoAssignAll">
+                                    <i class="fas fa-robot"></i> 自动分配所有任务
+                                </el-button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="task-scheduling-tabs">
+                                <div 
+                                    class="tab-item" 
+                                    :class="{ active: schedulingTab === 'pending' }"
+                                    @click="schedulingTab = 'pending'"
+                                >
+                                    待分配任务 ({{ pendingTasks.length }})
+                                </div>
+                                <div 
+                                    class="tab-item" 
+                                    :class="{ active: schedulingTab === 'assigned' }"
+                                    @click="schedulingTab = 'assigned'"
+                                >
+                                    已分配任务 ({{ assignedTasks.length }})
+                                </div>
+                            </div>
+                            
+                            <!-- 待分配任务 -->
+                            <div v-if="schedulingTab === 'pending'">
+                                <div style="margin-bottom: 16px; display: flex; justify-content: space-between;">
+                                    <div>
+                                        <span style="color: #666; font-size: 14px;">
+                                            系统根据优先级、最近一次开始时间等排序待分配任务
+                                        </span>
+                                    </div>
+                                    <el-button type="text" @click="sortBy = sortBy === 'priority' ? 'startTime' : 'priority'">
+                                        按{{ sortBy === 'priority' ? '开始时间' : '优先级' }}排序
+                                    </el-button>
+                                </div>
+                                
+                                <el-table :data="sortedPendingTasks" style="width: 100%">
+                                    <el-table-column prop="id" label="任务ID" width="80"></el-table-column>
+                                    <el-table-column prop="name" label="任务名称" width="200"></el-table-column>
+                                    <el-table-column prop="templateName" label="模板名称" width="150"></el-table-column>
+                                    <el-table-column label="适用机器人组" width="150">
+                                        <template #default="scope">
+                                            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                                <el-tag 
+                                                    v-for="groupId in scope.row.robotGroupIds" 
+                                                    :key="groupId" 
+                                                    size="small"
+                                                >
+                                                    {{ getRobotGroupName(groupId) }}
+                                                </el-tag>
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="优先级" width="80">
+                                        <template #default="scope">
+                                            <div v-if="scope.row.priority === 1" style="color: #ff4d4f; font-weight: bold;">高</div>
+                                            <div v-if="scope.row.priority === 2" style="color: #fa8c16; font-weight: bold;">中</div>
+                                            <div v-if="scope.row.priority === 3" style="color: #1890ff; font-weight: bold;">低</div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="startTime" label="开始时间" width="180"></el-table-column>
+                                    <el-table-column label="操作" width="150" fixed="right">
+                                        <template #default="scope">
+                                            <el-button size="small" type="primary" @click="showManualAssignDialog(scope.row)">手动分配</el-button>
+                                            <el-button size="small" @click="autoAssignTask(scope.row)">自动分配</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                            
+                            <!-- 已分配任务 -->
+                            <div v-if="schedulingTab === 'assigned'">
+                                <el-table :data="assignedTasks" style="width: 100%">
+                                    <el-table-column prop="id" label="任务ID" width="80"></el-table-column>
+                                    <el-table-column prop="name" label="任务名称" width="200"></el-table-column>
+                                    <el-table-column prop="robotName" label="执行机器人" width="120"></el-table-column>
+                                    <el-table-column label="机器人状态" width="120">
+                                        <template #default="scope">
+                                            <span v-if="scope.row.robotStatus === 'online'" style="color: #52c41a;">
+                                                <i class="fas fa-circle" style="font-size: 10px;"></i> 在线
+                                            </span>
+                                            <span v-if="scope.row.robotStatus === 'offline'" style="color: #ff4d4f;">
+                                                <i class="fas fa-circle" style="font-size: 10px;"></i> 离线
+                                            </span>
+                                            <span v-if="scope.row.robotStatus === 'low_battery'" style="color: #fa8c16;">
+                                                <i class="fas fa-battery-quarter"></i> 电量低
+                                            </span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="assignedTime" label="分配时间" width="180"></el-table-column>
+                                    <el-table-column label="操作" width="120" fixed="right">
+                                        <template #default="scope">
+                                            <el-button size="small" type="danger" @click="reassignTask(scope.row)">重新分配</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务监控页面 -->
+                <div v-if="activeNav === 'monitoring'" class="task-monitoring-page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">任务监控</div>
+                            <div>
+                                <el-button type="text" @click="refreshTasks">
+                                    <i class="fas fa-sync-alt"></i> 刷新
+                                </el-button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- 高风险任务提醒 -->
+                            <div v-if="highRiskTasks.length > 0" style="margin-bottom: 24px;">
+                                <div style="background-color: #fff1f0; border: 1px solid #ffa39e; border-radius: 6px; padding: 16px;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <i class="fas fa-exclamation-triangle" style="color: #ff4d4f; margin-right: 8px;"></i>
+                                        <span style="font-weight: bold; color: #ff4d4f;">高风险任务警告 ({{ highRiskTasks.length }})</span>
+                                    </div>
+                                    <div style="color: #666; font-size: 14px;">
+                                        检测到{{ highRiskTasks.length }}个高风险任务，请及时处理
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="task-monitoring-tabs">
+                                <div 
+                                    class="tab-item" 
+                                    :class="{ active: monitoringTab === 'all' }"
+                                    @click="monitoringTab = 'all'"
+                                >
+                                    所有任务
+                                </div>
+                                <div 
+                                    class="tab-item" 
+                                    :class="{ active: monitoringTab === 'executing' }"
+                                    @click="monitoringTab = 'executing'"
+                                >
+                                    执行中 ({{ executingTasks.length }})
+                                </div>
+                                <div 
+                                    class="tab-item" 
+                                    :class="{ active: monitoringTab === 'highRisk' }"
+                                    @click="monitoringTab = 'highRisk'"
+                                >
+                                    高风险 ({{ highRiskTasks.length }})
+                                </div>
+                            </div>
+                            
+                            <!-- 任务列表 -->
+                            <el-table :data="monitoredTasks" style="width: 100%">
+                                <el-table-column prop="id" label="任务ID" width="80"></el-table-column>
+                                <el-table-column prop="name" label="任务名称" width="200"></el-table-column>
+                                <el-table-column prop="templateName" label="模板名称" width="150"></el-table-column>
+                                <el-table-column label="状态" width="120">
+                                    <template #default="scope">
+                                        <span :class="'status-tag status-' + scope.row.status">
+                                            {{ getStatusText(scope.row.status) }}
+                                            <span v-if="scope.row.isHighRisk" class="status-high-risk" style="margin-left: 4px;">高风险</span>
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="robotName" label="执行机器人" width="120"></el-table-column>
+                                <el-table-column label="机器人状态" width="120">
+                                    <template #default="scope">
+                                        <span v-if="scope.row.robotStatus === 'online'" style="color: #52c41a;">
+                                            <i class="fas fa-circle" style="font-size: 10px;"></i> 在线
+                                        </span>
+                                        <span v-if="scope.row.robotStatus === 'offline'" style="color: #ff4d4f;">
+                                            <i class="fas fa-circle" style="font-size: 10px;"></i> 离线
+                                        </span>
+                                        <span v-if="scope.row.robotStatus === 'low_battery'" style="color: #fa8c16;">
+                                            <i class="fas fa-battery-quarter"></i> 电量低
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="进度" width="200">
+                                    <template #default="scope">
+                                        <div class="step-progress">
+                                            <div v-for="i in 5" :key="i" 
+                                                 :class="['step-dot', 
+                                                         i <= scope.row.completedSteps ? 'completed' : 
+                                                         i === scope.row.completedSteps + 1 && scope.row.status === 'executing' ? 'executing' : '']">
+                                            </div>
+                                            <span style="margin-left: 8px; font-size: 12px;">
+                                                {{ scope.row.completedSteps }}/{{ scope.row.totalSteps }}
+                                            </span>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="startTime" label="开始时间" width="180"></el-table-column>
+                                <el-table-column label="操作" width="200" fixed="right">
+                                    <template #default="scope">
+                                        <el-button size="small" @click="viewTaskDetail(scope.row)">详情</el-button>
+                                        <el-button 
+                                            size="small" 
+                                            type="danger" 
+                                            @click="abortTask(scope.row)"
+                                            :disabled="scope.row.status !== 'executing' && scope.row.status !== 'assigned'"
+                                        >中止</el-button>
+                                        <el-button 
+                                            size="small" 
+                                            type="success"
+                                            @click="resumeTask(scope.row)"
+                                            :disabled="scope.row.status !== 'aborted'"
+                                        >恢复</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 模板编辑对话框 -->
+        <el-dialog 
+            v-model="templateDialog.visible" 
+            :title="templateDialog.mode === 'create' ? '新增模板' : '修改模板'" 
+            width="80%"
+            top="5vh"
+        >
+            <div v-if="templateDialog.visible" style="height: 60vh; overflow-y: auto;">
+                <div style="margin-bottom: 24px;">
+                    <el-form :model="templateForm" label-width="100px">
+                        <el-form-item label="模板名称" required>
+                            <el-input v-model="templateForm.name" placeholder="请输入模板名称"></el-input>
+                        </el-form-item>
+                        
+                        <el-form-item label="模板描述">
+                            <el-input 
+                                v-model="templateForm.description" 
+                                type="textarea" 
+                                placeholder="请输入模板描述"
+                                :rows="3"
+                            ></el-input>
+                        </el-form-item>
+                        
+                        <el-form-item label="适用机器人组" required>
+                            <el-select 
+                                v-model="templateForm.robotGroupIds" 
+                                multiple 
+                                placeholder="请选择适用机器人组"
+                                style="width: 100%;"
+                            >
+                                <el-option 
+                                    v-for="group in robotGroups" 
+                                    :key="group.id" 
+                                    :label="group.name" 
+                                    :value="group.id"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                        
+                        <el-form-item label="表单内容">
+                            <div style="border: 1px solid #dcdfe6; border-radius: 4px; padding: 16px;">
+                                <div style="margin-bottom: 16px; display: flex; justify-content: space-between;">
+                                    <span style="font-weight: bold;">表单字段定义</span>
+                                    <el-button size="small" @click="addField">
+                                        <i class="fas fa-plus"></i> 添加字段
+                                    </el-button>
+                                </div>
+                                
+                                <div v-for="(field, index) in templateForm.fields" :key="index" 
+                                     style="margin-bottom: 16px; padding: 12px; border: 1px dashed #dcdfe6; border-radius: 4px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span style="font-weight: 500;">字段 {{ index + 1 }}</span>
+                                        <el-button size="small" type="danger" @click="removeField(index)">删除</el-button>
+                                    </div>
+                                    
+                                    <el-form :model="field" label-width="80px" size="small">
+                                        <el-row :gutter="16">
+                                            <el-col :span="12">
+                                                <el-form-item label="字段ID">
+                                                    <el-input v-model="field.id" placeholder="如：start_location"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-form-item label="字段标签">
+                                                    <el-input v-model="field.label" placeholder="如：起始位置"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                        
+                                        <el-row :gutter="16">
+                                            <el-col :span="12">
+                                                <el-form-item label="字段类型">
+                                                    <el-select v-model="field.type" placeholder="请选择字段类型">
+                                                        <el-option label="文本" value="text"></el-option>
+                                                        <el-option label="数字" value="number"></el-option>
+                                                        <el-option label="日期" value="date"></el-option>
+                                                        <el-option label="时间" value="time"></el-option>
+                                                        <el-option label="下拉选择" value="select"></el-option>
+                                                        <el-option label="位置选择" value="location"></el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-form-item label="是否必填">
+                                                    <el-switch v-model="field.required"></el-switch>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                    </el-form>
+                                </div>
+                                
+                                <div v-if="templateForm.fields.length === 0" style="text-align: center; color: #999; padding: 20px;">
+                                    暂无字段，请点击"添加字段"按钮添加
+                                </div>
+                            </div>
+                        </el-form-item>
+                        
+                        <el-form-item label="标准作业流程">
+                            <div style="border: 1px solid #dcdfe6; border-radius: 4px; padding: 16px;">
+                                <div style="margin-bottom: 16px; display: flex; justify-content: space-between;">
+                                    <span style="font-weight: bold;">流程步骤定义</span>
+                                    <el-button size="small" @click="addStep">
+                                        <i class="fas fa-plus"></i> 添加步骤
+                                    </el-button>
+                                </div>
+                                
+                                <div v-for="(step, index) in templateForm.steps" :key="index" 
+                                     style="margin-bottom: 16px; padding: 12px; border: 1px dashed #dcdfe6; border-radius: 4px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span style="font-weight: 500;">步骤 {{ index + 1 }}</span>
+                                        <el-button size="small" type="danger" @click="removeStep(index)">删除</el-button>
+                                    </div>
+                                    
+                                    <el-form :model="step" label-width="80px" size="small">
+                                        <el-row :gutter="16">
+                                            <el-col :span="12">
+                                                <el-form-item label="步骤名称">
+                                                    <el-input v-model="step.name" placeholder="如：前往药房"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-form-item label="预估时间(分钟)">
+                                                    <el-input-number v-model="step.estimatedTime" :min="1" :max="120"></el-input-number>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                        
+                                        <el-form-item label="步骤描述">
+                                            <el-input 
+                                                v-model="step.description" 
+                                                type="textarea" 
+                                                placeholder="如：从{{start_location}}导航到{{pharmacy_location}}"
+                                                :rows="2"
+                                            ></el-input>
+                                            <div style="font-size: 12px; color: #999; margin-top: 4px;">
+                                                提示：使用{{'{字段ID}'}}引用字段值，如{{'{start_location}'}}
+                                            </div>
+                                        </el-form-item>
+                                    </el-form>
+                                </div>
+                                
+                                <div v-if="templateForm.steps.length === 0" style="text-align: center; color: #999; padding: 20px;">
+                                    暂无步骤，请点击"添加步骤"按钮添加
+                                </div>
+                            </div>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+            
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="templateDialog.visible = false">取消</el-button>
+                    <el-button type="primary" @click="saveTemplate">保存</el-button>
+                </span>
+            </template>
+        </el-dialog>
+        <!-- 任务创建对话框 -->
+<el-dialog 
+    v-model="taskCreateDialog.visible" 
+    :title="taskCreateDialog.title" 
+    width="700px"
+    top="5vh"
+>
+    <div style="height: 60vh; overflow-y: auto; padding-right: 10px;">
+        <el-form :model="taskCreateForm" label-width="120px">
+            <!-- 任务基本信息 -->
+            <el-form-item label="任务名称" required>
+                <el-input 
+                    v-model="taskCreateForm.name" 
+                    placeholder="请输入任务名称"
+                    style="width: 100%;"
+                ></el-input>
+            </el-form-item>
+            
+            <!-- 完整流程任务 -->
+            <div v-if="taskCreateDialog.type === 'process'">
+                <el-form-item label="选择模板" required>
+                    <el-select 
+                        v-model="taskCreateForm.templateId" 
+                        placeholder="请选择模板"
+                        style="width: 100%;"
+                        @change="onTemplateSelect"
+                    >
+                        <el-option 
+                            v-for="template in templates" 
+                            :key="template.id" 
+                            :label="template.name" 
+                            :value="template.id"
+                        >
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>{{ template.name }}</span>
+                                <span style="color: #999; font-size: 12px;">
+                                    {{ getRobotGroupNames(template.robotGroupIds) }}
+                                </span>
+                            </div>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                
+                <!-- 模板表单字段 -->
+                <div v-if="taskCreateForm.templateId">
+                    <el-form-item 
+                        v-for="field in templates.find(t => t.id === taskCreateForm.templateId)?.fields || []" 
+                        :key="field.id"
+                        :label="field.label"
+                        :required="field.required"
+                    >
+                        <el-input 
+                            v-if="field.type === 'text' || field.type === 'location'"
+                            v-model="taskCreateForm.formData[field.id]"
+                            :placeholder="'请输入' + field.label"
+                            style="width: 100%;"
+                        ></el-input>
+                        
+                        <el-select 
+                            v-if="field.type === 'select'"
+                            v-model="taskCreateForm.formData[field.id]"
+                            placeholder="请选择"
+                            style="width: 100%;"
+                        >
+                            <el-option label="选项1" value="option1"></el-option>
+                            <el-option label="选项2" value="option2"></el-option>
+                            <el-option label="选项3" value="option3"></el-option>
+                        </el-select>
+                        
+                        <el-date-picker
+                            v-if="field.type === 'date'"
+                            v-model="taskCreateForm.formData[field.id]"
+                            type="date"
+                            placeholder="选择日期"
+                            style="width: 100%;"
+                        ></el-date-picker>
+                        
+                        <el-time-picker
+                            v-if="field.type === 'time'"
+                            v-model="taskCreateForm.formData[field.id]"
+                            placeholder="选择时间"
+                            style="width: 100%;"
+                        ></el-time-picker>
+                    </el-form-item>
+                </div>
+            </div>
+            
+            <!-- 简单动作任务 -->
+            <div v-if="taskCreateDialog.type === 'simple'">
+                <el-form-item label="简单作业" required>
+                    <el-select 
+                        v-model="taskCreateForm.simpleAction" 
+                        placeholder="请选择简单作业"
+                        style="width: 100%;"
+                    >
+                        <el-option 
+                            v-for="action in simpleActions" 
+                            :key="action.value" 
+                            :label="action.label" 
+                            :value="action.value"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div>
+            
+            <!-- 通用设置 -->
+            <el-form-item label="任务优先级">
+                <el-radio-group v-model="taskCreateForm.priority">
+                    <el-radio :label="1">高</el-radio>
+                    <el-radio :label="2">中</el-radio>
+                    <el-radio :label="3">低</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            
+            <el-form-item label="开始时间" required>
+                <el-date-picker
+                    v-model="taskCreateForm.startTime"
+                    type="datetime"
+                    placeholder="选择任务开始时间"
+                    style="width: 100%;"
+                ></el-date-picker>
+            </el-form-item>
+            
+            <el-form-item label="Cron表达式">
+                <el-input 
+                    v-model="taskCreateForm.cronExpression" 
+                    placeholder="如：0 0 * * * 表示每天0点执行"
+                    style="width: 100%;"
+                >
+                    <template #append>
+                        <el-button @click="showCronHelp">帮助</el-button>
+                    </template>
+                </el-input>
+                <div style="font-size: 12px; color: #999; margin-top: 4px;">
+                    格式：秒 分 时 日 月 周，留空表示立即执行
+                </div>
+            </el-form-item>
+            
+            <el-form-item label="是否为组任务">
+                <el-switch v-model="taskCreateForm.isGroupTask"></el-switch>
+                <span style="margin-left: 8px; color: #999; font-size: 12px;">
+                    组任务可由多个机器人协同完成
+                </span>
+            </el-form-item>
+        </el-form>
+        
+        <!-- 显示标准作业流程预览 -->
+        <div v-if="taskCreateDialog.type === 'process' && taskCreateForm.templateId" 
+             style="margin-top: 20px; border-top: 1px solid #e8e8e8; padding-top: 16px;">
+            <h4 style="margin-bottom: 12px;">标准作业流程预览：</h4>
+            <div style="background: #fafafa; border-radius: 4px; padding: 12px;">
+                <div v-for="(step, index) in templates.find(t => t.id === taskCreateForm.templateId)?.steps || []" 
+                     :key="index"
+                     style="margin-bottom: 8px; padding: 8px; border-bottom: 1px dashed #e8e8e8;">
+                    <div style="display: flex;">
+                        <div style="width: 24px; height: 24px; background: #1890ff; color: white; 
+                                    border-radius: 50%; text-align: center; line-height: 24px; margin-right: 12px;">
+                            {{ index + 1 }}
+                        </div>
+                        <div>
+                            <div style="font-weight: bold;">{{ step.name }}</div>
+                            <div style="color: #666; font-size: 13px; margin-top: 2px;">
+                                {{ renderStepPreview(step.description) }}
+                            </div>
+                            <div style="color: #999; font-size: 12px; margin-top: 2px;">
+                                预估时间：{{ step.estimatedTime }}分钟
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <template #footer>
+        <span class="dialog-footer">
+            <el-button @click="taskCreateDialog.visible = false">取消</el-button>
+            <el-button type="primary" @click="saveTask">创建任务</el-button>
+        </span>
+    </template>
+</el-dialog>
+        <!-- 任务详情对话框 -->
+        <el-dialog 
+            v-model="taskDetailDialog.visible" 
+            :title="'任务详情 - ' + (selectedTask ? selectedTask.name : '')" 
+            width="80%"
+            top="5vh"
+        >
+            <div v-if="selectedTask" style="height: 70vh; overflow-y: auto;">
+                <div class="task-detail-section">
+                    <div class="task-detail-title">
+                        <i class="fas fa-info-circle"></i> 基本信息
+                    </div>
+                    <div class="task-detail-content">
+                        <div class="detail-row">
+                            <div class="detail-label">任务名称：</div>
+                            <div class="detail-value">{{ selectedTask.name }}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">模板名称：</div>
+                            <div class="detail-value">{{ selectedTask.templateName }}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">任务类型：</div>
+                            <div class="detail-value">
+                                <el-tag size="small" :type="selectedTask.type === 'process' ? '' : 'info'">
+                                    {{ selectedTask.type === 'process' ? '完整流程任务' : '简单动作任务' }}
+                                </el-tag>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">任务状态：</div>
+                            <div class="detail-value">
+                                <span :class="'status-tag status-' + selectedTask.status">
+                                    {{ getStatusText(selectedTask.status) }}
+                                    <span v-if="selectedTask.isHighRisk" class="status-high-risk" style="margin-left: 4px;">高风险</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">是否组任务：</div>
+                            <div class="detail-value">
+                                <el-tag size="small" v-if="selectedTask.isGroupTask">是</el-tag>
+                                <span v-else>否</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">执行机器人组：</div>
+                            <div class="detail-value">
+                                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                    <el-tag 
+                                        v-for="groupId in selectedTask.robotGroupIds" 
+                                        :key="groupId" 
+                                        size="small"
+                                    >
+                                        {{ getRobotGroupName(groupId) }}
+                                    </el-tag>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">执行机器人：</div>
+                            <div class="detail-value">{{ selectedTask.robotName || '未分配' }}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">任务优先级：</div>
+                            <div class="detail-value">
+                                <div v-if="selectedTask.priority === 1" style="color: #ff4d4f; font-weight: bold;">高</div>
+                                <div v-if="selectedTask.priority === 2" style="color: #fa8c16; font-weight: bold;">中</div>
+                                <div v-if="selectedTask.priority === 3" style="color: #1890ff; font-weight: bold;">低</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">开始时间：</div>
+                            <div class="detail-value">{{ selectedTask.startTime }}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">创建时间：</div>
+                            <div class="detail-value">{{ selectedTask.createdTime }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 表单内容 -->
+                <div v-if="selectedTask.formData && Object.keys(selectedTask.formData).length > 0" class="task-detail-section">
+                    <div class="task-detail-title">
+                        <i class="fas fa-edit"></i> 表单内容
+                    </div>
+                    <div class="task-detail-content">
+                        <div v-for="(value, key) in selectedTask.formData" :key="key" class="detail-row">
+                            <div class="detail-label">{{ getFieldLabel(key) }}：</div>
+                            <div class="detail-value">{{ value }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作业步骤 -->
+                <div v-if="selectedTask.steps && selectedTask.steps.length > 0" class="task-detail-section">
+                    <div class="task-detail-title">
+                        <i class="fas fa-list-ol"></i> 作业步骤
+                    </div>
+                    <div class="step-list">
+                        <div v-for="(step, index) in selectedTask.steps" :key="index" class="step-item">
+                            <div class="step-info">
+                                <div class="step-index">{{ index + 1 }}</div>
+                                <div class="step-content">
+                                    <div class="step-title">{{ step.name }}</div>
+                                    <div class="step-desc">{{ step.description }}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <span :class="'status-tag status-' + step.status">
+                                    {{ getStatusText(step.status) }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务日志 -->
+                <div class="task-detail-section">
+                    <div class="task-detail-title">
+                        <i class="fas fa-history"></i> 任务日志
+                    </div>
+                    <div class="task-detail-content">
+                        <div v-for="(log, index) in selectedTask.logs" :key="index" 
+                             style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-weight: 500;">{{ log.action }}</span>
+                                <span style="color: #999; font-size: 12px;">{{ log.time }}</span>
+                            </div>
+                            <div style="color: #666; font-size: 13px; margin-top: 4px;">
+                                {{ log.details }}
+                            </div>
+                        </div>
+                        
+                        <div v-if="selectedTask.logs.length === 0" style="text-align: center; color: #999; padding: 20px;">
+                            暂无日志记录
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="taskDetailDialog.visible = false">关闭</el-button>
+                </span>
+            </template>
+        </el-dialog>
+        
+        <!-- 手动分配对话框 -->
+        <el-dialog 
+            v-model="manualAssignDialog.visible" 
+            title="手动分配任务" 
+            width="600px"
+        >
+            <div v-if="manualAssignDialog.task">
+                <div style="margin-bottom: 16px;">
+                    <div style="font-weight: bold; margin-bottom: 8px;">任务信息</div>
+                    <div>任务名称：{{ manualAssignDialog.task.name }}</div>
+                    <div>适用机器人组：{{ getRobotGroupNames(manualAssignDialog.task.robotGroupIds) }}</div>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <div style="font-weight: bold; margin-bottom: 8px;">可用机器人</div>
+                    <div v-if="availableRobots.length === 0" style="color: #999; text-align: center; padding: 20px;">
+                        当前没有可用的机器人
+                    </div>
+                    <div v-else>
+                        <el-radio-group v-model="manualAssignDialog.selectedRobotId">
+                            <div v-for="robot in availableRobots" :key="robot.id" 
+                                 style="margin-bottom: 12px; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
+                                <el-radio :label="robot.id">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="margin-right: 12px;">
+                                            <i class="fas fa-robot" style="font-size: 24px; color: #1890ff;"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: bold;">{{ robot.name }}</div>
+                                            <div style="font-size: 12px; color: #666;">
+                                                电量：{{ robot.battery }}% | 
+                                                状态：{{ robot.status === 'online' ? '在线' : '离线' }} | 
+                                                位置：{{ robot.location }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </el-radio>
+                            </div>
+                        </el-radio-group>
+                    </div>
+                </div>
+            </div>
+            
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="manualAssignDialog.visible = false">取消</el-button>
+                    <el-button 
+                        type="primary" 
+                        @click="confirmManualAssign"
+                        :disabled="!manualAssignDialog.selectedRobotId"
+                    >分配</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+    <script>
+        const { createApp, ref, reactive, computed, onMounted, watch } = Vue;
+        const { ElMessage, ElMessageBox } = ElementPlus;
+        
+        const app = createApp({
+            setup() {
+                // 当前激活的导航项
+                const activeNav = ref('tasks');
+                
+const expandedMenu = ref('taskManagement'); // 默认展开任务管理，或设为空字符串默认收起
+        
+        // 切换菜单展开/收起
+        const toggleMenu = (menuName) => {
+            if (expandedMenu.value === menuName) {
+                expandedMenu.value = ''; // 点击已展开的则收起
+            } else {
+                expandedMenu.value = menuName; // 展开新的
+            }
+        };
+
+                // 页面标题映射
+                const pageTitles = {
+                    'dashboard': '仪表板',
+                    'templates': '模板管理',
+                    'tasks': '任务列表',
+                    'scheduling': '任务调度',
+                    'monitoring': '任务监控',
+                    'robots': '机器人管理',
+                    'reports': '报表分析'
+                };
+                
+                const getPageTitle = () => {
+                    return pageTitles[activeNav.value] || '机器人管理平台';
+                };
+
+watch(activeNav, (newVal) => {
+            if (['templates', 'tasks', 'scheduling', 'monitoring'].includes(newVal)) {
+                expandedMenu.value = 'taskManagement';
+            }
+        }, { immediate: true });
+                
+                // 任务统计
+                const taskStats = reactive({
+                    total: 0,
+                    executing: 0,
+                    pending: 0,
+                    highRisk: 0
+                });
+                
+                // 机器人组数据
+                const robotGroups = ref([
+                    { id: 1, name: '配送机器人组' },
+                    { id: 2, name: '巡检机器人组' },
+                    { id: 3, name: '清洁机器人组' },
+                    { id: 4, name: '安防机器人组' }
+                ]);
+                
+                const getRobotGroupName = (groupId) => {
+                    const group = robotGroups.value.find(g => g.id == groupId);
+                    return group ? group.name : groupId;
+                };
+                
+                const getRobotGroupNames = (groupIds) => {
+                    return groupIds.map(id => getRobotGroupName(id)).join(', ');
+                };
+                
+                // 机器人数据
+                const robots = ref([
+                    { id: 1, name: '机器人A', groupId: 1, battery: 85, status: 'online', location: '药房' },
+                    { id: 2, name: '机器人B', groupId: 1, battery: 42, status: 'low_battery', location: '病房区' },
+                    { id: 3, name: '机器人C', groupId: 2, battery: 92, status: 'online', location: '门诊大厅' },
+                    { id: 4, name: '机器人D', groupId: 3, battery: 78, status: 'online', location: '走廊' },
+                    { id: 5, name: '机器人E', groupId: 4, battery: 65, status: 'offline', location: '监控室' }
+                ]);
+                
+                // 模板数据
+                const templates = ref([
+                    {
+                        id: 1,
+                        name: '药品配送模板',
+                        description: '院内药品配送标准流程',
+                        robotGroupIds: [1],
+                        fields: [
+                            { id: 'start_location', label: '起始位置', type: 'location', required: true },
+                            { id: 'pharmacy_location', label: '药房位置', type: 'location', required: true },
+                            { id: 'drug_name', label: '药品名称', type: 'text', required: true },
+                            { id: 'receiver_dept', label: '接收科室', type: 'select', required: true }
+                        ],
+                        steps: [
+                            { name: '任务接收', description: '接收配送任务指令', estimatedTime: 2 },
+                            { name: '前往药房', description: '从{{start_location}}导航到{{pharmacy_location}}', estimatedTime: 10 },
+                            { name: '药品领取', description: '取走{{drug_name}}，核对药品信息', estimatedTime: 5 },
+                            { name: '药品配送', description: '将药品送至{{receiver_dept}}', estimatedTime: 15 },
+                            { name: '交接确认', description: '与接收人员交接药品', estimatedTime: 3 }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        name: '银行巡检模板',
+                        description: '银行网点安全巡检流程',
+                        robotGroupIds: [2, 4],
+                        fields: [
+                            { id: 'bank_branch', label: '支行名称', type: 'text', required: true },
+                            { id: 'inspection_items', label: '巡检项目', type: 'select', required: true },
+                            { id: 'inspection_time', label: '巡检时间', type: 'time', required: true }
+                        ],
+                        steps: [
+                            { name: '任务启动', description: '启动巡检任务', estimatedTime: 2 },
+                            { name: '网点到达', description: '导航至{{bank_branch}}', estimatedTime: 20 },
+                            { name: '安全巡检', description: '执行{{inspection_items}}巡检', estimatedTime: 30 },
+                            { name: '异常上报', description: '上报巡检发现的问题', estimatedTime: 5 },
+                            { name: '任务完成', description: '返回基地并生成报告', estimatedTime: 15 }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        name: '设备维护模板',
+                        description: '医疗设备定期维护流程',
+                        robotGroupIds: [2],
+                        fields: [
+                            { id: 'device_name', label: '设备名称', type: 'text', required: true },
+                            { id: 'device_location', label: '设备位置', type: 'location', required: true },
+                            { id: 'maintenance_type', label: '维护类型', type: 'select', required: true }
+                        ],
+                        steps: [
+                            { name: '准备工作', description: '准备维护工具和设备', estimatedTime: 5 },
+                            { name: '前往设备位置', description: '导航至{{device_location}}', estimatedTime: 10 },
+                            { name: '设备检查', description: '对{{device_name}}进行{{maintenance_type}}检查', estimatedTime: 25 },
+                            { name: '维护记录', description: '记录维护结果和问题', estimatedTime: 5 }
+                        ]
+                    }
+                ]);
+                
+                // 模板筛选
+                const templateFilter = reactive({
+                    keyword: '',
+                    robotGroup: ''
+                });
+                
+                const filteredTemplates = computed(() => {
+                    let result = templates.value;
+                    
+                    if (templateFilter.keyword) {
+                        const keyword = templateFilter.keyword.toLowerCase();
+                        result = result.filter(t => 
+                            t.name.toLowerCase().includes(keyword) || 
+                            (t.description && t.description.toLowerCase().includes(keyword))
+                        );
+                    }
+                    
+                    if (templateFilter.robotGroup) {
+                        result = result.filter(t => 
+                            t.robotGroupIds.includes(parseInt(templateFilter.robotGroup))
+                        );
+                    }
+                    
+                    return result;
+                });
+                
+                const filterTemplates = () => {
+                    // 这里会触发computed重新计算
+                };
+                
+                // 模板对话框
+                const templateDialog = reactive({
+                    visible: false,
+                    mode: 'create' // 'create' or 'edit'
+                });
+                
+                const templateForm = reactive({
+                    id: null,
+                    name: '',
+                    description: '',
+                    robotGroupIds: [],
+                    fields: [],
+                    steps: []
+                });
+                
+                const showTemplateDialog = (mode, template = null) => {
+                    templateDialog.mode = mode;
+                    
+                    if (mode === 'create') {
+                        // 重置表单
+                        Object.assign(templateForm, {
+                            id: null,
+                            name: '',
+                            description: '',
+                            robotGroupIds: [],
+                            fields: [],
+                            steps: []
+                        });
+                    } else if (mode === 'edit' && template) {
+                        // 填充表单数据
+                        Object.assign(templateForm, {
+                            id: template.id,
+                            name: template.name,
+                            description: template.description,
+                            robotGroupIds: template.robotGroupIds,
+                            fields: JSON.parse(JSON.stringify(template.fields)),
+                            steps: JSON.parse(JSON.stringify(template.steps))
+                        });
+                    }
+                    
+                    templateDialog.visible = true;
+                };
+                
+                const addField = () => {
+                    templateForm.fields.push({
+                        id: '',
+                        label: '',
+                        type: 'text',
+                        required: false
+                    });
+                };
+                
+                const removeField = (index) => {
+                    templateForm.fields.splice(index, 1);
+                };
+                
+                const addStep = () => {
+                    templateForm.steps.push({
+                        name: '',
+                        description: '',
+                        estimatedTime: 5
+                    });
+                };
+                
+                const removeStep = (index) => {
+                    templateForm.steps.splice(index, 1);
+                };
+                
+                const saveTemplate = () => {
+                    if (!templateForm.name.trim()) {
+                        ElMessage.error('请输入模板名称');
+                        return;
+                    }
+                    
+                    if (templateForm.robotGroupIds.length === 0) {
+                        ElMessage.error('请选择至少一个适用机器人组');
+                        return;
+                    }
+                    
+                    if (templateDialog.mode === 'create') {
+                        // 生成新ID
+                        const newId = Math.max(...templates.value.map(t => t.id)) + 1;
+                        templateForm.id = newId;
+                        
+                        // 添加新模板
+                        templates.value.push({
+                            ...JSON.parse(JSON.stringify(templateForm))
+                        });
+                        
+                        ElMessage.success('模板创建成功');
+                    } else {
+                        // 更新模板
+                        const index = templates.value.findIndex(t => t.id === templateForm.id);
+                        if (index !== -1) {
+                            templates.value[index] = {
+                                ...JSON.parse(JSON.stringify(templateForm))
+                            };
+                        }
+                        
+                        ElMessage.success('模板修改成功');
+                    }
+                    
+                    templateDialog.visible = false;
+                };
+                
+                const viewTemplate = (template) => {
+                    ElMessageBox.alert(`
+                        <div>
+                            <h3>${template.name}</h3>
+                            <p><strong>描述：</strong>${template.description}</p>
+                            <p><strong>适用机器人组：</strong>${getRobotGroupNames(template.robotGroupIds)}</p>
+                            <p><strong>字段数量：</strong>${template.fields.length}</p>
+                            <p><strong>步骤数量：</strong>${template.steps.length}</p>
+                        </div>
+                    `, '模板详情', {
+                        dangerouslyUseHTMLString: true,
+                        customClass: 'template-detail-dialog'
+                    });
+                };
+                
+                const deleteTemplate = (id) => {
+                    ElMessageBox.confirm('确定要删除这个模板吗？', '确认删除', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        const index = templates.value.findIndex(t => t.id === id);
+                        if (index !== -1) {
+                            templates.value.splice(index, 1);
+                            ElMessage.success('模板删除成功');
+                        }
+                    }).catch(() => {
+                        // 取消删除
+                    });
+                };
+                
+                // 任务数据
+                const tasks = ref([
+                    {
+                        id: 1001,
+                        name: '药品配送-急诊科',
+                        templateId: 1,
+                        templateName: '药品配送模板',
+                        type: 'process',
+                        status: 'executing',
+                        isHighRisk: false,
+                        robotId: 1,
+                        robotName: '机器人A',
+                        robotStatus: 'online',
+                        robotGroupIds: [1],
+                        priority: 1,
+                        isGroupTask: false,
+                        startTime: '2023-10-20 09:00:00',
+                        createdTime: '2023-10-19 16:30:00',
+                        formData: {
+                            start_location: '护士站',
+                            pharmacy_location: '中心药房',
+                            drug_name: '头孢曲松钠',
+                            receiver_dept: '急诊科'
+                        },
+                        steps: [
+                            { name: '任务接收', description: '接收配送任务指令', status: 'completed' },
+                            { name: '前往药房', description: '从护士站导航到中心药房', status: 'completed' },
+                            { name: '药品领取', description: '取走头孢曲松钠，核对药品信息', status: 'executing' },
+                            { name: '药品配送', description: '将药品送至急诊科', status: 'pending' },
+                            { name: '交接确认', description: '与接收人员交接药品', status: 'pending' }
+                        ],
+                        completedSteps: 2,
+                        totalSteps: 5,
+                        logs: [
+                            { action: '任务创建', time: '2023-10-19 16:30:00', details: '管理员创建了任务' },
+                            { action: '任务分配', time: '2023-10-20 08:45:00', details: '任务分配给机器人A' },
+                            { action: '任务开始', time: '2023-10-20 09:00:00', details: '机器人A开始执行任务' },
+                            { action: '步骤完成', time: '2023-10-20 09:02:00', details: '完成步骤1: 任务接收' },
+                            { action: '步骤完成', time: '2023-10-20 09:12:00', details: '完成步骤2: 前往药房' }
+                        ]
+                    },
+                    {
+                        id: 1002,
+                        name: '银行巡检-朝阳支行',
+                        templateId: 2,
+                        templateName: '银行巡检模板',
+                        type: 'process',
+                        status: 'pending',
+                        isHighRisk: false,
+                        robotId: null,
+                        robotName: null,
+                        robotStatus: null,
+                        robotGroupIds: [2, 4],
+                        priority: 2,
+                        isGroupTask: true,
+                        startTime: '2023-10-20 14:00:00',
+                        createdTime: '2023-10-19 10:15:00',
+                        formData: {
+                            bank_branch: '朝阳支行',
+                            inspection_items: '安全门禁,监控设备,报警系统',
+                            inspection_time: '14:00'
+                        },
+                        steps: [
+                            { name: '任务启动', description: '启动巡检任务', status: 'pending' },
+                            { name: '网点到达', description: '导航至朝阳支行', status: 'pending' },
+                            { name: '安全巡检', description: '执行安全门禁,监控设备,报警系统巡检', status: 'pending' },
+                            { name: '异常上报', description: '上报巡检发现的问题', status: 'pending' },
+                            { name: '任务完成', description: '返回基地并生成报告', status: 'pending' }
+                        ],
+                        completedSteps: 0,
+                        totalSteps: 5,
+                        logs: [
+                            { action: '任务创建', time: '2023-10-19 10:15:00', details: '管理员创建了任务' }
+                        ]
+                    },
+                    {
+                        id: 1003,
+                        name: '设备维护-MRI设备',
+                        templateId: 3,
+                        templateName: '设备维护模板',
+                        type: 'process',
+                        status: 'assigned',
+                        isHighRisk: false,
+                        robotId: 3,
+                        robotName: '机器人C',
+                        robotStatus: 'online',
+                        robotGroupIds: [2],
+                        priority: 2,
+                        isGroupTask: false,
+                        startTime: '2023-10-20 10:30:00',
+                        createdTime: '2023-10-18 14:20:00',
+                        formData: {
+                            device_name: 'MRI设备',
+                            device_location: '影像科',
+                            maintenance_type: '定期检查'
+                        },
+                        steps: [
+                            { name: '准备工作', description: '准备维护工具和设备', status: 'pending' },
+                            { name: '前往设备位置', description: '导航至影像科', status: 'pending' },
+                            { name: '设备检查', description: '对MRI设备进行定期检查检查', status: 'pending' },
+                            { name: '维护记录', description: '记录维护结果和问题', status: 'pending' }
+                        ],
+                        completedSteps: 0,
+                        totalSteps: 4,
+                        logs: [
+                            { action: '任务创建', time: '2023-10-18 14:20:00', details: '管理员创建了任务' },
+                            { action: '任务分配', time: '2023-10-19 09:15:00', details: '任务分配给机器人C' }
+                        ]
+                    },
+                    {
+                        id: 1004,
+                        name: '清洁任务-门诊大厅',
+                        type: 'simple',
+                        templateName: '清洁任务',
+                        status: 'executing',
+                        isHighRisk: true,
+                        robotId: 4,
+                        robotName: '机器人D',
+                        robotStatus: 'online',
+                        robotGroupIds: [3],
+                        priority: 3,
+                        isGroupTask: false,
+                        startTime: '2023-10-20 08:00:00',
+                        createdTime: '2023-10-19 17:00:00',
+                        completedSteps: 3,
+                        totalSteps: 5,
+                        logs: [
+                            { action: '任务创建', time: '2023-10-19 17:00:00', details: '管理员创建了简单任务' },
+                            { action: '任务分配', time: '2023-10-19 17:30:00', details: '任务分配给机器人D' },
+                            { action: '任务开始', time: '2023-10-20 08:00:00', details: '机器人D开始执行清洁任务' },
+                            { action: '高风险标记', time: '2023-10-20 09:30:00', details: '检测到机器人电量低，标记为高风险' }
+                        ]
+                    },
+                    {
+                        id: 1005,
+                        name: '安防巡逻-夜间巡逻',
+                        type: 'simple',
+                        templateName: '安防巡逻',
+                        status: 'completed',
+                        isHighRisk: false,
+                        robotId: 5,
+                        robotName: '机器人E',
+                        robotStatus: 'offline',
+                        robotGroupIds: [4],
+                        priority: 2,
+                        isGroupTask: false,
+                        startTime: '2023-10-19 22:00:00',
+                        createdTime: '2023-10-19 18:30:00',
+                        completedSteps: 5,
+                        totalSteps: 5,
+                        logs: [
+                            { action: '任务创建', time: '2023-10-19 18:30:00', details: '管理员创建了简单任务' },
+                            { action: '任务分配', time: '2023-10-19 21:45:00', details: '任务分配给机器人E' },
+                            { action: '任务开始', time: '2023-10-19 22:00:00', details: '机器人E开始执行安防巡逻' },
+                            { action: '任务完成', time: '2023-10-20 02:30:00', details: '机器人E完成安防巡逻任务' }
+                        ]
+                    },
+                    {
+                        id: 1006,
+                        name: '药品配送-住院部',
+                        templateId: 1,
+                        templateName: '药品配送模板',
+                        type: 'process',
+                        status: 'cancelled',
+                        isHighRisk: false,
+                        robotId: null,
+                        robotName: null,
+                        robotStatus: null,
+                        robotGroupIds: [1],
+                        priority: 2,
+                        isGroupTask: false,
+                        startTime: '2023-10-21 10:00:00',
+                        createdTime: '2023-10-18 11:45:00',
+                        formData: {
+                            start_location: '药房',
+                            pharmacy_location: '中心药房',
+                            drug_name: '胰岛素',
+                            receiver_dept: '住院部'
+                        },
+                        steps: [],
+                        completedSteps: 0,
+                        totalSteps: 5,
+                        logs: [
+                            { action: '任务创建', time: '2023-10-18 11:45:00', details: '管理员创建了任务' },
+                            { action: '任务取消', time: '2023-10-19 09:20:00', details: '管理员取消了任务' }
+                        ]
+                    }
+                ]);
+                
+                // 任务状态文本映射
+                const statusTextMap = {
+                    'pending': '待分配',
+                    'assigned': '已分配',
+                    'executing': '执行中',
+                    'completed': '已完成',
+                    'cancelled': '已取消',
+                    'aborted': '已中止'
+                };
+                
+                const getStatusText = (status) => {
+                    return statusTextMap[status] || status;
+                };
+                
+                // 任务筛选
+                const taskFilter = reactive({
+                    keyword: '',
+                    status: '',
+                    robotId: '',
+                    isHighRisk: ''
+                });
+                
+                const filteredTasks = computed(() => {
+                    let result = tasks.value;
+                    
+                    if (taskFilter.keyword) {
+                        const keyword = taskFilter.keyword.toLowerCase();
+                        result = result.filter(t => 
+                            t.name.toLowerCase().includes(keyword) || 
+                            t.templateName.toLowerCase().includes(keyword)
+                        );
+                    }
+                    
+                    if (taskFilter.status) {
+                        result = result.filter(t => t.status === taskFilter.status);
+                    }
+                    
+                    if (taskFilter.robotId) {
+                        result = result.filter(t => t.robotId == taskFilter.robotId);
+                    }
+                    
+                    if (taskFilter.isHighRisk !== '') {
+                        const isHighRisk = taskFilter.isHighRisk === 'true';
+                        result = result.filter(t => t.isHighRisk === isHighRisk);
+                    }
+                    
+                    return result;
+                });
+                
+                const filterTasks = () => {
+                    // 这里会触发computed重新计算
+                };
+                
+                // 任务详情对话框
+                const taskDetailDialog = reactive({
+                    visible: false
+                });
+                
+                const selectedTask = ref(null);
+                
+                const viewTaskDetail = (task) => {
+                    selectedTask.value = { ...task };
+                    taskDetailDialog.visible = true;
+                };
+                
+                const getFieldLabel = (fieldId) => {
+                    // 在实际应用中，这里应该根据模板获取字段标签
+                    const fieldLabels = {
+                        'start_location': '起始位置',
+                        'pharmacy_location': '药房位置',
+                        'drug_name': '药品名称',
+                        'receiver_dept': '接收科室',
+                        'bank_branch': '支行名称',
+                        'inspection_items': '巡检项目',
+                        'inspection_time': '巡检时间',
+                        'device_name': '设备名称',
+                        'device_location': '设备位置',
+                        'maintenance_type': '维护类型'
+                    };
+                    
+                    return fieldLabels[fieldId] || fieldId;
+                };
+                
+                // 任务操作
+                const editTask = (task) => {
+                    ElMessageBox.confirm('确定要修改这个任务吗？', '确认修改', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消'
+                    }).then(() => {
+                        // 在实际应用中，这里应该打开编辑对话框
+                        ElMessage.success('任务修改成功（演示功能）');
+                    }).catch(() => {
+                        // 取消修改
+                    });
+                };
+                
+                const cancelTask = (taskId) => {
+                    ElMessageBox.confirm('确定要取消这个任务吗？', '确认取消', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        const task = tasks.value.find(t => t.id === taskId);
+                        if (task) {
+                            task.status = 'cancelled';
+                            task.logs.push({
+                                action: '任务取消',
+                                time: new Date().toLocaleString('zh-CN'),
+                                details: '管理员取消了任务'
+                            });
+                            ElMessage.success('任务取消成功');
+                        }
+                    }).catch(() => {
+                        // 取消操作
+                    });
+                };
+                
+                // 任务调度相关
+                const schedulingTab = ref('pending');
+                const sortBy = ref('priority');
+                
+                const pendingTasks = computed(() => {
+                    return tasks.value.filter(t => t.status === 'pending');
+                });
+                
+                const assignedTasks = computed(() => {
+                    return tasks.value.filter(t => t.status === 'assigned' || t.status === 'executing');
+                });
+                
+                const sortedPendingTasks = computed(() => {
+                    const tasks = [...pendingTasks.value];
+                    
+                    if (sortBy.value === 'priority') {
+                        return tasks.sort((a, b) => a.priority - b.priority);
+                    } else {
+                        return tasks.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+                    }
+                });
+                
+                // 手动分配对话框
+                const manualAssignDialog = reactive({
+                    visible: false,
+                    task: null,
+                    selectedRobotId: null
+                });
+                
+                const availableRobots = computed(() => {
+                    if (!manualAssignDialog.task) return [];
+                    
+                    const groupIds = manualAssignDialog.task.robotGroupIds;
+                    
+                    return robots.value.filter(robot => 
+                        groupIds.includes(robot.groupId) && 
+                        robot.status === 'online' && 
+                        robot.battery > 20
+                    );
+                });
+                
+                const showManualAssignDialog = (task) => {
+                    manualAssignDialog.task = { ...task };
+                    manualAssignDialog.selectedRobotId = null;
+                    manualAssignDialog.visible = true;
+                };
+                
+                const confirmManualAssign = () => {
+                    if (!manualAssignDialog.selectedRobotId) {
+                        ElMessage.error('请选择一个机器人');
+                        return;
+                    }
+                    
+                    const robot = robots.value.find(r => r.id === manualAssignDialog.selectedRobotId);
+                    const task = tasks.value.find(t => t.id === manualAssignDialog.task.id);
+                    
+                    if (robot && task) {
+                        task.robotId = robot.id;
+                        task.robotName = robot.name;
+                        task.robotStatus = robot.status;
+                        task.status = 'assigned';
+                        
+                        task.logs.push({
+                            action: '任务分配',
+                            time: new Date().toLocaleString('zh-CN'),
+                            details: `任务手动分配给${robot.name}`
+                        });
+                        
+                        ElMessage.success(`任务已分配给${robot.name}`);
+                        manualAssignDialog.visible = false;
+                    }
+                };
+                
+                const autoAssignTask = (task) => {
+                    // 查找可用的机器人
+                    const groupIds = task.robotGroupIds;
+                    const availableRobots = robots.value.filter(robot => 
+                        groupIds.includes(robot.groupId) && 
+                        robot.status === 'online' && 
+                        robot.battery > 20
+                    );
+                    
+                    if (availableRobots.length === 0) {
+                        ElMessage.warning('没有可用的机器人');
+                        return;
+                    }
+                    
+                    // 选择电量最高的机器人
+                    const selectedRobot = availableRobots.reduce((prev, current) => 
+                        prev.battery > current.battery ? prev : current
+                    );
+                    
+                    const taskIndex = tasks.value.findIndex(t => t.id === task.id);
+                    if (taskIndex !== -1) {
+                        tasks.value[taskIndex].robotId = selectedRobot.id;
+                        tasks.value[taskIndex].robotName = selectedRobot.name;
+                        tasks.value[taskIndex].robotStatus = selectedRobot.status;
+                        tasks.value[taskIndex].status = 'assigned';
+                        
+                        tasks.value[taskIndex].logs.push({
+                            action: '任务分配',
+                            time: new Date().toLocaleString('zh-CN'),
+                            details: `任务自动分配给${selectedRobot.name}`
+                        });
+                        
+                        ElMessage.success(`任务已自动分配给${selectedRobot.name}`);
+                    }
+                };
+                
+                const autoAssignAll = () => {
+                    const pending = tasks.value.filter(t => t.status === 'pending');
+                    
+                    if (pending.length === 0) {
+                        ElMessage.info('没有待分配的任务');
+                        return;
+                    }
+                    
+                    let assignedCount = 0;
+                    
+                    pending.forEach(task => {
+                        autoAssignTask(task);
+                        assignedCount++;
+                    });
+                    
+                    ElMessage.success(`已自动分配${assignedCount}个任务`);
+                };
+                
+                const reassignTask = (task) => {
+                    ElMessageBox.confirm('确定要重新分配这个任务吗？', '确认重新分配', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        // 将任务状态重置为待分配
+                        const taskIndex = tasks.value.findIndex(t => t.id === task.id);
+                        if (taskIndex !== -1) {
+                            tasks.value[taskIndex].robotId = null;
+                            tasks.value[taskIndex].robotName = null;
+                            tasks.value[taskIndex].robotStatus = null;
+                            tasks.value[taskIndex].status = 'pending';
+                            
+                            tasks.value[taskIndex].logs.push({
+                                action: '任务重新分配',
+                                time: new Date().toLocaleString('zh-CN'),
+                                details: '任务被重新分配，状态重置为待分配'
+                            });
+                            
+                            ElMessage.success('任务已重置为待分配状态');
+                        }
+                    }).catch(() => {
+                        // 取消操作
+                    });
+                };
+                
+                // 任务监控相关
+                const monitoringTab = ref('all');
+                
+                const executingTasks = computed(() => {
+                    return tasks.value.filter(t => t.status === 'executing');
+                });
+                
+                const highRiskTasks = computed(() => {
+                    return tasks.value.filter(t => t.isHighRisk);
+                });
+                
+                const monitoredTasks = computed(() => {
+                    if (monitoringTab.value === 'executing') {
+                        return executingTasks.value;
+                    } else if (monitoringTab.value === 'highRisk') {
+                        return highRiskTasks.value;
+                    } else {
+                        return tasks.value;
+                    }
+                });
+                
+                const refreshTasks = () => {
+                    // 模拟刷新任务数据
+                    ElMessage.success('任务数据已刷新');
+                    
+                    // 更新任务统计
+                    updateTaskStats();
+                };
+                
+                const abortTask = (task) => {
+                    ElMessageBox.prompt('请输入中止原因', '中止任务', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        inputPlaceholder: '请输入中止原因',
+                        inputValidator: (value) => {
+                            if (!value || value.trim() === '') {
+                                return '中止原因不能为空';
+                            }
+                            return true;
+                        }
+                    }).then(({ value }) => {
+                        const taskIndex = tasks.value.findIndex(t => t.id === task.id);
+                        if (taskIndex !== -1) {
+                            tasks.value[taskIndex].status = 'aborted';
+                            tasks.value[taskIndex].logs.push({
+                                action: '任务中止',
+                                time: new Date().toLocaleString('zh-CN'),
+                                details: `管理员中止了任务，原因：${value}`
+                            });
+                            
+                            ElMessage.success('任务已中止');
+                        }
+                    }).catch(() => {
+                        // 取消操作
+                    });
+                };
+                
+                const resumeTask = (task) => {
+                    ElMessageBox.confirm('确定要恢复这个任务吗？', '恢复任务', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消'
+                    }).then(() => {
+                        const taskIndex = tasks.value.findIndex(t => t.id === task.id);
+                        if (taskIndex !== -1) {
+                            tasks.value[taskIndex].status = 'pending';
+                            tasks.value[taskIndex].logs.push({
+                                action: '任务恢复',
+                                time: new Date().toLocaleString('zh-CN'),
+                                details: '管理员恢复了任务，状态重置为待分配'
+                            });
+                            
+                            ElMessage.success('任务已恢复为待分配状态');
+                        }
+                    }).catch(() => {
+                        // 取消操作
+                    });
+                };
+                
+                // 更新任务统计
+                const updateTaskStats = () => {
+                    const total = tasks.value.length;
+                    const executing = tasks.value.filter(t => t.status === 'executing').length;
+                    const pending = tasks.value.filter(t => t.status === 'pending').length;
+                    const highRisk = tasks.value.filter(t => t.isHighRisk).length;
+                    
+                    taskStats.total = total;
+                    taskStats.executing = executing;
+                    taskStats.pending = pending;
+                    taskStats.highRisk = highRisk;
+                };
+                
+                // 最近任务
+                const recentTasks = computed(() => {
+                    return [...tasks.value]
+                        .sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime))
+                        .slice(0, 5);
+                });
+                
+                // 初始化任务统计
+                updateTaskStats();
+                
+                // 初始化ECharts图表
+                onMounted(() => {
+                    // 模拟任务状态分布图表
+                    setTimeout(() => {
+                        const chartDom = document.getElementById('taskStatusChart');
+                        if (chartDom) {
+                            const myChart = echarts.init(chartDom);
+                            
+                            const option = {
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                                },
+                                legend: {
+                                    orient: 'vertical',
+                                    left: 'right',
+                                    top: 'center'
+                                },
+                                series: [
+                                    {
+                                        name: '任务状态',
+                                        type: 'pie',
+                                        radius: ['40%', '70%'],
+                                        avoidLabelOverlap: false,
+                                        itemStyle: {
+                                            borderRadius: 10,
+                                            borderColor: '#fff',
+                                            borderWidth: 2
+                                        },
+                                        label: {
+                                            show: false,
+                                            position: 'center'
+                                        },
+                                        emphasis: {
+                                            label: {
+                                                show: true,
+                                                fontSize: '16',
+                                                fontWeight: 'bold'
+                                            }
+                                        },
+                                        labelLine: {
+                                            show: false
+                                        },
+                                        data: [
+                                            { value: taskStats.pending, name: '待分配' },
+                                            { value: taskStats.executing, name: '执行中' },
+                                            { value: tasks.value.filter(t => t.status === 'completed').length, name: '已完成' },
+                                            { value: tasks.value.filter(t => t.status === 'cancelled' || t.status === 'aborted').length, name: '已取消/中止' }
+                                        ],
+                                        color: ['#fa8c16', '#52c41a', '#1890ff', '#ff4d4f']
+                                    }
+                                ]
+                            };
+                            
+                            myChart.setOption(option);
+                            
+                            // 响应窗口大小变化
+                            window.addEventListener('resize', () => {
+                                myChart.resize();
+                            });
+                        }
+                    }, 100);
+                });
+
+		// 任务创建对话框
+const taskCreateDialog = reactive({
+    visible: false,
+    type: 'process', // 'process' 或 'simple'
+    title: ''
+});
+
+const taskCreateForm = reactive({
+    name: '',
+    templateId: null,
+    templateName: '',
+    type: 'process',
+    priority: 2,
+    startTime: '',
+    isGroupTask: false,
+    cronExpression: '0 0 * * *', // 默认每天0点
+    formData: {},
+    simpleAction: null
+});
+
+// 显示任务创建对话框
+const showTaskDialog = (type) => {
+    taskCreateDialog.type = type;
+    taskCreateDialog.visible = true;
+    
+    if (type === 'process') {
+        taskCreateDialog.title = '创建完整流程任务';
+        taskCreateForm.type = 'process';
+        taskCreateForm.templateId = null;
+        taskCreateForm.templateName = '';
+        taskCreateForm.simpleAction = null;
+    } else {
+        taskCreateDialog.title = '创建简单动作任务';
+        taskCreateForm.type = 'simple';
+        taskCreateForm.templateId = null;
+        taskCreateForm.templateName = '';
+        taskCreateForm.simpleAction = null;
+    }
+    
+    // 重置表单
+    Object.assign(taskCreateForm, {
+        name: '',
+        priority: 2,
+        startTime: '',
+        isGroupTask: false,
+        cronExpression: '0 0 * * *',
+        formData: {}
+    });
+};
+
+// 渲染步骤预览（替换变量）
+const renderStepPreview = (description) => {
+    if (!description || !taskCreateForm.templateId) return description;
+    
+    // 获取模板字段
+    const template = templates.value.find(t => t.id === taskCreateForm.templateId);
+    if (!template) return description;
+    
+    // 替换变量
+    let result = description;
+    template.fields.forEach(field => {
+        const value = taskCreateForm.formData[field.id] || `[${field.label}]`;
+        result = result.replace(new RegExp(`{{${field.id}}}`, 'g'), value);
+    });
+    
+    return result;
+};
+
+// 显示Cron表达式帮助
+const showCronHelp = () => {
+    ElMessageBox.alert(`
+        <div style="font-size: 14px; line-height: 1.5;">
+            <h3 style="margin-top: 0;">Cron表达式格式说明</h3>
+            <p>格式：<strong>秒 分 时 日 月 周</strong></p>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+                <tr style="background: #f5f5f5;">
+                    <th style="padding: 8px; border: 1px solid #ddd;">字段</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">允许值</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">特殊字符</th>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">秒</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">0-59</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">, - * /</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="padding: 8px; border: 1px solid #ddd;">分</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">0-59</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">, - * /</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">时</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">0-23</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">, - * /</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="padding: 8px; border: 1px solid #ddd;">日</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">1-31</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">, - * ? / L W</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">月</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">1-12 或 JAN-DEC</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">, - * /</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="padding: 8px; border: 1px solid #ddd;">周</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">1-7 或 SUN-SAT</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">, - * ? / L #</td>
+                </tr>
+            </table>
+            <p><strong>示例：</strong></p>
+            <ul style="padding-left: 20px;">
+                <li><code>0 0 9 * * ?</code> - 每天9点执行</li>
+                <li><code>0 0 12 ? * MON-FRI</code> - 周一至周五12点执行</li>
+                <li><code>0 0/30 9-17 * * ?</code> - 9点到17点每30分钟执行</li>
+                <li><code>0 0 0 1 * ?</code> - 每月1号0点执行</li>
+            </ul>
+        </div>
+    `, 'Cron表达式帮助', {
+        dangerouslyUseHTMLString: true,
+        customClass: 'cron-help-dialog',
+        width: '600px'
+    });
+};
+
+// 保存任务
+const saveTask = async () => {
+    // 表单验证
+    if (!taskCreateForm.name.trim()) {
+        ElMessage.error('请输入任务名称');
+        return;
+    }
+    
+    if (taskCreateDialog.type === 'process' && !taskCreateForm.templateId) {
+        ElMessage.error('请选择模板');
+        return;
+    }
+    
+    if (taskCreateDialog.type === 'simple' && !taskCreateForm.simpleAction) {
+        ElMessage.error('请选择简单作业');
+        return;
+    }
+    
+    if (!taskCreateForm.startTime) {
+        ElMessage.error('请选择开始时间');
+        return;
+    }
+    
+    // 生成新任务ID
+    const newTaskId = Math.max(...tasks.value.map(t => t.id), 1000) + 1;
+    
+    // 获取当前时间
+    const now = new Date();
+    const createdTime = now.toLocaleString('zh-CN');
+    
+    // 计算开始时间
+    let startTime = taskCreateForm.startTime;
+    if (taskCreateForm.cronExpression) {
+        // 如果是定时任务，这里简化处理
+        startTime = `定时任务 (${taskCreateForm.cronExpression})`;
+    }
+    
+    // 构建新任务对象
+    const newTask = {
+        id: newTaskId,
+        name: taskCreateForm.name,
+        templateId: taskCreateForm.templateId,
+        templateName: taskCreateForm.templateName || (taskCreateDialog.type === 'simple' ? taskCreateForm.simpleAction + '任务' : ''),
+        type: taskCreateDialog.type,
+        status: 'pending',
+        isHighRisk: false,
+        robotId: null,
+        robotName: null,
+        robotStatus: null,
+        robotGroupIds: taskCreateForm.templateId ? 
+            templates.value.find(t => t.id === taskCreateForm.templateId)?.robotGroupIds || [] : 
+            (taskCreateDialog.type === 'simple' ? [3] : []), // 简单任务默认给清洁机器人组
+        priority: taskCreateForm.priority,
+        isGroupTask: taskCreateForm.isGroupTask,
+        startTime: startTime,
+        createdTime: createdTime,
+        formData: taskCreateDialog.type === 'process' ? taskCreateForm.formData : {},
+        steps: taskCreateDialog.type === 'process' ? 
+            JSON.parse(JSON.stringify(templates.value.find(t => t.id === taskCreateForm.templateId)?.steps || [])) : 
+            [],
+        completedSteps: 0,
+        totalSteps: taskCreateDialog.type === 'process' ? 
+            templates.value.find(t => t.id === taskCreateForm.templateId)?.steps.length || 0 : 
+            5, // 简单任务默认5个步骤
+        logs: [
+            {
+                action: '任务创建',
+                time: createdTime,
+                details: `管理员创建了${taskCreateDialog.type === 'process' ? '完整流程' : '简单动作'}任务`
+            }
+        ]
+    };
+    
+    // 如果是简单任务，设置步骤
+    if (taskCreateDialog.type === 'simple') {
+        const simpleActionSteps = {
+            '清洁': [
+                { name: '任务启动', description: '启动清洁任务', status: 'pending' },
+                { name: '前往清洁区域', description: '导航至清洁区域', status: 'pending' },
+                { name: '执行清洁', description: '执行地面清洁工作', status: 'pending' },
+                { name: '垃圾回收', description: '收集并处理垃圾', status: 'pending' },
+                { name: '任务完成', description: '返回充电站并生成报告', status: 'pending' }
+            ],
+            '巡检': [
+                { name: '任务启动', description: '启动巡检任务', status: 'pending' },
+                { name: '巡检路线规划', description: '规划巡检路线', status: 'pending' },
+                { name: '执行巡检', description: '按路线执行巡检', status: 'pending' },
+                { name: '异常检测', description: '检测并记录异常情况', status: 'pending' },
+                { name: '任务完成', description: '生成巡检报告', status: 'pending' }
+            ],
+            '配送': [
+                { name: '任务启动', description: '启动配送任务', status: 'pending' },
+                { name: '取货', description: '前往取货点取货', status: 'pending' },
+                { name: '运输', description: '将物品运输至目的地', status: 'pending' },
+                { name: '交货', description: '将物品交给接收人', status: 'pending' },
+                { name: '任务完成', description: '返回基地', status: 'pending' }
+            ]
+        };
+        
+        newTask.steps = simpleActionSteps[taskCreateForm.simpleAction] || simpleActionSteps['清洁'];
+        newTask.templateName = taskCreateForm.simpleAction + '任务';
+    }
+    
+    // 添加到任务列表
+    tasks.value.push(newTask);
+    
+    // 更新任务统计
+    updateTaskStats();
+    
+    // 显示成功消息和标准作业流程
+    let message = '任务创建成功！';
+    
+    if (taskCreateDialog.type === 'process' && newTask.steps.length > 0) {
+        message += '\n\n标准作业流程：';
+        newTask.steps.forEach((step, index) => {
+            message += `\n${index + 1}. ${step.name}: ${step.description}`;
+        });
+    }
+    
+    ElMessageBox.alert(message, '创建成功', {
+        confirmButtonText: '确定',
+        dangerouslyUseHTMLString: true
+    });
+    
+    // 关闭对话框
+    taskCreateDialog.visible = false;
+};
+
+// 当选择模板时，初始化表单数据
+const onTemplateSelect = (templateId) => {
+    const template = templates.value.find(t => t.id === templateId);
+    if (template) {
+        taskCreateForm.templateName = template.name;
+        
+        // 初始化表单数据
+        const formData = {};
+        template.fields.forEach(field => {
+            formData[field.id] = '';
+        });
+        taskCreateForm.formData = formData;
+    }
+};
+
+// 获取字段标签
+const getFieldLabelInCreate = (fieldId) => {
+    if (!taskCreateForm.templateId) return fieldId;
+    
+    const template = templates.value.find(t => t.id === taskCreateForm.templateId);
+    if (!template) return fieldId;
+    
+    const field = template.fields.find(f => f.id === fieldId);
+    return field ? field.label : fieldId;
+};
+
+// 简单动作选项
+const simpleActions = ref([
+    { value: '清洁', label: '清洁任务' },
+    { value: '巡检', label: '巡检任务' },
+    { value: '配送', label: '配送任务' },
+    { value: '安防', label: '安防巡逻' },
+    { value: '送餐', label: '送餐服务' }
+]);
+                
+                return {
+                    activeNav,
+expandedMenu,
+            toggleMenu,
+                    getPageTitle,
+                    taskStats,
+                    robotGroups,
+                    getRobotGroupName,
+                    getRobotGroupNames,
+                    robots,
+                    templates,
+                    templateFilter,
+                    filteredTemplates,
+                    filterTemplates,
+                    templateDialog,
+                    templateForm,
+                    showTemplateDialog,
+                    addField,
+                    removeField,
+                    addStep,
+                    removeStep,
+                    saveTemplate,
+                    viewTemplate,
+                    deleteTemplate,
+                    tasks,
+                    getStatusText,
+                    taskFilter,
+                    filteredTasks,
+                    filterTasks,
+                    taskDetailDialog,
+                    selectedTask,
+                    viewTaskDetail,
+                    getFieldLabel,
+                    editTask,
+                    cancelTask,
+                    schedulingTab,
+                    sortBy,
+                    pendingTasks,
+                    assignedTasks,
+                    sortedPendingTasks,
+                    manualAssignDialog,
+                    availableRobots,
+                    showManualAssignDialog,
+                    confirmManualAssign,
+                    autoAssignTask,
+                    autoAssignAll,
+                    reassignTask,
+                    monitoringTab,
+                    executingTasks,
+                    highRiskTasks,
+                    monitoredTasks,
+                    refreshTasks,
+                    abortTask,
+                    resumeTask,
+                    recentTasks,
+taskCreateDialog,
+    taskCreateForm,
+    simpleActions,
+    showTaskDialog,
+    saveTask,
+    onTemplateSelect,
+    getFieldLabelInCreate,
+    renderStepPreview,
+    showCronHelp
+                };
+            }
+        });
+        
+        app.use(ElementPlus);
+        app.mount('#app');
+    </script>
+</body>
+</html>
