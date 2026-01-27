@@ -700,8 +700,66 @@
         <i class="fas fa-robot"></i>
         <span class="nav-text">机器人管理</span>
     </div>
-</div>
+
+	<!-- 数据管理与分析 - 包含子菜单 -->
+<div class="nav-item-wrapper">
+    <div 
+        class="nav-item" 
+        :class="{ 
+            active: ['data-management', 'data-dashboard', 'metrics-analysis', 'ai-analysis'].includes(activeNav),
+            expanded: expandedMenu === 'dataAnalysis'
+        }"
+        @click="toggleMenu('dataAnalysis')"
+    >
+        <i class="fas fa-chart-line"></i>
+        <span class="nav-text">数据管理与分析</span>
+        <i 
+            class="fas fa-chevron-down arrow-icon" 
+            :class="{ 'rotated': expandedMenu === 'dataAnalysis' }"
+        ></i>
+    </div>
+    
+    <!-- 子菜单 -->
+    <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
+        <div 
+            class="nav-item sub-item" 
+            :class="{ active: activeNav === 'data-management' }"
+            @click.stop="activeNav = 'data-management'"
+        >
+            <i class="fas fa-database"></i>
+            <span class="nav-text">数据管理工具</span>
         </div>
+        
+        <div 
+            class="nav-item sub-item" 
+            :class="{ active: activeNav === 'data-dashboard' }"
+            @click.stop="activeNav = 'data-dashboard'"
+        >
+            <i class="fas fa-tachometer-alt"></i>
+            <span class="nav-text">数据仪表盘</span>
+        </div>
+        
+        <div 
+            class="nav-item sub-item" 
+            :class="{ active: activeNav === 'metrics-analysis' }"
+            @click.stop="activeNav = 'metrics-analysis'"
+        >
+            <i class="fas fa-chart-bar"></i>
+            <span class="nav-text">指标分析</span>
+        </div>
+        
+        <div 
+            class="nav-item sub-item" 
+            :class="{ active: activeNav === 'ai-analysis' }"
+            @click.stop="activeNav = 'ai-analysis'"
+        >
+            <i class="fas fa-brain"></i>
+            <span class="nav-text">AI分析</span>
+        </div>
+    </div>
+</div>		
+</div>
+</div>
         
         <!-- 主内容区 -->
         <div class="main-content">
@@ -1780,7 +1838,11 @@ const expandedMenu = ref('taskManagement'); // 默认展开任务管理，或设
                     'scheduling': '任务调度',
                     'monitoring': '任务监控',
                     'robots': '机器人管理',
-                    'reports': '报表分析'
+                    'reports': '报表分析',
+					'data-management': '数据管理工具',
+    				'data-dashboard': '数据仪表盘',
+  				  	'metrics-analysis': '指标分析',
+    				'ai-analysis': 'AI分析'
                 };
                 
                 const getPageTitle = () => {
@@ -3037,4 +3099,5 @@ taskCreateDialog,
         app.mount('#app');
     </script>
 </body>
+
 </html>
