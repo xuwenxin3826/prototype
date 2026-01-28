@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>机器人管理 - 机器人管理平台</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+                 * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1890ff;
+            --primary-light: #e6f7ff;
+            --success-color: #52c41a;
+            --warning-color: #faad14;
+            --error-color: #f5222d;
+            --info-color: #1890ff;
+            --bg-color: #f0f2f5;
+            --sidebar-bg: #001529;
+            --header-bg: #fff;
+            --card-bg: #fff;
+            --text-primary: #000000e0;
+            --text-secondary: #000000a6;
+            --border-color: #f0f0f0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 256px;
+            background-color: var(--sidebar-bg);
+            color: rgba(255, 255, 255, 0.85);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.65);
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .nav-item i {
+            font-size: 16px;
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* 主内容区样式 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            height: 64px;
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+	/* Cron帮助对话框样式 */
+.cron-help-dialog .el-message-box__content {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.cron-help-dialog code {
+    background-color: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    color: #e74c3c;
+}
+
+/* 任务创建对话框中的步骤预览 */
+.step-preview-item {
+    transition: all 0.3s;
+}
+
+.step-preview-item:hover {
+    background-color: #f0f9ff;
+}
+
+/* 表单字段提示 */
+.field-hint {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+}
+
+        /* 状态标签样式 */
+        .status-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff7e6;
+            color: #fa8c16;
+        }
+        
+        .status-assigned {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .status-executing {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .status-completed {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .status-cancelled {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+        }
+        
+        .status-aborted {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+        }
+        
+        .status-high-risk {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+            border: 1px solid #ff4d4f;
+        }
+        
+        /* 表格样式 */
+        .el-table {
+            font-size: 14px;
+        }
+        
+        .el-table .cell {
+            line-height: 1.5;
+        }
+        
+        /* 步骤进度样式 */
+        .step-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #d9d9d9;
+        }
+        
+        .step-dot.completed {
+            background-color: var(--success-color);
+        }
+        
+        .step-dot.executing {
+            background-color: var(--primary-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* 任务详情样式 */
+        .task-detail-section {
+            margin-bottom: 24px;
+        }
+        
+        .task-detail-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .task-detail-content {
+            background-color: #fafafa;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        
+        .detail-label {
+            width: 120px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            flex: 1;
+            color: var(--text-primary);
+        }
+        
+        /* 步骤列表样式 */
+        .step-list {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .step-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .step-item:last-child {
+            border-bottom: none;
+        }
+        
+        .step-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .step-index {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+/* 父菜单容器 */
+.nav-item-wrapper {
+    margin-bottom: 4px;
+}
+
+/* 带下拉箭头的菜单项 */
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.nav-item.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 父菜单高亮（当子菜单被选中时） */
+.nav-item.active-parent {
+    background-color: rgba(24, 144, 255, 0.2);
+    color: white;
+    border-right: 3px solid var(--primary-color);
+}
+
+/* 箭头图标 */
+.arrow-icon {
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s;
+    opacity: 0.7;
+}
+
+.arrow-icon.rotated {
+    transform: rotate(180deg);
+}
+
+/* 子菜单容器 */
+.sub-nav-menu {
+    background-color: rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 子菜单项 */
+.nav-item.sub-item {
+    padding: 10px 24px 10px 48px;  /* 左侧缩进 */
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    margin-left: 0;
+}
+
+.nav-item.sub-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.nav-item.sub-item.active {
+    background-color: rgba(24, 144, 255, 0.25);
+    color: #fff;
+    border-left-color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* 子菜单图标更小一些 */
+.nav-item.sub-item i {
+    font-size: 14px;
+    width: 18px;
+    margin-right: 8px;
+}
+
+/* 折叠状态下的侧边栏适配 */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 80px;
+    }
+    
+    .logo-text, .nav-text, .arrow-icon {
+        display: none;
+    }
+    
+    .nav-item {
+        justify-content: center;
+        padding: 16px 0;
+    }
+    
+    .nav-item i {
+        margin-right: 0;
+        font-size: 20px;
+    }
+    
+    /* 折叠时隐藏子菜单 */
+    .sub-nav-menu {
+        display: none !important;
+    }
+    
+    /* 或者改为悬浮展开（可选） */
+    .nav-item-wrapper:hover .sub-nav-menu {
+        display: block !important;
+        position: absolute;
+        left: 80px;
+        top: 0;
+        width: 160px;
+        background-color: #001529;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    }
+    
+    .nav-item.sub-item {
+        padding: 12px 16px;
+    }
+}
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo-text, .nav-text {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 16px 0;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        
+        /* 高亮当前页面的菜单 */
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span class="logo-text">机器人管理平台</span>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <!-- 任务管理折叠菜单（与 index.html 一致） -->
+                <div class="nav-item-wrapper">
+                    <div class="nav-item" @click="toggleMenu('taskManagement')">
+                        <i class="fas fa-tasks"></i>
+                        <span class="nav-text">任务管理</span>
+                        <i class="fas fa-chevron-down arrow-icon"></i>
+                    </div>
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
+                        <!-- 子菜单链接回 index.html 并带锚点 -->
+                        <a href="index.html#templates" class="nav-item sub-item">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span class="nav-text">模板管理</span>
+                        </a>
+                        <a href="index.html#tasks" class="nav-item sub-item">
+                            <i class="fas fa-list-ul"></i>
+                            <span class="nav-text">任务列表</span>
+                        </a>
+                        <a href="index.html#scheduling" class="nav-item sub-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="nav-text">任务调度</span>
+                        </a>
+                        <a href="index.html#monitoring" class="nav-item sub-item">
+                            <i class="fas fa-eye"></i>
+                            <span class="nav-text">任务监控</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 机器人管理 - 当前页面高亮 -->
+                <a href="robots.html" class="nav-item active" style="text-decoration: none;">
+                    <i class="fas fa-robot"></i>
+                    <span class="nav-text">机器人管理</span>
+                </a>
+
+		<div class="nav-item-wrapper">
+                    <div 
+                        class="nav-item" 
+                        :class="{ 
+                            active: ['data-management', 'data-dashboard', 'metrics-analysis', 'ai-analysis'].includes(activeNav),
+                            expanded: expandedMenu === 'dataAnalysis'
+                        }"
+                        @click="toggleMenu('dataAnalysis')"
+                    >
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-text">数据管理与分析</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon" 
+                            :class="{ 'rotated': expandedMenu === 'dataAnalysis' }"
+                        ></i>
+                    </div>
+                    
+                    <!-- 子菜单 -->
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
+                        <a href="data-management.html" class="nav-item sub-item">
+                            <i class="fas fa-database"></i>
+                            <span class="nav-text">数据管理工具</span>
+                        </a>
+                        
+                        <a href="data-dashboard.html" class="nav-item sub-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="nav-text">数据仪表盘</span>
+                        </a>
+                        
+                        <a href="metrics-analysis.html" class="nav-item sub-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="nav-text">指标分析</span>
+                        </a>
+                        
+                        <a href="ai-analysis.html" class="nav-item sub-item">
+                            <i class="fas fa-brain"></i>
+                            <span class="nav-text">AI分析</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <span class="header-title">机器人管理</span>
+                </div>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <span>管理员</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 机器人管理内容区 -->
+            <div class="content-wrapper">
+                <div id="app">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">机器人列表</div>
+                            <el-button type="primary" @click="showAddRobot">
+                                <i class="fas fa-plus"></i> 新增机器人
+                            </el-button>
+                        </div>
+                        <div class="card-body">
+                            <el-table :data="robots" style="width: 100%">
+                                <el-table-column prop="id" label="机器人ID"></el-table-column>
+                                <el-table-column prop="name" label="机器人名称"></el-table-column>
+                                <el-table-column prop="groupName" label="所属分组"></el-table-column>
+                                <el-table-column label="状态">
+                                    <template #default="scope">
+                                        <el-tag :type="scope.row.status === 'online' ? 'success' : scope.row.status === 'low_battery' ? 'warning' : 'danger'">
+                                            {{ scope.row.status === 'online' ? '在线' : scope.row.status === 'low_battery' ? '电量低' : '离线' }}
+                                        </el-tag>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="battery" label="电量(%)">
+                                    <template #default="scope">
+                                        <el-progress :percentage="scope.row.battery" :status="scope.row.battery < 20 ? 'exception' : ''"></el-progress>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="location" label="当前位置"></el-table-column>
+                                <el-table-column label="操作">
+                                    <template #default="scope">
+                                        <el-button size="small" @click="editRobot(scope.row)">编辑</el-button>
+                                        <el-button size="small" type="danger" @click="deleteRobot(scope.row)">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </div>
+                    
+                    <!-- 添加机器人对话框 -->
+                    <el-dialog v-model="dialogVisible" title="新增机器人" width="500px">
+                        <el-form :model="robotForm" label-width="80px">
+                            <el-form-item label="名称">
+                                <el-input v-model="robotForm.name"></el-input>
+                            </el-form-item>
+                            <el-form-item label="分组">
+                                <el-select v-model="robotForm.groupId" style="width: 100%">
+                                    <el-option v-for="group in robotGroups" :key="group.id" :label="group.name" :value="group.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="位置">
+                                <el-input v-model="robotForm.location"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <template #footer>
+                            <el-button @click="dialogVisible = false">取消</el-button>
+                            <el-button type="primary" @click="saveRobot">保存</el-button>
+                        </template>
+                    </el-dialog>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script>
+        const { createApp, ref, reactive } = Vue;
+        
+        createApp({
+            setup() {
+                const expandedMenu = ref('taskManagement');
+                const toggleMenu = (menu) => {
+                    expandedMenu.value = expandedMenu.value === menu ? '' : menu;
+                };
+                
+                const robots = ref([
+                    { id: 1, name: '机器人A', groupId: 1, groupName: '配送机器人组', battery: 85, status: 'online', location: '药房' },
+                    { id: 2, name: '机器人B', groupId: 1, groupName: '配送机器人组', battery: 42, status: 'low_battery', location: '病房区' },
+                    { id: 3, name: '机器人C', groupId: 2, groupName: '巡检机器人组', battery: 92, status: 'online', location: '门诊大厅' }
+                ]);
+                
+                const robotGroups = ref([
+                    { id: 1, name: '配送机器人组' },
+                    { id: 2, name: '巡检机器人组' },
+                    { id: 3, name: '清洁机器人组' },
+                    { id: 4, name: '安防机器人组' }
+                ]);
+                
+                const dialogVisible = ref(false);
+                const robotForm = reactive({ name: '', groupId: '', location: '' });
+                
+                const showAddRobot = () => {
+                    dialogVisible.value = true;
+                };
+                
+                const saveRobot = () => {
+                    // 保存逻辑
+                    dialogVisible.value = false;
+                };
+                
+                const editRobot = (row) => {
+                    console.log('编辑', row);
+                };
+                
+                const deleteRobot = (row) => {
+                    ElementPlus.ElMessageBox.confirm('确定删除该机器人？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        robots.value = robots.value.filter(r => r.id !== row.id);
+                        ElementPlus.ElMessage.success('删除成功');
+                    });
+                };
+                
+                return {
+                    expandedMenu,
+                    toggleMenu,
+                    robots,
+                    robotGroups,
+                    dialogVisible,
+                    robotForm,
+                    showAddRobot,
+                    saveRobot,
+                    editRobot,
+                    deleteRobot
+                };
+            }
+        }).use(ElementPlus).mount('#app');
+    </script>
+</body>
+</html>
