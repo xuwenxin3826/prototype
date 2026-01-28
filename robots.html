@@ -81,12 +81,10 @@
             padding: 16px 0;
         }
         
-        /* 父菜单容器 */
         .nav-item-wrapper {
             margin-bottom: 4px;
         }
 
-        /* 带下拉箭头的菜单项 */
         .nav-item {
             position: relative;
             display: flex;
@@ -108,14 +106,12 @@
             color: white;
         }
 
-        /* 父菜单高亮（当子菜单被选中时） */
         .nav-item.active-parent {
             background-color: rgba(24, 144, 255, 0.2);
             color: white;
             border-right: 3px solid var(--primary-color);
         }
 
-        /* 箭头图标 */
         .arrow-icon {
             margin-left: auto;
             font-size: 12px;
@@ -127,14 +123,12 @@
             transform: rotate(180deg);
         }
 
-        /* 子菜单容器 */
         .sub-nav-menu {
             background-color: rgba(0, 0, 0, 0.15);
             overflow: hidden;
             transition: all 0.3s ease-in-out;
         }
 
-        /* 子菜单项 */
         .nav-item.sub-item {
             padding: 10px 24px 10px 48px;
             font-size: 13px;
@@ -155,7 +149,6 @@
             font-weight: 500;
         }
 
-        /* 子菜单图标更小一些 */
         .nav-item.sub-item i {
             font-size: 14px;
             width: 18px;
@@ -249,6 +242,29 @@
             padding: 24px;
         }
         
+        /* 筛选栏样式 */
+        .filter-bar {
+            background-color: #fafafa;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
         /* 状态标签样式 */
         .status-tag {
             display: inline-block;
@@ -273,6 +289,22 @@
             color: #fa8c16;
         }
 
+        /* 分组管理卡片样式 */
+        .group-card {
+            margin-top: 24px;
+        }
+
+        .group-tag {
+            margin-right: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .group-tag.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
         /* 响应式设计 */
         @media (max-width: 992px) {
             .sidebar {
@@ -295,6 +327,11 @@
             
             .sub-nav-menu {
                 display: none !important;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
         
@@ -325,7 +362,7 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <i class="fas fa-robot"></i>
-                    <span class="logo-text">机器人后台管理平台</span>
+                    <span class="logo-text">机器人管理平台</span>
                 </div>
             </div>
             
@@ -427,51 +464,199 @@
             </div>
             
             <div class="content-wrapper">
+                <!-- 机器人列表卡片 -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">机器人列表</div>
-                        <el-button type="primary" @click="showAddRobot">
-                            <i class="fas fa-plus"></i> 新增机器人
-                        </el-button>
+                        <div style="display: flex; gap: 12px;">
+                            <el-button type="primary" @click="showAddRobot">
+                                <i class="fas fa-plus"></i> 新增机器人
+                            </el-button>
+                        </div>
                     </div>
+                    
+                    <!-- 筛选栏 -->
+                    <div class="filter-bar">
+                        <div class="filter-item">
+                            <span class="filter-label">所属分组：</span>
+                            <el-select 
+                                v-model="robotFilter.groupId" 
+                                placeholder="全部分组" 
+                                clearable 
+                                style="width: 160px"
+                                @change="handleFilterChange"
+                            >
+                                <el-option 
+                                    v-for="group in robotGroups" 
+                                    :key="group.id" 
+                                    :label="group.name" 
+                                    :value="group.id"
+                                ></el-option>
+                            </el-select>
+                        </div>
+                        
+                        <div class="filter-item">
+                            <span class="filter-label">状态：</span>
+                            <el-select 
+                                v-model="robotFilter.status" 
+                                placeholder="全部状态" 
+                                clearable 
+                                style="width: 140px"
+                                @change="handleFilterChange"
+                            >
+                                <el-option label="在线" value="online"></el-option>
+                                <el-option label="离线" value="offline"></el-option>
+                                <el-option label="电量低" value="low_battery"></el-option>
+                            </el-select>
+                        </div>
+                        
+                        <div class="filter-item" style="margin-left: auto;">
+                            <el-button @click="resetRobotFilter" type="default">
+                                <i class="fas fa-undo" style="margin-right: 6px;"></i>重置筛选
+                            </el-button>
+                            <span style="margin-left: 12px; color: #999; font-size: 14px;">
+                                共 {{ filteredRobots.length }} 个机器人
+                            </span>
+                        </div>
+                    </div>
+                    
                     <div class="card-body">
-                        <el-table :data="robots" style="width: 100%">
+                        <el-table :data="filteredRobots" style="width: 100%" v-loading="loading">
                             <el-table-column prop="id" label="机器人ID" width="100"></el-table-column>
                             <el-table-column prop="name" label="机器人名称"></el-table-column>
-                            <el-table-column prop="groupName" label="所属分组"></el-table-column>
-                            <el-table-column label="状态" width="100">
+                            <el-table-column prop="groupName" label="所属分组">
+                                <template #default="scope">
+                                    <el-tag size="small" type="info">{{ scope.row.groupName }}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="状态" width="120">
                                 <template #default="scope">
                                     <span :class="'status-tag status-' + scope.row.status">
+                                        <i class="fas fa-circle" style="font-size: 8px; margin-right: 4px;"></i>
                                         {{ scope.row.status === 'online' ? '在线' : scope.row.status === 'low_battery' ? '电量低' : '离线' }}
                                     </span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="battery" label="电量(%)" width="180">
+                            <el-table-column prop="battery" label="电量" width="200">
                                 <template #default="scope">
-                                    <el-progress 
-                                        :percentage="scope.row.battery" 
-                                        :status="scope.row.battery < 20 ? 'exception' : ''"
-                                    ></el-progress>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <el-progress 
+                                            :percentage="scope.row.battery" 
+                                            :status="scope.row.battery < 20 ? 'exception' : scope.row.battery > 80 ? 'success' : ''"
+                                            style="width: 120px;"
+                                        ></el-progress>
+                                        <span style="font-size: 12px; color: #666;">{{ scope.row.battery }}%</span>
+                                    </div>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="location" label="当前位置"></el-table-column>
-                            <el-table-column label="操作" width="180" fixed="right">
+                            <el-table-column prop="location" label="当前位置">
+                                <template #default="scope">
+                                    <i class="fas fa-map-marker-alt" style="color: #999; margin-right: 4px;"></i>
+                                    {{ scope.row.location }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" width="200" fixed="right">
                                 <template #default="scope">
                                     <el-button size="small" @click="editRobot(scope.row)">编辑</el-button>
                                     <el-button size="small" type="danger" @click="deleteRobot(scope.row)">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
+                        
+                        <!-- 空状态提示 -->
+                        <el-empty v-if="filteredRobots.length === 0" description="暂无符合条件的机器人"></el-empty>
                     </div>
                 </div>
                 
+                <!-- 组别管理卡片 -->
+                <div class="card group-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-layer-group" style="margin-right: 8px;"></i>组别管理
+                            <span style="font-size: 12px; color: #999; font-weight: normal; margin-left: 8px;">共 {{ robotGroups.length }} 个分组</span>
+                        </div>
+			<div style="display: flex; gap: 12px;">
+                            <el-button type="success" plain @click="showGroupDialog('add')">
+                                <i class="fas fa-folder-plus"></i> 新增组别
+                            </el-button>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+    <div 
+        v-for="group in robotGroups" 
+        :key="group.id" 
+        style="display: inline-flex; align-items: center; background: #f5f7fa; padding: 6px 12px; border-radius: 4px; border: 1px solid #e4e7ed; transition: all 0.3s;"
+        :style="{ 
+            background: robotFilter.groupId === group.id ? '#ecf5ff' : '#f5f7fa', 
+            borderColor: robotFilter.groupId === group.id ? '#1890ff' : '#e4e7ed',
+            boxShadow: robotFilter.groupId === group.id ? '0 2px 8px rgba(24,144,255,0.2)' : 'none'
+        }"
+    >
+        <!-- 点击筛选区域 -->
+        <div 
+            @click="robotFilter.groupId = robotFilter.groupId === group.id ? '' : group.id" 
+            style="cursor: pointer; display: flex; align-items: center; flex: 1;"
+        >
+            <i 
+                class="fas fa-folder" 
+                :style="{ color: robotFilter.groupId === group.id ? '#1890ff' : '#666', marginRight: '6px' }"
+            ></i>
+            <span 
+                :style="{ 
+                    fontWeight: robotFilter.groupId === group.id ? '600' : 'normal', 
+                    color: robotFilter.groupId === group.id ? '#1890ff' : '#333' 
+                }"
+            >
+                {{ group.name }}
+            </span>
+            <span style="font-size: 12px; margin-left: 4px; color: #999;">
+                ({{ getGroupRobotCount(group.id) }})
+            </span>
+        </div>
+        
+        <!-- 分隔线 -->
+        <el-divider direction="vertical" style="margin: 0 8px;"></el-divider>
+        
+        <!-- 编辑按钮 -->
+        <el-button 
+            size="small" 
+            link 
+            type="primary" 
+            @click.stop="showGroupDialog('edit', group)"
+            title="编辑分组"
+        >
+            <i class="fas fa-edit"></i>
+        </el-button>
+        
+        <!-- 删除按钮 -->
+        <el-button 
+            size="small" 
+            link 
+            type="danger" 
+            @click.stop="deleteGroup(group)"
+            title="删除分组"
+        >
+            <i class="fas fa-trash-alt"></i>
+        </el-button>
+    </div>
+    
+    <!-- 空状态 -->
+    <div v-if="robotGroups.length === 0" style="color: #999; text-align: center; padding: 20px; width: 100%;">
+        <i class="fas fa-inbox" style="font-size: 24px; margin-bottom: 8px; display: block;"></i>
+        暂无分组，请点击上方"新增组别"按钮创建
+    </div>
+</div>
+                </div>
+                
                 <!-- 添加/编辑机器人对话框 -->
-                <el-dialog v-model="dialogVisible" :title="dialogTitle" width="500px">
-                    <el-form :model="robotForm" label-width="100px">
-                        <el-form-item label="机器人名称" required>
+                <el-dialog v-model="dialogVisible" :title="dialogTitle" width="500px" destroy-on-close>
+                    <el-form :model="robotForm" label-width="100px" :rules="robotRules" ref="robotFormRef">
+                        <el-form-item label="机器人名称" prop="name">
                             <el-input v-model="robotForm.name" placeholder="请输入机器人名称"></el-input>
                         </el-form-item>
-                        <el-form-item label="所属分组" required>
+                        <el-form-item label="所属分组" prop="groupId">
                             <el-select v-model="robotForm.groupId" style="width: 100%" placeholder="请选择分组">
                                 <el-option 
                                     v-for="group in robotGroups" 
@@ -485,13 +670,36 @@
                             <el-input v-model="robotForm.location" placeholder="请输入当前位置"></el-input>
                         </el-form-item>
                         <el-form-item label="初始电量">
-                            <el-slider v-model="robotForm.battery" show-input></el-slider>
+                            <el-slider v-model="robotForm.battery" show-input :max="100"></el-slider>
                         </el-form-item>
                     </el-form>
                     <template #footer>
                         <span class="dialog-footer">
                             <el-button @click="dialogVisible = false">取消</el-button>
                             <el-button type="primary" @click="saveRobot">保存</el-button>
+                        </span>
+                    </template>
+                </el-dialog>
+
+                <!-- 添加/编辑组别对话框 -->
+                <el-dialog v-model="groupDialogVisible" :title="groupDialogTitle" width="500px" destroy-on-close>
+                    <el-form :model="groupForm" label-width="100px" :rules="groupRules" ref="groupFormRef">
+                        <el-form-item label="组名" prop="name">
+                            <el-input v-model="groupForm.name" placeholder="请输入组名，如：配送机器人组"></el-input>
+                        </el-form-item>
+                        <el-form-item label="组描述">
+                            <el-input 
+                                v-model="groupForm.description" 
+                                type="textarea" 
+                                :rows="3" 
+                                placeholder="请输入分组描述，如：负责院内药品配送工作"
+                            ></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <template #footer>
+                        <span class="dialog-footer">
+                            <el-button @click="groupDialogVisible = false">取消</el-button>
+                            <el-button type="primary" @click="saveGroup">保存</el-button>
                         </span>
                     </template>
                 </el-dialog>
@@ -510,8 +718,9 @@
                 // 默认不展开任务管理
                 const expandedMenu = ref('');
                 const activeNav = ref('robots');
+                const loading = ref(false);
                 
-                // 计算是否高亮任务管理父菜单（用于index.html跳转过来的情况，虽然当前页是robots.html）
+                // 计算是否高亮任务管理父菜单
                 const isTaskManagementActive = computed(() => {
                     return ['templates', 'tasks', 'scheduling', 'monitoring'].includes(activeNav.value);
                 });
@@ -524,22 +733,70 @@
                     expandedMenu.value = expandedMenu.value === menu ? '' : menu;
                 };
                 
+                // 机器人筛选条件
+                const robotFilter = reactive({
+                    groupId: '',
+                    status: ''
+                });
+                
+                // 机器人数据
                 const robots = ref([
                     { id: 1, name: '机器人A', groupId: 1, groupName: '配送机器人组', battery: 85, status: 'online', location: '药房' },
                     { id: 2, name: '机器人B', groupId: 1, groupName: '配送机器人组', battery: 42, status: 'low_battery', location: '病房区' },
                     { id: 3, name: '机器人C', groupId: 2, groupName: '巡检机器人组', battery: 92, status: 'online', location: '门诊大厅' },
-                    { id: 4, name: '机器人D', groupId: 3, groupName: '清洁机器人组', battery: 78, status: 'online', location: '走廊' }
+                    { id: 4, name: '机器人D', groupId: 3, groupName: '清洁机器人组', battery: 78, status: 'online', location: '走廊' },
+                    { id: 5, name: '机器人E', groupId: 4, groupName: '安防机器人组', battery: 15, status: 'offline', location: '监控室' }
                 ]);
                 
+                // 分组数据
                 const robotGroups = ref([
-                    { id: 1, name: '配送机器人组' },
-                    { id: 2, name: '巡检机器人组' },
-                    {  id: 3, name: '清洁机器人组' },
-                    { id: 4, name: '安防机器人组' }
+                    { id: 1, name: '配送机器人组', description: '负责院内药品配送' },
+                    { id: 2, name: '巡检机器人组', description: '负责设备巡检' },
+                    { id: 3, name: '清洁机器人组', description: '负责清洁工作' },
+                    { id: 4, name: '安防机器人组', description: '负责安全巡逻' }
                 ]);
                 
+                // 筛选后的机器人列表
+                const filteredRobots = computed(() => {
+                    let result = robots.value;
+                    
+                    // 按分组筛选
+                    if (robotFilter.groupId !== '') {
+                        result = result.filter(r => r.groupId === robotFilter.groupId);
+                    }
+                    
+                    // 按状态筛选
+                    if (robotFilter.status !== '') {
+                        result = result.filter(r => r.status === robotFilter.status);
+                    }
+                    
+                    return result;
+                });
+                
+                // 获取分组下的机器人数量
+                const getGroupRobotCount = (groupId) => {
+                    return robots.value.filter(r => r.groupId === groupId).length;
+                };
+                
+                // 重置筛选
+                const resetRobotFilter = () => {
+                    robotFilter.groupId = '';
+                    robotFilter.status = '';
+                    ElMessage.success('筛选条件已重置');
+                };
+                
+                // 筛选变化处理（可用于添加加载动画等）
+                const handleFilterChange = () => {
+                    loading.value = true;
+                    setTimeout(() => {
+                        loading.value = false;
+                    }, 200);
+                };
+                
+                // 机器人对话框
                 const dialogVisible = ref(false);
                 const dialogTitle = ref('新增机器人');
+                const robotFormRef = ref(null);
                 const robotForm = reactive({ 
                     id: null,
                     name: '', 
@@ -547,6 +804,25 @@
                     location: '',
                     battery: 100
                 });
+                
+                const robotRules = {
+                    name: [{ required: true, message: '请输入机器人名称', trigger: 'blur' }],
+                    groupId: [{ required: true, message: '请选择所属分组', trigger: 'change' }]
+                };
+                
+                // 组别对话框
+                const groupDialogVisible = ref(false);
+                const groupDialogTitle = ref('新增组别');
+                const groupFormRef = ref(null);
+                const groupForm = reactive({
+                    id: null,
+                    name: '',
+                    description: ''
+                });
+                
+                const groupRules = {
+                    name: [{ required: true, message: '请输入组名', trigger: 'blur' }]
+                };
                 
                 const showAddRobot = () => {
                     dialogTitle.value = '新增机器人';
@@ -572,44 +848,41 @@
                     dialogVisible.value = true;
                 };
                 
-                const saveRobot = () => {
-                    if (!robotForm.name.trim()) {
-                        ElMessage.error('请输入机器人名称');
-                        return;
-                    }
-                    if (!robotForm.groupId) {
-                        ElMessage.error('请选择所属分组');
-                        return;
-                    }
+                const saveRobot = async () => {
+                    if (!robotFormRef.value) return;
                     
-                    const group = robotGroups.value.find(g => g.id === robotForm.groupId);
-                    
-                    if (robotForm.id) {
-                        // 编辑
-                        const index = robots.value.findIndex(r => r.id === robotForm.id);
-                        if (index !== -1) {
-                            robots.value[index] = {
-                                ...robotForm,
-                                groupName: group.name,
-                                status: robotForm.battery < 20 ? 'low_battery' : 'online'
-                            };
-                            ElMessage.success('修改成功');
+                    await robotFormRef.value.validate((valid) => {
+                        if (valid) {
+                            const group = robotGroups.value.find(g => g.id === robotForm.groupId);
+                            
+                            if (robotForm.id) {
+                                // 编辑
+                                const index = robots.value.findIndex(r => r.id === robotForm.id);
+                                if (index !== -1) {
+                                    robots.value[index] = {
+                                        ...robotForm,
+                                        groupName: group.name,
+                                        status: robotForm.battery < 20 ? 'low_battery' : 'online'
+                                    };
+                                    ElMessage.success('修改成功');
+                                }
+                            } else {
+                                // 新增
+                                const newId = Math.max(...robots.value.map(r => r.id), 0) + 1;
+                                robots.value.push({
+                                    id: newId,
+                                    name: robotForm.name,
+                                    groupId: robotForm.groupId,
+                                    groupName: group.name,
+                                    battery: robotForm.battery,
+                                    status: robotForm.battery < 20 ? 'low_battery' : 'online',
+                                    location: robotForm.location || '未知'
+                                });
+                                ElMessage.success('添加成功');
+                            }
+                            dialogVisible.value = false;
                         }
-                    } else {
-                        // 新增
-                        const newId = Math.max(...robots.value.map(r => r.id), 0) + 1;
-                        robots.value.push({
-                            id: newId,
-                            name: robotForm.name,
-                            groupId: robotForm.groupId,
-                            groupName: group.name,
-                            battery: robotForm.battery,
-                            status: robotForm.battery < 20 ? 'low_battery' : 'online',
-                            location: robotForm.location || '未知'
-                        });
-                        ElMessage.success('添加成功');
-                    }
-                    dialogVisible.value = false;
+                    });
                 };
                 
                 const deleteRobot = (row) => {
@@ -623,25 +896,143 @@
                     }).catch(() => {});
                 };
                 
+                // 组别管理方法
+                const showGroupDialog = (type, row = null) => {
+                    if (type === 'add') {
+                        groupDialogTitle.value = '新增组别';
+                        Object.assign(groupForm, {
+                            id: null,
+                            name: '',
+                            description: ''
+                        });
+                    } else if (type === 'edit' && row) {
+                        groupDialogTitle.value = '编辑组别';
+                        Object.assign(groupForm, {
+                            id: row.id,
+                            name: row.name,
+                            description: row.description
+                        });
+                    }
+                    groupDialogVisible.value = true;
+                };
+                
+                const saveGroup = async () => {
+                    if (!groupFormRef.value) return;
+                    
+                    await groupFormRef.value.validate((valid) => {
+                        if (valid) {
+                            if (groupForm.id) {
+                                // 编辑
+                                const index = robotGroups.value.findIndex(g => g.id === groupForm.id);
+                                if (index !== -1) {
+                                    const oldName = robotGroups.value[index].name;
+                                    robotGroups.value[index] = {
+                                        id: groupForm.id,
+                                        name: groupForm.name,
+                                        description: groupForm.description
+                                    };
+                                    // 同步更新所有机器人的组名
+                                    robots.value.forEach(r => {
+                                        if (r.groupId === groupForm.id) {
+                                            r.groupName = groupForm.name;
+                                        }
+                                    });
+                                    ElMessage.success('组别修改成功');
+                                }
+                            } else {
+                                // 新增
+                                const newId = Math.max(...robotGroups.value.map(g => g.id), 0) + 1;
+                                robotGroups.value.push({
+                                    id: newId,
+                                    name: groupForm.name,
+                                    description: groupForm.description
+                                });
+                                ElMessage.success('组别添加成功');
+                            }
+                            groupDialogVisible.value = false;
+                        }
+                    });
+                };
+                
+                const deleteGroup = (group) => {
+                    // 检查是否有机器人使用该分组
+                    const usedCount = robots.value.filter(r => r.groupId === group.id).length;
+                    
+                    if (usedCount > 0) {
+                        ElMessageBox.confirm(
+                            `该分组下有 ${usedCount} 个机器人，删除后这些机器人将变为未分组状态，确定删除吗？`, 
+                            '警告', 
+                            {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            }
+                        ).then(() => {
+                            // 将该组机器人设为未分组（这里可以改为删除或移到默认组）
+                            robots.value.forEach(r => {
+                                if (r.groupId === group.id) {
+                                    r.groupId = null;
+                                    r.groupName = '未分组';
+                                }
+                            });
+                            robotGroups.value = robotGroups.value.filter(g => g.id !== group.id);
+                            ElMessage.success('组别删除成功');
+                            
+                            // 如果当前筛选的是该组，重置筛选
+                            if (robotFilter.groupId === group.id) {
+                                robotFilter.groupId = '';
+                            }
+                        }).catch(() => {});
+                    } else {
+                        ElMessageBox.confirm(`确定删除分组 "${group.name}" 吗？`, '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            robotGroups.value = robotGroups.value.filter(g => g.id !== group.id);
+                            ElMessage.success('组别删除成功');
+                            
+                            if (robotFilter.groupId === group.id) {
+                                robotFilter.groupId = '';
+                            }
+                        }).catch(() => {});
+                    }
+                };
+                
                 return {
                     expandedMenu,
                     activeNav,
                     isTaskManagementActive,
                     isDataAnalysisActive,
                     toggleMenu,
+                    loading,
+                    robotFilter,
                     robots,
                     robotGroups,
+                    filteredRobots,
+                    getGroupRobotCount,
+                    resetRobotFilter,
+                    handleFilterChange,
                     dialogVisible,
                     dialogTitle,
                     robotForm,
+                    robotFormRef,
+                    robotRules,
                     showAddRobot,
                     editRobot,
                     saveRobot,
-                    deleteRobot
+                    deleteRobot,
+                    groupDialogVisible,
+                    groupDialogTitle,
+                    groupForm,
+                    groupFormRef,
+                    groupRules,
+                    showGroupDialog,
+                    saveGroup,
+                    deleteGroup
                 };
             }
         }).use(ElementPlus).mount('#app');
     </script>
 </body>
-
 </html>
