@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>机器人后台管理平台</title>
+    <title>任务管理 - 机器人后台管理平台</title>
     <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -535,6 +535,113 @@
                 font-size: 20px;
             }
         }
+
+/* 任务调度和监控标签页样式 */
+.task-scheduling-tabs,
+.task-monitoring-tabs {
+    display: flex;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 24px;
+    gap: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.task-monitoring-tabs {
+    background-color: #fff;
+    border: 1px solid #e8e8e8;
+}
+
+.tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px 24px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 14px;
+    color: #595959;
+    font-weight: 500;
+    position: relative;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.tab-item:hover {
+    background-color: rgba(24, 144, 255, 0.08);
+    color: #1890ff;
+    transform: translateY(-1px);
+}
+
+.tab-item.active {
+    background-color: #fff;
+    color: #1890ff;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background-color: #1890ff;
+    border-radius: 2px;
+}
+
+/* 数量徽章样式 */
+.tab-item .count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background-color: #ff4d4f;
+    color: white;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 6px;
+    box-shadow: 0 2px 4px rgba(255, 77, 79, 0.2);
+}
+
+.tab-item.active .count-badge {
+    background-color: #ff4d4f;
+    color: white;
+}
+
+/* 高风险标签的特殊样式 */
+.tab-item[data-tab="highRisk"].active {
+    color: #ff4d4f;
+}
+
+.tab-item[data-tab="highRisk"].active::after {
+    background-color: #ff4d4f;
+}
+
+.tab-item[data-tab="highRisk"]:hover {
+    color: #ff4d4f;
+    background-color: rgba(255, 77, 79, 0.08);
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .task-scheduling-tabs,
+    .task-monitoring-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-item {
+        flex: 1 1 calc(50% - 4px);
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+}
         
         /* 自定义滚动条 */
         ::-webkit-scrollbar {
@@ -564,7 +671,7 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <i class="fas fa-robot"></i>
-                    <span class="logo-text">机器人管理平台</span>
+                    <span class="logo-text">机器人后台管理平台</span>
                 </div>
             </div>
             
@@ -840,33 +947,38 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div style="margin-bottom: 16px;">
-                                <el-input 
-                                    v-model="templateFilter.keyword" 
-                                    placeholder="搜索模板名称" 
-                                    style="width: 300px; margin-right: 16px;"
-                                    clearable
-                                    @change="filterTemplates"
-                                >
-                                    <template #prefix>
-                                        <i class="fas fa-search"></i>
-                                    </template>
-                                </el-input>
-                                
-                                <el-select 
-                                    v-model="templateFilter.robotGroup" 
-                                    placeholder="选择机器人组" 
-                                    clearable
-                                    @change="filterTemplates"
-                                >
-                                    <el-option 
-                                        v-for="group in robotGroups" 
-                                        :key="group.id" 
-                                        :label="group.name" 
-                                        :value="group.id"
-                                    ></el-option>
-                                </el-select>
-                            </div>
+                            <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+    <el-input 
+        v-model="templateFilter.keyword" 
+        placeholder="搜索模板名称" 
+        style="width: 300px;"
+        clearable
+        @change="filterTemplates"
+    >
+        <template #prefix>
+            <i class="fas fa-search"></i>
+        </template>
+    </el-input>
+    
+    <el-select 
+        v-model="templateFilter.robotGroup" 
+        placeholder="选择机器人组" 
+        clearable
+        @change="filterTemplates"
+        style="width: 200px;"
+    >
+        <el-option 
+            v-for="group in robotGroups" 
+            :key="group.id" 
+            :label="group.name" 
+            :value="group.id"
+        ></el-option>
+    </el-select>
+    
+    <el-button @click="resetTemplateFilter" style="margin-left: auto;">
+        <i class="fas fa-undo" style="margin-right: 6px;"></i>重置筛选
+    </el-button>
+</div>
                             
                             <el-table :data="filteredTemplates" style="width: 100%">
                                 <el-table-column prop="name" label="模板名称" width="200"></el-table-column>
@@ -921,59 +1033,64 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div style="margin-bottom: 16px;">
-                                <el-input 
-                                    v-model="taskFilter.keyword" 
-                                    placeholder="搜索任务名称" 
-                                    style="width: 300px; margin-right: 16px;"
-                                    clearable
-                                    @change="filterTasks"
-                                >
-                                    <template #prefix>
-                                        <i class="fas fa-search"></i>
-                                    </template>
-                                </el-input>
-                                
-                                <el-select 
-                                    v-model="taskFilter.status" 
-                                    placeholder="选择任务状态" 
-                                    clearable
-                                    @change="filterTasks"
-                                    style="margin-right: 16px;"
-                                >
-                                    <el-option label="待分配" value="pending"></el-option>
-                                    <el-option label="已分配" value="assigned"></el-option>
-                                    <el-option label="执行中" value="executing"></el-option>
-                                    <el-option label="已完成" value="completed"></el-option>
-                                    <el-option label="已中止" value="aborted"></el-option>
-                                    <el-option label="已取消" value="cancelled"></el-option>
-                                </el-select>
-                                
-                                <el-select 
-                                    v-model="taskFilter.robotId" 
-                                    placeholder="选择执行机器人" 
-                                    clearable
-                                    @change="filterTasks"
-                                    style="margin-right: 16px;"
-                                >
-                                    <el-option 
-                                        v-for="robot in robots" 
-                                        :key="robot.id" 
-                                        :label="robot.name" 
-                                        :value="robot.id"
-                                    ></el-option>
-                                </el-select>
-                                
-                                <el-select 
-                                    v-model="taskFilter.isHighRisk" 
-                                    placeholder="风险状态" 
-                                    clearable
-                                    @change="filterTasks"
-                                >
-                                    <el-option label="高风险" value="true"></el-option>
-                                    <el-option label="正常" value="false"></el-option>
-                                </el-select>
-                            </div>
+                            <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+    <el-input 
+        v-model="taskFilter.keyword" 
+        placeholder="搜索任务名称" 
+        style="width: 280px;"
+        clearable
+        @change="filterTasks"
+    >
+        <template #prefix>
+            <i class="fas fa-search"></i>
+        </template>
+    </el-input>
+    
+    <el-select 
+        v-model="taskFilter.status" 
+        placeholder="选择任务状态" 
+        clearable
+        @change="filterTasks"
+        style="width: 150px;"
+    >
+        <el-option label="待分配" value="pending"></el-option>
+        <el-option label="已分配" value="assigned"></el-option>
+        <el-option label="执行中" value="executing"></el-option>
+        <el-option label="已完成" value="completed"></el-option>
+        <el-option label="已中止" value="aborted"></el-option>
+        <el-option label="已取消" value="cancelled"></el-option>
+    </el-select>
+    
+    <el-select 
+        v-model="taskFilter.robotId" 
+        placeholder="选择执行机器人" 
+        clearable
+        @change="filterTasks"
+        style="width: 150px;"
+    >
+        <el-option 
+            v-for="robot in robots" 
+            :key="robot.id" 
+            :label="robot.name" 
+            :value="robot.id"
+        ></el-option>
+    </el-select>
+    
+    <el-select 
+        v-model="taskFilter.isHighRisk" 
+        placeholder="风险状态" 
+        clearable
+        @change="filterTasks"
+        style="width: 120px;"
+    >
+        <el-option label="高风险" value="true"></el-option>
+        <el-option label="正常" value="false"></el-option>
+    </el-select>
+    
+    <el-button @click="resetTaskFilter" type="default" style="margin-left: auto;">
+        <i class="fas fa-undo" style="margin-right: 6px;"></i>重置筛选
+    </el-button>
+</div>
                             
                             <el-table :data="filteredTasks" style="width: 100%">
                                 <el-table-column prop="id" label="任务ID" width="80"></el-table-column>
@@ -1043,21 +1160,27 @@
                         </div>
                         <div class="card-body">
                             <div class="task-scheduling-tabs">
-                                <div 
-                                    class="tab-item" 
-                                    :class="{ active: schedulingTab === 'pending' }"
-                                    @click="schedulingTab = 'pending'"
-                                >
-                                    待分配任务 ({{ pendingTasks.length }})
-                                </div>
-                                <div 
-                                    class="tab-item" 
-                                    :class="{ active: schedulingTab === 'assigned' }"
-                                    @click="schedulingTab = 'assigned'"
-                                >
-                                    已分配任务 ({{ assignedTasks.length }})
-                                </div>
-                            </div>
+    <div 
+        class="tab-item" 
+        :class="{ active: schedulingTab === 'pending' }"
+        @click="schedulingTab = 'pending'"
+        data-tab="pending"
+    >
+        <i class="fas fa-clock" style="margin-right: 6px;"></i>
+        待分配任务
+        <span class="count-badge" v-if="pendingTasks.length > 0">{{ pendingTasks.length }}</span>
+    </div>
+    <div 
+        class="tab-item" 
+        :class="{ active: schedulingTab === 'assigned' }"
+        @click="schedulingTab = 'assigned'"
+        data-tab="assigned"
+    >
+        <i class="fas fa-robot" style="margin-right: 6px;"></i>
+        已分配任务
+        <span class="count-badge" v-if="assignedTasks.length > 0" style="background-color: #1890ff;">{{ assignedTasks.length }}</span>
+    </div>
+</div>
                             
                             <!-- 待分配任务 -->
                             <div v-if="schedulingTab === 'pending'">
@@ -1163,28 +1286,36 @@
                             </div>
                             
                             <div class="task-monitoring-tabs">
-                                <div 
-                                    class="tab-item" 
-                                    :class="{ active: monitoringTab === 'all' }"
-                                    @click="monitoringTab = 'all'"
-                                >
-                                    所有任务
-                                </div>
-                                <div 
-                                    class="tab-item" 
-                                    :class="{ active: monitoringTab === 'executing' }"
-                                    @click="monitoringTab = 'executing'"
-                                >
-                                    执行中 ({{ executingTasks.length }})
-                                </div>
-                                <div 
-                                    class="tab-item" 
-                                    :class="{ active: monitoringTab === 'highRisk' }"
-                                    @click="monitoringTab = 'highRisk'"
-                                >
-                                    高风险 ({{ highRiskTasks.length }})
-                                </div>
-                            </div>
+    <div 
+        class="tab-item" 
+        :class="{ active: monitoringTab === 'all' }"
+        @click="monitoringTab = 'all'"
+        data-tab="all"
+    >
+        <i class="fas fa-th-list" style="margin-right: 6px;"></i>
+        所有任务
+    </div>
+    <div 
+        class="tab-item" 
+        :class="{ active: monitoringTab === 'executing' }"
+        @click="monitoringTab = 'executing'"
+        data-tab="executing"
+    >
+        <i class="fas fa-play-circle" style="margin-right: 6px;"></i>
+        执行中
+        <span class="count-badge" v-if="executingTasks.length > 0" style="background-color: #52c41a;">{{ executingTasks.length }}</span>
+    </div>
+    <div 
+        class="tab-item" 
+        :class="{ active: monitoringTab === 'highRisk' }"
+        @click="monitoringTab = 'highRisk'"
+        data-tab="highRisk"
+    >
+        <i class="fas fa-exclamation-triangle" style="margin-right: 6px;"></i>
+        高风险
+        <span class="count-badge" v-if="highRiskTasks.length > 0">{{ highRiskTasks.length }}</span>
+    </div>
+</div>
                             
                             <!-- 任务列表 -->
                             <el-table :data="monitoredTasks" style="width: 100%">
@@ -3036,6 +3167,22 @@ const simpleActions = ref([
     { value: '安防', label: '安防巡逻' },
     { value: '送餐', label: '送餐服务' }
 ]);
+
+// 重置模板筛选
+const resetTemplateFilter = () => {
+    templateFilter.keyword = '';
+    templateFilter.robotGroup = '';
+    ElMessage.success('筛选条件已重置');
+};
+
+// 重置任务筛选
+const resetTaskFilter = () => {
+    taskFilter.keyword = '';
+    taskFilter.status = '';
+    taskFilter.robotId = '';
+    taskFilter.isHighRisk = '';
+    ElMessage.success('筛选条件已重置');
+};
                 
                 return {
                     activeNav,
@@ -3102,7 +3249,9 @@ taskCreateDialog,
     renderStepPreview,
     showCronHelp,
     onMounted,
-    switchNav
+    switchNav,
+resetTemplateFilter,
+    resetTaskFilter
                 };
             }
         });
