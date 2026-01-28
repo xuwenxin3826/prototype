@@ -656,7 +656,7 @@
             <div 
                 class="nav-item sub-item" 
                 :class="{ active: activeNav === 'templates' }"
-                @click.stop="activeNav = 'templates'"
+                @click.stop="switchNav('templates')"
             >
                 <i class="fas fa-clipboard-list"></i>
                 <span class="nav-text">模板管理</span>
@@ -665,7 +665,7 @@
             <div 
                 class="nav-item sub-item" 
                 :class="{ active: activeNav === 'tasks' }"
-                @click.stop="activeNav = 'tasks'"
+                @click.stop="switchNav('tasks')"
             >
                 <i class="fas fa-list-ul"></i>
                 <span class="nav-text">任务列表</span>
@@ -674,7 +674,7 @@
             <div 
                 class="nav-item sub-item" 
                 :class="{ active: activeNav === 'scheduling' }"
-                @click.stop="activeNav = 'scheduling'"
+                @click.stop="switchNav('scheduling')"
             >
                 <i class="fas fa-calendar-alt"></i>
                 <span class="nav-text">任务调度</span>
@@ -683,7 +683,7 @@
             <div 
                 class="nav-item sub-item" 
                 :class="{ active: activeNav === 'monitoring' }"
-                @click.stop="activeNav = 'monitoring'"
+                @click.stop="switchNav('monitoring')"
             >
                 <i class="fas fa-eye"></i>
                 <span class="nav-text">任务监控</span>
@@ -705,7 +705,7 @@
     <span class="nav-text">机器人管理</span>
 </a>
 
-	<!-- 数据管理与分析 - 包含子菜单 -->
+<!-- 数据管理与分析 - 包含子菜单 -->
 <div class="nav-item-wrapper">
     <div 
         class="nav-item" 
@@ -723,45 +723,29 @@
         ></i>
     </div>
     
-    <!-- 子菜单 -->
+    <!-- 子菜单 - 指向 data.html -->
     <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
-        <div 
-            class="nav-item sub-item" 
-            :class="{ active: activeNav === 'data-management' }"
-            @click.stop="activeNav = 'data-management'"
-        >
+        <a href="data.html#tools" class="nav-item sub-item">
             <i class="fas fa-database"></i>
             <span class="nav-text">数据管理工具</span>
-        </div>
+        </a>
         
-        <div 
-            class="nav-item sub-item" 
-            :class="{ active: activeNav === 'data-dashboard' }"
-            @click.stop="activeNav = 'data-dashboard'"
-        >
+        <a href="data.html" class="nav-item sub-item">
             <i class="fas fa-tachometer-alt"></i>
             <span class="nav-text">数据仪表盘</span>
-        </div>
+        </a>
         
-        <div 
-            class="nav-item sub-item" 
-            :class="{ active: activeNav === 'metrics-analysis' }"
-            @click.stop="activeNav = 'metrics-analysis'"
-        >
+        <a href="data.html#metrics" class="nav-item sub-item">
             <i class="fas fa-chart-bar"></i>
             <span class="nav-text">指标分析</span>
-        </div>
+        </a>
         
-        <div 
-            class="nav-item sub-item" 
-            :class="{ active: activeNav === 'ai-analysis' }"
-            @click.stop="activeNav = 'ai-analysis'"
-        >
+        <a href="data.html#ai" class="nav-item sub-item">
             <i class="fas fa-brain"></i>
             <span class="nav-text">AI分析</span>
-        </div>
+        </a>
     </div>
-</div>		
+</div>
 </div>
 </div>
         
@@ -1858,7 +1842,29 @@ watch(activeNav, (newVal) => {
                 expandedMenu.value = 'taskManagement';
             }
         }, { immediate: true });
-                
+
+const switchNav = (navName) => {
+    activeNav.value = navName;
+    // 同步更新浏览器地址栏，不刷新页面
+    history.pushState(null, null, '#' + navName);
+};
+                onMounted(() => {
+            // 从 URL hash 初始化当前页面
+            const hash = window.location.hash.replace('#', '');
+            const validPages = ['templates', 'tasks', 'scheduling', 'monitoring', 'robots', 'reports', 'dashboard'];
+            
+            if (validPages.includes(hash)) {
+                activeNav.value = hash;
+            }
+            
+            // 监听浏览器前进/后退按钮
+            window.addEventListener('hashchange', () => {
+                const newHash = window.location.hash.replace('#', '');
+                if (validPages.includes(newHash)) {
+                    activeNav.value = newHash;
+                }
+            });
+        });
                 // 任务统计
                 const taskStats = reactive({
                     total: 0,
@@ -3094,7 +3100,9 @@ taskCreateDialog,
     onTemplateSelect,
     getFieldLabelInCreate,
     renderStepPreview,
-    showCronHelp
+    showCronHelp,
+    onMounted,
+    switchNav
                 };
             }
         });
@@ -3105,4 +3113,3 @@ taskCreateDialog,
 </body>
 
 </html>
-
