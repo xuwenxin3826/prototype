@@ -500,6 +500,248 @@
             margin-bottom: 16px;
             color: #d9d9d9;
         }
+
+        /* 复选框网格样式 */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-item {
+            position: relative;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            display: none;
+        }
+        
+        .checkbox-item label {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #fafafa;
+        }
+        
+        .checkbox-item label:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        .checkbox-item input[type="checkbox"]:checked + label {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            box-shadow: 0 2px 8px rgba(24, 144, 255, 0.1);
+        }
+        
+        .checkbox-item label i {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+        
+        .checkbox-item label span {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .checkbox-item label small {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* 数据源统计样式 */
+        .data-source-stats {
+            display: flex;
+            gap: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* 章节头部样式 */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* 记录摘要样式 */
+        .records-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .summary-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 20px;
+        }
+        
+        .summary-info {
+            flex: 1;
+        }
+        
+        .summary-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* 紧凑表格样式 */
+        .compact-table-container {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .compact-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        .compact-table thead {
+            background-color: #fafafa;
+        }
+        
+        .compact-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .compact-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .compact-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+        
+        .time-cell {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .time-date {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .time-clock {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .data-source-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .data-source-cell i {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
+        .count-cell {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .count-cell.warning {
+            color: var(--warning-color);
+        }
+        
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+        
+        /* 表格底部样式 */
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: #fafafa;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .pagination-info {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .pagination {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .pagination .el-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
         
         /* 响应式 */
         @media (max-width: 992px) {
@@ -760,76 +1002,257 @@
                     </div>
 
                     <div class="card">
-                        <div class="card-body">
-                            <div class="form-section">
-                                <h3>应用数据源</h3>
-                                <div class="checkbox-group">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="interaction" v-model="dataSources.interactionLogs" checked>
-                                        <label for="interaction">交互日志</label>
+                    <div class="card-body">
+                        <div class="form-section">
+                            <h3>应用数据源</h3>
+                            <div class="checkbox-grid">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="interaction" v-model="dataSources.interactionLogs" checked>
+                                    <label for="interaction">
+                                        <i class="fas fa-comments"></i>
+                                        <span>交互日志</span>
+                                        <small>机器人对话记录</small>
+                                    </label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="status" v-model="dataSources.robotStatus" checked>
+                                    <label for="status">
+                                        <i class="fas fa-microchip"></i>
+                                        <span>机器人状态</span>
+                                        <small>设备运行状态</small>
+                                    </label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="feedback" v-model="dataSources.userFeedback" checked>
+                                    <label for="feedback">
+                                        <i class="fas fa-star"></i>
+                                        <span>用户反馈</span>
+                                        <small>满意度评分</small>
+                                    </label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="task" v-model="dataSources.taskExecution">
+                                    <label for="task">
+                                        <i class="fas fa-tasks"></i>
+                                        <span>任务执行记录</span>
+                                        <small>任务执行日志</small>
+                                    </label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="performance" v-model="dataSources.performance">
+                                    <label for="performance">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span>性能指标</span>
+                                        <small>CPU/内存使用率</small>
+                                    </label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="error" v-model="dataSources.errorLogs">
+                                    <label for="error">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>错误日志</span>
+                                        <small>系统错误记录</small>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="data-source-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">已选择</span>
+                                    <span class="stat-value">{{ selectedDataSourcesCount }}/6</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">覆盖范围</span>
+                                    <span class="stat-value">85%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">上次清洗</span>
+                                    <span class="stat-value">2小时前</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3>最近处理记录</h3>
+                                <div class="section-actions">
+                                    <el-button size="small" @click="refreshRecords">
+                                        <i class="fas fa-sync-alt"></i>
+                                        刷新
+                                    </el-button>
+                                    <el-button size="small" type="primary" @click="showAllRecords">
+                                        <i class="fas fa-list"></i>
+                                        查看全部
+                                    </el-button>
+                                </div>
+                            </div>
+                            
+                            <div class="records-summary">
+                                <div class="summary-item">
+                                    <div class="summary-icon" style="background: #e6f7ff; color: #1890ff;">
+                                        <i class="fas fa-database"></i>
                                     </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="status" v-model="dataSources.robotStatus" checked>
-                                        <label for="status">机器人状态</label>
+                                    <div class="summary-info">
+                                        <div class="summary-value">5,425</div>
+                                        <div class="summary-label">今日处理总数</div>
                                     </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="feedback" v-model="dataSources.userFeedback" checked>
-                                        <label for="feedback">用户反馈</label>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-icon" style="background: #f6ffed; color: #52c41a;">
+                                        <i class="fas fa-check-circle"></i>
                                     </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="task" v-model="dataSources.taskExecution">
-                                        <label for="task">任务执行记录</label>
+                                    <div class="summary-info">
+                                        <div class="summary-value">5,321</div>
+                                        <div class="summary-label">正常处理数</div>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-icon" style="background: #fff7e6; color: #fa8c14;">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </div>
+                                    <div class="summary-info">
+                                        <div class="summary-value">104</div>
+                                        <div class="summary-label">异常数据数</div>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-icon" style="background: #f0f0f0; color: #595959;">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="summary-info">
+                                        <div class="summary-value">1.8%</div>
+                                        <div class="summary-label">异常率</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="compact-table-container">
+                                <table class="compact-table">
+                                    <thead>
+                                        <tr>
+                                            <th width="160">执行时间</th>
+                                            <th width="100">任务类型</th>
+                                            <th width="120">数据来源</th>
+                                            <th width="100">处理条数</th>
+                                            <th width="100">异常条数</th>
+                                            <th width="100">执行状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="time-cell">
+                                                    <div class="time-date">2026-01-25</div>
+                                                    <div class="time-clock">14:30:22</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <el-tag size="small" type="info">定时清洗</el-tag>
+                                            </td>
+                                            <td>
+                                                <div class="data-source-cell">
+                                                    <i class="fas fa-microchip"></i>
+                                                    机器人状态
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="count-cell">1,240</div>
+                                            </td>
+                                            <td>
+                                                <div class="count-cell warning">12</div>
+                                            </td>
+                                            <td>
+                                                <el-tag size="small" type="success" class="status-tag">
+                                                    <i class="fas fa-check"></i>
+                                                    完成
+                                                </el-tag>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="time-cell">
+                                                    <div class="time-date">2026-01-25</div>
+                                                    <div class="time-clock">13:10:45</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <el-tag size="small">手动触发</el-tag>
+                                            </td>
+                                            <td>
+                                                <div class="data-source-cell">
+                                                    <i class="fas fa-comments"></i>
+                                                    交互日志
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="count-cell">3,560</div>
+                                            </td>
+                                            <td>
+                                                <div class="count-cell warning">87</div>
+                                            </td>
+                                            <td>
+                                                <el-tag size="small" type="warning" class="status-tag">
+                                                    <i class="fas fa-exclamation"></i>
+                                                    存在异常
+                                                </el-tag>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="time-cell">
+                                                    <div class="time-date">2026-01-25</div>
+                                                    <div class="time-clock">10:15:33</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <el-tag size="small" type="info">定时清洗</el-tag>
+                                            </td>
+                                            <td>
+                                                <div class="data-source-cell">
+                                                    <i class="fas fa-star"></i>
+                                                    用户反馈
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="count-cell">625</div>
+                                            </td>
+                                            <td>
+                                                <div class="count-cell warning">5</div>
+                                            </td>
+                                            <td>
+                                                <el-tag size="small" type="success" class="status-tag">
+                                                    <i class="fas fa-check"></i>
+                                                    完成
+                                                </el-tag>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <div class="table-footer">
+                                    <div class="pagination-info">
+                                        显示 3 条记录，共 128 条
+                                    </div>
+                                    <div class="pagination">
+                                        <el-button size="small" disabled>
+                                            <i class="fas fa-chevron-left"></i>
+                                        </el-button>
+                                        <el-button size="small" class="active">1</el-button>
+                                        <el-button size="small">2</el-button>
+                                        <el-button size="small">3</el-button>
+                                        <el-button size="small">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </el-button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-section">
-                                <h3>最近处理记录</h3>
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>执行时间</th>
-                                            <th>任务类型</th>
-                                            <th>数据来源</th>
-                                            <th>处理条数</th>
-                                            <th>异常条数</th>
-                                            <th>执行状态</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>2026-01-25 14:30</td>
-                                            <td>定时清洗</td>
-                                            <td>机器人状态</td>
-                                            <td>1240</td>
-                                            <td>12</td>
-                                            <td class="status-ok">完成</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2026-01-25 13:10</td>
-                                            <td>手动触发</td>
-                                            <td>交互日志</td>
-                                            <td>3560</td>
-                                            <td>87</td>
-                                            <td class="status-warn">存在异常</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2026-01-25 10:15</td>
-                                            <td>定时清洗</td>
-                                            <td>用户反馈</td>
-                                            <td>625</td>
-                                            <td>5</td>
-                                            <td class="status-ok">完成</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                </div>
                 </div>
 
                 <!-- 其他子页面 -->
@@ -884,12 +1307,30 @@
                 });
                 
                 // 数据源配置
+                // 在setup()函数中添加
                 const dataSources = ref({
                     interactionLogs: true,
                     robotStatus: true,
                     userFeedback: true,
-                    taskExecution: false
+                    taskExecution: false,
+                    performance: true,
+                    errorLogs: false
                 });
+                
+                // 计算已选择的数据源数量
+                const selectedDataSourcesCount = computed(() => {
+                    return Object.values(dataSources.value).filter(Boolean).length;
+                });
+                
+                // 刷新记录方法
+                const refreshRecords = () => {
+                    ElMessage.info('正在刷新处理记录...');
+                };
+                
+                // 查看全部记录方法
+                const showAllRecords = () => {
+                    ElMessage.info('跳转到完整记录页面...');
+                };
                 
                 // 页面标题映射
                 const titles = {
@@ -972,3 +1413,4 @@
     </script>
 </body>
 </html>
+
