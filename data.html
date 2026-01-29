@@ -328,6 +328,162 @@
             color: var(--text-secondary);
         }
         
+        /* 数据清洗规则配置样式 */
+        .page-content {
+            padding: 0;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .page-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        
+        .form-section {
+            margin-bottom: 24px;
+        }
+        
+        .form-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 8px 0;
+        }
+        
+        .form-row label {
+            width: 200px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .form-row select {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: white;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .form-row select:focus {
+            border-color: var(--primary-color);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn:hover {
+            background-color: #40a9ff;
+        }
+        
+        .btn-secondary {
+            background-color: #f5f5f5;
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e8e8e8;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .checkbox-item label {
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        
+        /* 表格样式 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        
+        .data-table thead {
+            background-color: #fafafa;
+        }
+        
+        .data-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+        
+        .status-ok {
+            color: var(--success-color);
+            font-weight: 500;
+        }
+        
+        .status-warn {
+            color: var(--warning-color);
+            font-weight: 500;
+        }
+        
         /* 空白占位样式 */
         .empty-placeholder {
             display: flex;
@@ -372,11 +528,25 @@
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .form-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .form-row label {
+                width: 100%;
+                margin-bottom: 8px;
+            }
         }
         
         @media (max-width: 576px) {
             .stats-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
             }
         }
         
@@ -412,7 +582,7 @@
             </div>
             
             <div class="nav-menu">
-                <!-- 任务管理 - 修复：移除 active-parent 类依赖，仅用 expandedMenu 控制展开 -->
+                <!-- 任务管理 -->
                 <div class="nav-item-wrapper">
                     <div 
                         class="nav-item" 
@@ -528,7 +698,164 @@
                 </div>
             </div>
 
-            
+            <!-- 数据管理工具页面内容 -->
+            <div class="content-wrapper">
+                <!-- 数据管理工具页面 -->
+                <div v-if="currentTab === 'tools'" class="page-content">
+                    <div class="page-title">数据清洗规则配置</div>
+                    <div class="page-desc">
+                        配置数据清洗规则，对机器人采集的交互日志、状态与用户反馈数据进行标准化处理，为后续分析提供高质量数据。
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-section">
+                                <h3>数据规范化规则</h3>
+                                <div class="form-row">
+                                    <label>字段完整性校验</label>
+                                    <select v-model="cleaningRules.fieldValidation">
+                                        <option value="mark">缺失字段标记异常</option>
+                                        <option value="discard">缺失字段自动丢弃</option>
+                                        <option value="fill">缺失字段填充默认值</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>时间格式统一</label>
+                                    <select v-model="cleaningRules.timeFormat">
+                                        <option value="iso8601">ISO 8601</option>
+                                        <option value="timestamp_ms">时间戳（毫秒）</option>
+                                        <option value="timestamp_s">时间戳（秒）</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>状态码映射规则</label>
+                                    <select v-model="cleaningRules.statusMapping">
+                                        <option value="enum">映射为平台统一枚举</option>
+                                        <option value="original">保留原始值</option>
+                                        <option value="custom">自定义映射表</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>异常值过滤策略</label>
+                                    <select v-model="cleaningRules.outlierFilter">
+                                        <option value="mark">标记异常</option>
+                                        <option value="filter">直接过滤</option>
+                                        <option value="correct">使用统计方法修正</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>文本数据清洗</label>
+                                    <select v-model="cleaningRules.textCleaning">
+                                        <option value="html">去除HTML标签</option>
+                                        <option value="special">去除特殊字符</option>
+                                        <option value="original">保留原始文本</option>
+                                    </select>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn" @click="saveCleaningRules">保存规则</button>
+                                    <button class="btn btn-secondary" @click="testCleaningRules">测试规则</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-section">
+                                <h3>应用数据源</h3>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="interaction" v-model="dataSources.interactionLogs" checked>
+                                        <label for="interaction">交互日志</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="status" v-model="dataSources.robotStatus" checked>
+                                        <label for="status">机器人状态</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="feedback" v-model="dataSources.userFeedback" checked>
+                                        <label for="feedback">用户反馈</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="task" v-model="dataSources.taskExecution">
+                                        <label for="task">任务执行记录</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-section">
+                                <h3>最近处理记录</h3>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>执行时间</th>
+                                            <th>任务类型</th>
+                                            <th>数据来源</th>
+                                            <th>处理条数</th>
+                                            <th>异常条数</th>
+                                            <th>执行状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>2026-01-25 14:30</td>
+                                            <td>定时清洗</td>
+                                            <td>机器人状态</td>
+                                            <td>1240</td>
+                                            <td>12</td>
+                                            <td class="status-ok">完成</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2026-01-25 13:10</td>
+                                            <td>手动触发</td>
+                                            <td>交互日志</td>
+                                            <td>3560</td>
+                                            <td>87</td>
+                                            <td class="status-warn">存在异常</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2026-01-25 10:15</td>
+                                            <td>定时清洗</td>
+                                            <td>用户反馈</td>
+                                            <td>625</td>
+                                            <td>5</td>
+                                            <td class="status-ok">完成</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他子页面 -->
+                <div v-if="currentTab === 'dashboard'" class="data-dashboard">
+                    <!-- 数据仪表盘内容 -->
+                    <div class="empty-placeholder">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <p>数据仪表盘内容开发中...</p>
+                    </div>
+                </div>
+
+                <div v-if="currentTab === 'metrics'" class="data-metrics">
+                    <!-- 指标分析内容 -->
+                    <div class="empty-placeholder">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>指标分析内容开发中...</p>
+                    </div>
+                </div>
+
+                <div v-if="currentTab === 'ai'" class="data-ai">
+                    <!-- AI分析内容 -->
+                    <div class="empty-placeholder">
+                        <i class="fas fa-brain"></i>
+                        <p>AI分析内容开发中...</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -546,6 +873,23 @@
                 
                 // 当前 Tab（根据 URL hash 决定）
                 const currentTab = ref('dashboard');
+                
+                // 数据清洗规则配置
+                const cleaningRules = ref({
+                    fieldValidation: 'mark',
+                    timeFormat: 'iso8601',
+                    statusMapping: 'enum',
+                    outlierFilter: 'mark',
+                    textCleaning: 'html'
+                });
+                
+                // 数据源配置
+                const dataSources = ref({
+                    interactionLogs: true,
+                    robotStatus: true,
+                    userFeedback: true,
+                    taskExecution: false
+                });
                 
                 // 页面标题映射
                 const titles = {
@@ -574,15 +918,22 @@
                     // 注意：这里我们不阻止默认行为，而是让 hash 变化触发 updateFromHash
                 };
                 
-                // 切换 Tab 并更新 URL
-                const switchTab = (tab) => {
-                    currentTab.value = tab;
-                    // 更新 URL hash，不刷新页面
-                    if (tab === 'dashboard') {
-                        history.replaceState(null, '', 'data.html');
-                    } else {
-                        history.replaceState(null, '', `data.html#${tab}`);
-                    }
+                // 保存清洗规则
+                const saveCleaningRules = () => {
+                    ElMessage.success('数据清洗规则已保存');
+                    console.log('保存的规则:', cleaningRules.value);
+                    console.log('数据源配置:', dataSources.value);
+                };
+                
+                // 测试清洗规则
+                const testCleaningRules = () => {
+                    ElMessage.info('测试规则功能正在执行...');
+                    // 这里可以添加测试规则的逻辑
+                };
+                
+                // 刷新数据
+                const refreshData = () => {
+                    ElMessage.success('数据已刷新');
                 };
                 
                 // 从 URL hash 更新当前 Tab
@@ -595,12 +946,6 @@
                     }
                 };
                 
-                // 刷新数据
-                const refreshData = () => {
-                    ElMessage.success('数据已刷新');
-                };
-                
-                // 修复4：监听 hash 变化，确保侧边栏按钮常亮
                 onMounted(() => {
                     updateFromHash();
                     window.addEventListener('hashchange', updateFromHash);
@@ -613,15 +958,17 @@
                 return {
                     expandedMenu,
                     currentTab,
+                    cleaningRules,
+                    dataSources,
                     pageTitle,
                     toggleMenu,
-                    switchTab,
                     handleSubMenuClick,
+                    saveCleaningRules,
+                    testCleaningRules,
                     refreshData
                 };
             }
         }).use(ElementPlus).mount('#app');
     </script>
 </body>
-
 </html>
