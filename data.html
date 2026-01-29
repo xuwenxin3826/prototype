@@ -810,6 +810,28 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #a8a8a8;
         }
+        
+        @media (max-width: 1200px) {
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .records-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .records-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-footer {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1413,4 +1435,5 @@
     </script>
 </body>
 </html>
+
 
