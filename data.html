@@ -853,7 +853,7 @@
         }
         
         .detail-row label {
-            width: 80px;
+            width: 100px;
             font-size: 14px;
             color: var(--text-secondary);
         }
@@ -1648,6 +1648,111 @@
             font-size: 12px;
             color: var(--text-secondary);
         }
+
+        /* 水平布局的表单行 */
+        .form-row.horizontal {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .form-row.horizontal label {
+            width: 140px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-align: right;
+            margin-bottom: 0;
+        }
+        
+        .form-row.horizontal select {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            min-width: 200px;
+        }
+        
+        /* 时间配置部分 - 合并到一行 */
+        .detail-row.combined {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-item label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        .detail-item select,
+        .detail-item input[type="time"] {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            width: 160px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .two-column-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-row.combined {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            
+            .detail-item select,
+            .detail-item input[type="time"] {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row.horizontal {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .form-row.horizontal label {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 6px;
+            }
+            
+            .form-row.horizontal select {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .execution-options {
+                flex-direction: column;
+            }
+        }
         
         /* 响应式 */
         @media (max-width: 992px) {
@@ -1882,10 +1987,10 @@
                         <div class="form-section">
                             <h3>数据清洗规则配置</h3>
                             
-                            <!-- 两列布局的表单 -->
+                            <!-- 两列布局的表单（改为水平布局） -->
                             <div class="two-column-form">
                                 <div class="form-column">
-                                    <div class="form-row">
+                                    <div class="form-row horizontal">
                                         <label>字段完整性校验</label>
                                         <select v-model="cleaningRules.fieldValidation">
                                             <option value="mark">缺失字段标记异常</option>
@@ -1893,7 +1998,7 @@
                                             <option value="fill">缺失字段填充默认值</option>
                                         </select>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="form-row horizontal">
                                         <label>时间格式统一</label>
                                         <select v-model="cleaningRules.timeFormat">
                                             <option value="iso8601">ISO 8601</option>
@@ -1901,7 +2006,7 @@
                                             <option value="timestamp_s">时间戳（秒）</option>
                                         </select>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="form-row horizontal">
                                         <label>状态码映射规则</label>
                                         <select v-model="cleaningRules.statusMapping">
                                             <option value="enum">映射为平台统一枚举</option>
@@ -1912,7 +2017,7 @@
                                 </div>
                                 
                                 <div class="form-column">
-                                    <div class="form-row">
+                                    <div class="form-row horizontal">
                                         <label>异常值过滤策略</label>
                                         <select v-model="cleaningRules.outlierFilter">
                                             <option value="mark">标记异常</option>
@@ -1920,7 +2025,7 @@
                                             <option value="correct">使用统计方法修正</option>
                                         </select>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="form-row horizontal">
                                         <label>文本数据清洗</label>
                                         <select v-model="cleaningRules.textCleaning">
                                             <option value="html">去除HTML标签</option>
@@ -1928,7 +2033,7 @@
                                             <option value="original">保留原始文本</option>
                                         </select>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="form-row horizontal">
                                         <label>重复数据处理</label>
                                         <select v-model="cleaningRules.duplicateHandling">
                                             <option value="keep_first">保留第一条</option>
@@ -1939,7 +2044,7 @@
                                 </div>
                             </div>
                             
-                            <!-- 时间配置部分（简化） -->
+                            <!-- 时间配置部分（修改为合并到一行） -->
                             <div class="time-config-section">
                                 <h4>执行方式</h4>
                                 <div class="execution-options">
@@ -1957,34 +2062,39 @@
                                         </label>
                                         
                                         <div class="option-details" v-if="cleaningRules.executionType === 'schedule'">
-                                            <div class="detail-row">
-                                                <label>执行频率</label>
-                                                <select v-model="cleaningRules.scheduleFrequency" style="width: 200px;">
-                                                    <option value="hourly">每小时</option>
-                                                    <option value="daily">每天</option>
-                                                    <option value="weekly">每周</option>
-                                                    <option value="monthly">每月</option>
-                                                </select>
-                                            </div>
-                                            <div class="detail-row" v-if="cleaningRules.scheduleFrequency === 'daily'">
-                                                <label>执行时间</label>
-                                                <input 
-                                                    type="time" 
-                                                    v-model="cleaningRules.scheduleTime"
-                                                    style="width: 150px;"
-                                                >
-                                            </div>
-                                            <div class="detail-row" v-if="cleaningRules.scheduleFrequency === 'weekly'">
-                                                <label>执行星期</label>
-                                                <select v-model="cleaningRules.scheduleDay" style="width: 150px;">
-                                                    <option value="1">星期一</option>
-                                                    <option value="2">星期二</option>
-                                                    <option value="3">星期三</option>
-                                                    <option value="4">星期四</option>
-                                                    <option value="5">星期五</option>
-                                                    <option value="6">星期六</option>
-                                                    <option value="0">星期日</option>
-                                                </select>
+                                            <div class="detail-row combined">
+                                                <div class="detail-item">
+                                                    <label>执行频率</label>
+                                                    <select v-model="cleaningRules.scheduleFrequency">
+                                                        <option value="hourly">每小时</option>
+                                                        <option value="daily">每天</option>
+                                                        <option value="weekly">每周</option>
+                                                        <option value="monthly">每月</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <!-- 每天的执行时间 -->
+                                                <div class="detail-item" v-if="cleaningRules.scheduleFrequency === 'daily'">
+                                                    <label>执行时间</label>
+                                                    <input 
+                                                        type="time" 
+                                                        v-model="cleaningRules.scheduleTime"
+                                                    >
+                                                </div>
+                                                
+                                                <!-- 每周的执行星期 -->
+                                                <div class="detail-item" v-if="cleaningRules.scheduleFrequency === 'weekly'">
+                                                    <label>执行星期</label>
+                                                    <select v-model="cleaningRules.scheduleDay">
+                                                        <option value="1">星期一</option>
+                                                        <option value="2">星期二</option>
+                                                        <option value="3">星期三</option>
+                                                        <option value="4">星期四</option>
+                                                        <option value="5">星期五</option>
+                                                        <option value="6">星期六</option>
+                                                        <option value="0">星期日</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -3322,6 +3432,7 @@
     </script>
 </body>
 </html>
+
 
 
 
