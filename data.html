@@ -766,22 +766,27 @@
         /* 表单行 */
         .form-row {
             display: flex;
-            flex-direction: column;
-            margin-bottom: 8px;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
         }
         
         .form-row label {
+            width: 140px;
             font-size: 14px;
             font-weight: 500;
             color: var(--text-primary);
-            margin-bottom: 6px;
+            text-align: right;
+            margin-bottom: 0;
         }
         
         .form-row select {
+            flex: 1;
             padding: 8px 12px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 14px;
+            min-width: 200px;
         }
         
         /* 时间配置 */
@@ -849,7 +854,13 @@
         .detail-row {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
         }
         
         .detail-row label {
@@ -3432,6 +3443,7 @@
     </script>
 </body>
 </html>
+
 
 
 
