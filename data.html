@@ -742,6 +742,912 @@
             color: white;
             border-color: var(--primary-color);
         }
+
+        /* 两列表单布局 */
+        .two-column-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .two-column-form {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        /* 表单行 */
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;
+        }
+        
+        .form-row label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        
+        .form-row select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* 时间配置 */
+        .time-config-section {
+            margin: 24px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+        
+        .time-config-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        
+        .execution-options {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .execution-option {
+            flex: 1;
+        }
+        
+        .execution-option input[type="radio"] {
+            display: none;
+        }
+        
+        .execution-option label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+        }
+        
+        .execution-option input[type="radio"]:checked + label {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .execution-option label i {
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+        
+        .execution-option label span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .option-details {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .detail-row label {
+            width: 80px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .detail-row select,
+        .detail-row input[type="time"] {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* 应用数据源 */
+        .data-source-section {
+            margin: 24px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+        
+        .data-source-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        
+        .simple-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            margin-bottom: 12px;
+        }
+        
+        .simple-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .simple-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .simple-checkbox label {
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        
+        .selected-count {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* 数据仪表盘样式 */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .dashboard-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* 关键指标卡片 */
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .metric-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .metric-content {
+            flex: 1;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 图表区域 */
+        .dashboard-charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        
+        @media (max-width: 1200px) {
+            .dashboard-charts {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .chart-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        
+        .chart-card.large {
+            margin-bottom: 0;
+        }
+        
+        .chart-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chart-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .chart-body {
+            padding: 24px;
+            min-height: 300px;
+        }
+        
+        /* 机器人状态概览 */
+        .robot-status-overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            height: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .robot-status-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 饼图示例 */
+        .pie-chart-demo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #52c41a 0% 75%,
+                #fa8c16 75% 90%,
+                #f5222d 90% 100%
+            );
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .pie-segment {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .pie-segment span {
+            background-color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .chart-legend {
+            margin-top: 24px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 8px;
+        }
+        
+        .legend-text {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        /* 状态详情 */
+        .status-detail {
+            margin-bottom: 24px;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        
+        .detail-list, .recent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .detail-item, .recent-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .item-name, .robot-name {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .item-value, .robot-time {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 异常图表 */
+        .line-chart-demo {
+            height: 200px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .chart-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .grid-line {
+            border-top: 1px dashed #f0f0f0;
+        }
+        
+        .data-line {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            height: 150px;
+        }
+        
+        .data-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #f5222d;
+            border-radius: 50%;
+            transform: translate(-50%, 50%);
+        }
+        
+        .data-point:after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(245, 34, 45, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .x-axis {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .x-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .chart-summary, .feedback-summary {
+            display: flex;
+            gap: 24px;
+            margin-top: 20px;
+        }
+        
+        .summary-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .summary-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .summary-value.positive {
+            color: #52c41a;
+        }
+        
+        .summary-value.negative {
+            color: #f5222d;
+        }
+        
+        /* 词云图 */
+        .word-cloud-demo {
+            height: 200px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .word {
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .word:hover {
+            transform: scale(1.1);
+            background-color: #f0f0f0;
+        }
+        
+        /* 图表列 */
+        .chart-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .chart-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 指标分析页面样式 */
+        .metrics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .metrics-filter {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+        
+        /* 指标网格布局 */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 24px;
+        }
+        
+        @media (max-width: 1200px) {
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 指标卡片 */
+        .metric-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metric-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .metric-title h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .metric-card-body {
+            padding: 20px;
+            flex: 1;
+        }
+        
+        /* 满意度图表 */
+        .satisfaction-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .chart-visual {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 20px;
+        }
+        
+        .pie-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #52c41a 0% 60%,
+                #1890ff 60% 85%,
+                #fa8c16 85% 95%,
+                #f5222d 95% 100%
+            );
+        }
+        
+        .chart-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .center-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .center-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* 响应时间图表 */
+        .response-time-chart {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .trend-chart {
+            display: flex;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-y-axis {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 40px;
+            padding-right: 10px;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .y-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .chart-content {
+            flex: 1;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        .chart-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .grid-line {
+            border-top: 1px dashed #f0f0f0;
+        }
+        
+        .trend-line {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            height: 150px;
+        }
+        
+        .data-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #1890ff;
+            border-radius: 50%;
+            transform: translate(-50%, 50%);
+        }
+        
+        .data-point:after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(24, 144, 255, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .chart-x-axis {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .x-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .trend-summary {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+        
+        .summary-item {
+            text-align: center;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .summary-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .summary-value.negative {
+            color: #52c41a;
+        }
+        
+        /* 指标统计 */
+        .metric-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* 指标卡片底部 */
+        .metric-card-footer {
+            padding: 16px 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .metric-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .metric-tags {
+            display: flex;
+            gap: 6px;
+        }
+        
+        /* 添加指标卡片 */
+        .add-metric-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--border-color);
+            background-color: #fafafa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .add-metric-card:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .add-metric-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .add-metric-content i {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+        
+        .add-metric-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .add-metric-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 指标占位符 */
+        .metric-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #999;
+        }
+        
+        .metric-placeholder i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #d9d9d9;
+        }
+        
+        .metric-placeholder p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 图表图例 */
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        
+        .legend-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
         
         /* 响应式 */
         @media (max-width: 992px) {
@@ -972,125 +1878,185 @@
                     </div>
 
                     <div class="card">
-                        <div class="card-body">
-                            <div class="form-section">
-                                <h3>数据规范化规则</h3>
-                                <div class="form-row">
-                                    <label>字段完整性校验</label>
-                                    <select v-model="cleaningRules.fieldValidation">
-                                        <option value="mark">缺失字段标记异常</option>
-                                        <option value="discard">缺失字段自动丢弃</option>
-                                        <option value="fill">缺失字段填充默认值</option>
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label>时间格式统一</label>
-                                    <select v-model="cleaningRules.timeFormat">
-                                        <option value="iso8601">ISO 8601</option>
-                                        <option value="timestamp_ms">时间戳（毫秒）</option>
-                                        <option value="timestamp_s">时间戳（秒）</option>
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label>状态码映射规则</label>
-                                    <select v-model="cleaningRules.statusMapping">
-                                        <option value="enum">映射为平台统一枚举</option>
-                                        <option value="original">保留原始值</option>
-                                        <option value="custom">自定义映射表</option>
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label>异常值过滤策略</label>
-                                    <select v-model="cleaningRules.outlierFilter">
-                                        <option value="mark">标记异常</option>
-                                        <option value="filter">直接过滤</option>
-                                        <option value="correct">使用统计方法修正</option>
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label>文本数据清洗</label>
-                                    <select v-model="cleaningRules.textCleaning">
-                                        <option value="html">去除HTML标签</option>
-                                        <option value="special">去除特殊字符</option>
-                                        <option value="original">保留原始文本</option>
-                                    </select>
-                                </div>
-                                <div class="btn-group">
-                                    <button class="btn" @click="saveCleaningRules">保存规则</button>
-                                    <button class="btn btn-secondary" @click="testCleaningRules">测试规则</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
                     <div class="card-body">
                         <div class="form-section">
-                            <h3>应用数据源</h3>
-                            <div class="checkbox-grid">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="interaction" v-model="dataSources.interactionLogs" checked>
-                                    <label for="interaction">
-                                        <i class="fas fa-comments"></i>
-                                        <span>交互日志</span>
-                                        <small>机器人对话记录</small>
-                                    </label>
+                            <h3>数据清洗规则配置</h3>
+                            
+                            <!-- 两列布局的表单 -->
+                            <div class="two-column-form">
+                                <div class="form-column">
+                                    <div class="form-row">
+                                        <label>字段完整性校验</label>
+                                        <select v-model="cleaningRules.fieldValidation">
+                                            <option value="mark">缺失字段标记异常</option>
+                                            <option value="discard">缺失字段自动丢弃</option>
+                                            <option value="fill">缺失字段填充默认值</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>时间格式统一</label>
+                                        <select v-model="cleaningRules.timeFormat">
+                                            <option value="iso8601">ISO 8601</option>
+                                            <option value="timestamp_ms">时间戳（毫秒）</option>
+                                            <option value="timestamp_s">时间戳（秒）</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>状态码映射规则</label>
+                                        <select v-model="cleaningRules.statusMapping">
+                                            <option value="enum">映射为平台统一枚举</option>
+                                            <option value="original">保留原始值</option>
+                                            <option value="custom">自定义映射表</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="status" v-model="dataSources.robotStatus" checked>
-                                    <label for="status">
-                                        <i class="fas fa-microchip"></i>
-                                        <span>机器人状态</span>
-                                        <small>设备运行状态</small>
-                                    </label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="feedback" v-model="dataSources.userFeedback" checked>
-                                    <label for="feedback">
-                                        <i class="fas fa-star"></i>
-                                        <span>用户反馈</span>
-                                        <small>满意度评分</small>
-                                    </label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="task" v-model="dataSources.taskExecution">
-                                    <label for="task">
-                                        <i class="fas fa-tasks"></i>
-                                        <span>任务执行记录</span>
-                                        <small>任务执行日志</small>
-                                    </label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="performance" v-model="dataSources.performance">
-                                    <label for="performance">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>性能指标</span>
-                                        <small>CPU/内存使用率</small>
-                                    </label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="error" v-model="dataSources.errorLogs">
-                                    <label for="error">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <span>错误日志</span>
-                                        <small>系统错误记录</small>
-                                    </label>
+                                
+                                <div class="form-column">
+                                    <div class="form-row">
+                                        <label>异常值过滤策略</label>
+                                        <select v-model="cleaningRules.outlierFilter">
+                                            <option value="mark">标记异常</option>
+                                            <option value="filter">直接过滤</option>
+                                            <option value="correct">使用统计方法修正</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>文本数据清洗</label>
+                                        <select v-model="cleaningRules.textCleaning">
+                                            <option value="html">去除HTML标签</option>
+                                            <option value="special">去除特殊字符</option>
+                                            <option value="original">保留原始文本</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>重复数据处理</label>
+                                        <select v-model="cleaningRules.duplicateHandling">
+                                            <option value="keep_first">保留第一条</option>
+                                            <option value="keep_last">保留最后一条</option>
+                                            <option value="remove_all">删除所有重复</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="data-source-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">已选择</span>
-                                    <span class="stat-value">{{ selectedDataSourcesCount }}/6</span>
+                            <!-- 时间配置部分（简化） -->
+                            <div class="time-config-section">
+                                <h4>执行方式</h4>
+                                <div class="execution-options">
+                                    <div class="execution-option">
+                                        <input 
+                                            type="radio" 
+                                            id="scheduleAuto" 
+                                            name="executionType" 
+                                            value="schedule" 
+                                            v-model="cleaningRules.executionType"
+                                        >
+                                        <label for="scheduleAuto">
+                                            <i class="fas fa-clock"></i>
+                                            <span>定时清洗</span>
+                                        </label>
+                                        
+                                        <div class="option-details" v-if="cleaningRules.executionType === 'schedule'">
+                                            <div class="detail-row">
+                                                <label>执行频率</label>
+                                                <select v-model="cleaningRules.scheduleFrequency" style="width: 200px;">
+                                                    <option value="hourly">每小时</option>
+                                                    <option value="daily">每天</option>
+                                                    <option value="weekly">每周</option>
+                                                    <option value="monthly">每月</option>
+                                                </select>
+                                            </div>
+                                            <div class="detail-row" v-if="cleaningRules.scheduleFrequency === 'daily'">
+                                                <label>执行时间</label>
+                                                <input 
+                                                    type="time" 
+                                                    v-model="cleaningRules.scheduleTime"
+                                                    style="width: 150px;"
+                                                >
+                                            </div>
+                                            <div class="detail-row" v-if="cleaningRules.scheduleFrequency === 'weekly'">
+                                                <label>执行星期</label>
+                                                <select v-model="cleaningRules.scheduleDay" style="width: 150px;">
+                                                    <option value="1">星期一</option>
+                                                    <option value="2">星期二</option>
+                                                    <option value="3">星期三</option>
+                                                    <option value="4">星期四</option>
+                                                    <option value="5">星期五</option>
+                                                    <option value="6">星期六</option>
+                                                    <option value="0">星期日</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="execution-option">
+                                        <input 
+                                            type="radio" 
+                                            id="manualTrigger" 
+                                            name="executionType" 
+                                            value="manual" 
+                                            v-model="cleaningRules.executionType"
+                                        >
+                                        <label for="manualTrigger">
+                                            <i class="fas fa-play-circle"></i>
+                                            <span>手动触发</span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">覆盖范围</span>
-                                    <span class="stat-value">85%</span>
+                            </div>
+                            
+                            <!-- 应用数据源部分（简化） -->
+                            <div class="data-source-section">
+                                <h4>应用数据源</h4>
+                                <div class="simple-checkbox-group">
+                                    <div class="simple-checkbox">
+                                        <input type="checkbox" id="interaction" v-model="dataSources.interactionLogs" checked>
+                                        <label for="interaction">交互日志</label>
+                                    </div>
+                                    <div class="simple-checkbox">
+                                        <input type="checkbox" id="status" v-model="dataSources.robotStatus" checked>
+                                        <label for="status">机器人状态</label>
+                                    </div>
+                                    <div class="simple-checkbox">
+                                        <input type="checkbox" id="feedback" v-model="dataSources.userFeedback" checked>
+                                        <label for="feedback">用户反馈</label>
+                                    </div>
+                                    <div class="simple-checkbox">
+                                        <input type="checkbox" id="task" v-model="dataSources.taskExecution">
+                                        <label for="task">任务执行记录</label>
+                                    </div>
+                                    <div class="simple-checkbox">
+                                        <input type="checkbox" id="performance" v-model="dataSources.performance">
+                                        <label for="performance">性能指标</label>
+                                    </div>
+                                    <div class="simple-checkbox">
+                                        <input type="checkbox" id="error" v-model="dataSources.errorLogs">
+                                        <label for="error">错误日志</label>
+                                    </div>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">上次清洗</span>
-                                    <span class="stat-value">2小时前</span>
+                                <div class="selected-count">
+                                    已选择 {{ selectedDataSourcesCount }} 个数据源
                                 </div>
+                            </div>
+                            
+                            <!-- 操作按钮 -->
+                            <div class="action-buttons">
+                                <el-button type="primary" @click="saveCleaningRules">
+                                    <i class="fas fa-save"></i>
+                                    保存配置
+                                </el-button>
+                                <el-button @click="testCleaningRules">
+                                    <i class="fas fa-vial"></i>
+                                    测试规则
+                                </el-button>
+                                <el-button 
+                                    type="success" 
+                                    @click="executeCleaningNow"
+                                    v-if="cleaningRules.executionType === 'manual'"
+                                >
+                                    <i class="fas fa-play"></i>
+                                    立即执行
+                                </el-button>
                             </div>
                         </div>
                     </div>
@@ -1278,20 +2244,601 @@
                 </div>
 
                 <!-- 其他子页面 -->
+                <!-- 数据仪表盘页面 -->
                 <div v-if="currentTab === 'dashboard'" class="data-dashboard">
-                    <!-- 数据仪表盘内容 -->
-                    <div class="empty-placeholder">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <p>数据仪表盘内容开发中...</p>
+                    <!-- 页面标题和筛选 -->
+                    <div class="dashboard-header">
+                        <div class="page-title">数据仪表盘</div>
+                        <div class="dashboard-controls">
+                            <div class="time-range">
+                                <el-select v-model="dashboardTimeRange" size="small" style="width: 120px;">
+                                    <el-option label="今日" value="today"></el-option>
+                                    <el-option label="本周" value="week"></el-option>
+                                    <el-option label="本月" value="month"></el-option>
+                                    <el-option label="本年" value="year"></el-option>
+                                </el-select>
+                            </div>
+                            <el-button size="small" @click="refreshDashboard">
+                                <i class="fas fa-sync-alt"></i>
+                                刷新
+                            </el-button>
+                        </div>
+                    </div>
+                
+                    <!-- 关键指标卡片 -->
+                    <div class="key-metrics">
+                        <div class="metric-card">
+                            <div class="metric-icon" style="background-color: #e6f7ff;">
+                                <i class="fas fa-robot" style="color: #1890ff;"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">{{ robotStats.total }}</div>
+                                <div class="metric-label">总机器人数量</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-icon" style="background-color: #f6ffed;">
+                                <i class="fas fa-check-circle" style="color: #52c41a;"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">{{ robotStats.online }}</div>
+                                <div class="metric-label">在线机器人</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-icon" style="background-color: #fff7e6;">
+                                <i class="fas fa-exclamation-triangle" style="color: #fa8c16;"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">{{ robotStats.offline }}</div>
+                                <div class="metric-label">离线机器人</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-icon" style="background-color: #fff1f0;">
+                                <i class="fas fa-bug" style="color: #f5222d;"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">{{ exceptionStats.today }}</div>
+                                <div class="metric-label">今日异常</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-icon" style="background-color: #f9f0ff;">
+                                <i class="fas fa-comments" style="color: #722ed1;"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">{{ feedbackStats.today }}</div>
+                                <div class="metric-label">今日反馈</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-icon" style="background-color: #fcffe6;">
+                                <i class="fas fa-tasks" style="color: #a0d911;"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">{{ taskStats.completed }}</div>
+                                <div class="metric-label">完成的任务</div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- 主要图表区域 -->
+                    <div class="dashboard-charts">
+                        <!-- 服务监控大屏（在线机器人情况） -->
+                        <div class="chart-card large">
+                            <div class="chart-header">
+                                <h3>服务监控大屏 - 在线机器人情况</h3>
+                                <div class="chart-actions">
+                                    <el-button size="small" type="text">
+                                        <i class="fas fa-expand"></i>
+                                    </el-button>
+                                </div>
+                            </div>
+                            <div class="chart-body">
+                                <div class="robot-status-overview">
+                                    <div class="robot-status-chart">
+                                        <!-- 这里可以放置机器人状态图表，比如饼图或环形图 -->
+                                        <div class="chart-placeholder">
+                                            <div class="pie-chart-demo">
+                                                <div class="pie-segment" style="--percent: 75; --color: #52c41a;" title="在线: 75%">
+                                                    <span>在线</span>
+                                                </div>
+                                                <div class="pie-segment" style="--percent: 15; --color: #fa8c16;" title="忙碌: 15%">
+                                                    <span>忙碌</span>
+                                                </div>
+                                                <div class="pie-segment" style="--percent: 10; --color: #f5222d;" title="离线: 10%">
+                                                    <span>离线</span>
+                                                </div>
+                                            </div>
+                                            <div class="chart-legend">
+                                                <div class="legend-item">
+                                                    <span class="legend-color" style="background-color: #52c41a;"></span>
+                                                    <span class="legend-text">在线 ({{ robotStats.online }})</span>
+                                                </div>
+                                                <div class="legend-item">
+                                                    <span class="legend-color" style="background-color: #fa8c16;"></span>
+                                                    <span class="legend-text">忙碌 ({{ robotStats.busy }})</span>
+                                                </div>
+                                                <div class="legend-item">
+                                                    <span class="legend-color" style="background-color: #f5222d;"></span>
+                                                    <span class="legend-text">离线 ({{ robotStats.offline }})</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- 右侧两列小图表 -->
+                        <div class="chart-column">
+                            <!-- 异常情况数量 -->
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>异常情况趋势</h3>
+                                </div>
+                                <div class="chart-body">
+                                    <div class="exception-chart">
+                                        <!-- 这里可以放置折线图或柱状图 -->
+                                        <div class="chart-placeholder">
+                                            <div class="line-chart-demo">
+                                                <div class="chart-grid">
+                                                    <div class="grid-line" v-for="i in 5" :key="i"></div>
+                                                </div>
+                                                <div class="data-line">
+                                                    <div class="data-point" v-for="(point, index) in exceptionStats.trend" 
+                                                         :key="index" 
+                                                         :style="{left: `${index * 20}%`, bottom: `${point.value * 10}px`}"
+                                                         :title="`${point.day}: ${point.count}个异常`">
+                                                    </div>
+                                                </div>
+                                                <div class="x-axis">
+                                                    <div class="x-label" v-for="point in exceptionStats.trend" :key="point.day">
+                                                        {{ point.day }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chart-summary">
+                                                <div class="summary-item">
+                                                    <div class="summary-label">本周异常</div>
+                                                    <div class="summary-value">{{ exceptionStats.week }}</div>
+                                                </div>
+                                                <div class="summary-item">
+                                                    <div class="summary-label">环比</div>
+                                                    <div class="summary-value" :class="exceptionStats.trendChange >= 0 ? 'negative' : 'positive'">
+                                                        {{ exceptionStats.trendChange > 0 ? '+' : '' }}{{ exceptionStats.trendChange }}%
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- 用户反馈视图（词云图） -->
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>用户反馈高频词</h3>
+                                    <div class="chart-actions">
+                                        <el-select v-model="feedbackType" size="small" style="width: 100px;">
+                                            <el-option label="全部" value="all"></el-option>
+                                            <el-option label="好评" value="positive"></el-option>
+                                            <el-option label="差评" value="negative"></el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
+                                <div class="chart-body">
+                                    <div class="word-cloud">
+                                        <!-- 这里可以放置词云图 -->
+                                        <div class="word-cloud-demo">
+                                            <span class="word" v-for="word in wordCloud" :key="word.text" 
+                                                  :style="{fontSize: `${word.size}px`, color: word.color}">
+                                                {{ word.text }}
+                                            </span>
+                                        </div>
+                                        <div class="feedback-summary">
+                                            <div class="summary-item">
+                                                <div class="summary-label">满意度</div>
+                                                <div class="summary-value">{{ feedbackStats.satisfaction }}%</div>
+                                            </div>
+                                            <div class="summary-item">
+                                                <div class="summary-label">反馈总数</div>
+                                                <div class="summary-value">{{ feedbackStats.total }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 指标分析页面 -->
                 <div v-if="currentTab === 'metrics'" class="data-metrics">
-                    <!-- 指标分析内容 -->
-                    <div class="empty-placeholder">
-                        <i class="fas fa-chart-bar"></i>
-                        <p>指标分析内容开发中...</p>
+                    <!-- 页面标题和操作 -->
+                    <div class="metrics-header">
+                        <div class="page-title">指标分析</div>
+                        <div class="metrics-actions">
+                            <el-button type="primary" @click="showCreateMetricDialog">
+                                <i class="fas fa-plus"></i>
+                                创建新指标
+                            </el-button>
+                        </div>
                     </div>
+                
+                    <!-- 指标筛选和搜索 -->
+                    <div class="metrics-filter">
+                        <el-input
+                            v-model="metricSearch"
+                            placeholder="搜索指标名称"
+                            clearable
+                            style="width: 300px;"
+                        >
+                            <template #prefix>
+                                <i class="fas fa-search"></i>
+                            </template>
+                        </el-input>
+                        
+                        <el-select v-model="metricCategory" placeholder="选择指标分类" clearable style="width: 200px;">
+                            <el-option label="用户满意度" value="satisfaction"></el-option>
+                            <el-option label="响应时间" value="response"></el-option>
+                            <el-option label="任务完成率" value="completion"></el-option>
+                            <el-option label="异常率" value="exception"></el-option>
+                        </el-select>
+                    </div>
+                
+                    <!-- 指标卡片展示区域 -->
+                    <div class="metrics-grid">
+                        <!-- 用户满意度分布指标卡片 -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <div class="metric-title">
+                                    <h3>用户满意度分布</h3>
+                                    <el-tag size="small" type="success">已启用</el-tag>
+                                </div>
+                                <div class="metric-actions">
+                                    <el-dropdown @command="handleMetricCommand('satisfaction', $event)">
+                                        <el-button size="small" type="text">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </el-button>
+                                        <template #dropdown>
+                                            <el-dropdown-menu>
+                                                <el-dropdown-item command="edit">编辑配置</el-dropdown-item>
+                                                <el-dropdown-item command="disable">停用指标</el-dropdown-item>
+                                                <el-dropdown-item command="delete">删除指标</el-dropdown-item>
+                                                <el-dropdown-item command="export">导出数据</el-dropdown-item>
+                                            </el-dropdown-menu>
+                                        </template>
+                                    </el-dropdown>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card-body">
+                                <div class="metric-chart">
+                                    <!-- 满意度分布饼图 -->
+                                    <div class="satisfaction-chart">
+                                        <div class="chart-visual">
+                                            <div class="pie-chart">
+                                                <div class="pie-segment" style="--percent: 60; --color: #52c41a;" title="非常满意: 60%"></div>
+                                                <div class="pie-segment" style="--percent: 25; --color: #1890ff;" title="满意: 25%"></div>
+                                                <div class="pie-segment" style="--percent: 10; --color: #fa8c16;" title="一般: 10%"></div>
+                                                <div class="pie-segment" style="--percent: 5; --color: #f5222d;" title="不满意: 5%"></div>
+                                            </div>
+                                            <div class="chart-center">
+                                                <div class="center-value">4.3</div>
+                                                <div class="center-label">平均分</div>
+                                            </div>
+                                        </div>
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background-color: #52c41a;"></span>
+                                                <span class="legend-text">非常满意 (60%)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background-color: #1890ff;"></span>
+                                                <span class="legend-text">满意 (25%)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background-color: #fa8c16;"></span>
+                                                <span class="legend-text">一般 (10%)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background-color: #f5222d;"></span>
+                                                <span class="legend-text">不满意 (5%)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label">样本数量</div>
+                                        <div class="stat-value">1,245</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">更新频率</div>
+                                        <div class="stat-value">每天</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">最近更新</div>
+                                        <div class="stat-value">今天 08:30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card-footer">
+                                <div class="metric-description">
+                                    统计用户对机器人服务的满意度评分分布情况
+                                </div>
+                                <div class="metric-tags">
+                                    <el-tag size="small">满意度</el-tag>
+                                    <el-tag size="small">用户反馈</el-tag>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- 平均响应时间指标卡片 -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <div class="metric-title">
+                                    <h3>平均响应时间</h3>
+                                    <el-tag size="small" type="success">已启用</el-tag>
+                                </div>
+                                <div class="metric-actions">
+                                    <el-dropdown @command="handleMetricCommand('response', $event)">
+                                        <el-button size="small" type="text">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </el-button>
+                                        <template #dropdown>
+                                            <el-dropdown-menu>
+                                                <el-dropdown-item command="edit">编辑配置</el-dropdown-item>
+                                                <el-dropdown-item command="disable">停用指标</el-dropdown-item>
+                                                <el-dropdown-item command="delete">删除指标</el-dropdown-item>
+                                                <el-dropdown-item command="export">导出数据</el-dropdown-item>
+                                            </el-dropdown-menu>
+                                        </template>
+                                    </el-dropdown>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card-body">
+                                <div class="metric-chart">
+                                    <!-- 响应时间趋势图 -->
+                                    <div class="response-time-chart">
+                                        <div class="trend-chart">
+                                            <div class="chart-y-axis">
+                                                <div class="y-label">3.5s</div>
+                                                <div class="y-label">3.0s</div>
+                                                <div class="y-label">2.5s</div>
+                                                <div class="y-label">2.0s</div>
+                                                <div class="y-label">1.5s</div>
+                                            </div>
+                                            <div class="chart-content">
+                                                <div class="chart-grid">
+                                                    <div class="grid-line" v-for="i in 5" :key="i"></div>
+                                                </div>
+                                                <div class="trend-line">
+                                                    <div class="data-point" 
+                                                         v-for="(point, index) in responseTimeData" 
+                                                         :key="index"
+                                                         :style="{left: `${index * 20}%`, bottom: `${(point.value - 1.5) * 40}px`}"
+                                                         :title="`${point.day}: ${point.value}s`">
+                                                    </div>
+                                                </div>
+                                                <div class="chart-x-axis">
+                                                    <div class="x-label" v-for="point in responseTimeData" :key="point.day">
+                                                        {{ point.day }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="trend-summary">
+                                            <div class="summary-item">
+                                                <div class="summary-label">当前平均</div>
+                                                <div class="summary-value">2.3s</div>
+                                            </div>
+                                            <div class="summary-item">
+                                                <div class="summary-label">环比变化</div>
+                                                <div class="summary-value negative">-12%</div>
+                                            </div>
+                                            <div class="summary-item">
+                                                <div class="summary-label">目标值</div>
+                                                <div class="summary-value">2.5s</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label">监控对象</div>
+                                        <div class="stat-value">所有机器人</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">计算周期</div>
+                                        <div class="stat-value">实时计算</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">阈值告警</div>
+                                        <div class="stat-value">
+                                            <el-tag size="small" type="success">已开启</el-tag>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card-footer">
+                                <div class="metric-description">
+                                    监控机器人从接收请求到给出响应的平均时间
+                                </div>
+                                <div class="metric-tags">
+                                    <el-tag size="small">性能指标</el-tag>
+                                    <el-tag size="small">实时监控</el-tag>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- 更多指标示例卡片 -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <div class="metric-title">
+                                    <h3>任务完成率</h3>
+                                    <el-tag size="small" type="warning">待配置</el-tag>
+                                </div>
+                                <div class="metric-actions">
+                                    <el-dropdown @command="handleMetricCommand('completion', $event)">
+                                        <el-button size="small" type="text">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </el-button>
+                                        <template #dropdown>
+                                            <el-dropdown-menu>
+                                                <el-dropdown-item command="configure">配置指标</el-dropdown-item>
+                                                <el-dropdown-item command="delete">删除指标</el-dropdown-item>
+                                            </el-dropdown-menu>
+                                        </template>
+                                    </el-dropdown>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card-body">
+                                <div class="metric-placeholder">
+                                    <i class="fas fa-cog"></i>
+                                    <p>指标尚未配置，请点击配置以设置计算规则</p>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card-footer">
+                                <div class="metric-description">
+                                    统计机器人任务成功完成的比例
+                                </div>
+                                <div class="metric-tags">
+                                    <el-tag size="small">任务指标</el-tag>
+                                    <el-tag size="small">成功率</el-tag>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- 添加新指标卡片 -->
+                        <div class="metric-card add-metric-card" @click="showCreateMetricDialog">
+                            <div class="add-metric-content">
+                                <i class="fas fa-plus-circle"></i>
+                                <div class="add-metric-text">添加新指标</div>
+                                <div class="add-metric-desc">创建自定义监控指标</div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- 创建/编辑指标对话框 -->
+                    <el-dialog
+                        v-model="metricDialogVisible"
+                        :title="isEditingMetric ? '编辑指标配置' : '创建新指标'"
+                        width="800px"
+                    >
+                        <el-form :model="metricForm" label-width="120px">
+                            <el-form-item label="指标名称" required>
+                                <el-input v-model="metricForm.name" placeholder="请输入指标名称"></el-input>
+                            </el-form-item>
+                            
+                            <el-form-item label="指标分类" required>
+                                <el-select v-model="metricForm.category" placeholder="请选择指标分类">
+                                    <el-option label="用户满意度" value="satisfaction"></el-option>
+                                    <el-option label="响应时间" value="response"></el-option>
+                                    <el-option label="任务完成率" value="completion"></el-option>
+                                    <el-option label="异常率" value="exception"></el-option>
+                                    <el-option label="使用率" value="usage"></el-option>
+                                    <el-option label="其他" value="other"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            
+                            <el-form-item label="指标描述">
+                                <el-input
+                                    v-model="metricForm.description"
+                                    type="textarea"
+                                    :rows="3"
+                                    placeholder="请输入指标描述"
+                                ></el-input>
+                            </el-form-item>
+                            
+                            <el-form-item label="计算方式" required>
+                                <el-radio-group v-model="metricForm.calculationType">
+                                    <el-radio label="count">计数统计</el-radio>
+                                    <el-radio label="average">平均值</el-radio>
+                                    <el-radio label="percentage">百分比</el-radio>
+                                    <el-radio label="sum">求和</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            
+                            <el-form-item label="数据来源" required>
+                                <el-checkbox-group v-model="metricForm.dataSources">
+                                    <el-checkbox label="interaction">交互日志</el-checkbox>
+                                    <el-checkbox label="status">机器人状态</el-checkbox>
+                                    <el-checkbox label="feedback">用户反馈</el-checkbox>
+                                    <el-checkbox label="task">任务记录</el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
+                            
+                            <el-form-item label="更新频率" required>
+                                <el-select v-model="metricForm.updateFrequency" style="width: 200px;">
+                                    <el-option label="实时更新" value="realtime"></el-option>
+                                    <el-option label="每小时" value="hourly"></el-option>
+                                    <el-option label="每天" value="daily"></el-option>
+                                    <el-option label="每周" value="weekly"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            
+                            <el-form-item label="图表类型" required>
+                                <el-select v-model="metricForm.chartType" style="width: 200px;">
+                                    <el-option label="柱状图" value="bar"></el-option>
+                                    <el-option label="折线图" value="line"></el-option>
+                                    <el-option label="饼图" value="pie"></el-option>
+                                    <el-option label="环形图" value="ring"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            
+                            <el-form-item label="阈值告警">
+                                <el-switch v-model="metricForm.enableAlert"></el-switch>
+                                <div v-if="metricForm.enableAlert" style="margin-top: 10px;">
+                                    <el-input-number v-model="metricForm.alertThreshold" :min="0" :step="0.1" style="width: 150px;"></el-input-number>
+                                    <span style="margin-left: 10px; color: #999;">超过此值触发告警</span>
+                                </div>
+                            </el-form-item>
+                            
+                            <el-form-item label="指标标签">
+                                <el-tag
+                                    v-for="tag in metricForm.tags"
+                                    :key="tag"
+                                    closable
+                                    @close="removeMetricTag(tag)"
+                                >
+                                    {{ tag }}
+                                </el-tag>
+                                <el-input
+                                    v-if="tagInputVisible"
+                                    ref="tagInputRef"
+                                    v-model="tagInputValue"
+                                    size="small"
+                                    @keyup.enter="addMetricTag"
+                                    @blur="addMetricTag"
+                                ></el-input>
+                                <el-button v-else size="small" @click="showTagInput">+ 添加标签</el-button>
+                            </el-form-item>
+                        </el-form>
+                        
+                        <template #footer>
+                            <span class="dialog-footer">
+                                <el-button @click="metricDialogVisible = false">取消</el-button>
+                                <el-button type="primary" @click="saveMetric">
+                                    {{ isEditingMetric ? '保存修改' : '创建指标' }}
+                                </el-button>
+                            </span>
+                        </template>
+                    </el-dialog>
                 </div>
 
                 <div v-if="currentTab === 'ai'" class="data-ai">
@@ -1318,31 +2865,6 @@
                 
                 // 当前 Tab（根据 URL hash 决定）
                 const currentTab = ref('dashboard');
-                
-                // 数据清洗规则配置
-                const cleaningRules = ref({
-                    fieldValidation: 'mark',
-                    timeFormat: 'iso8601',
-                    statusMapping: 'enum',
-                    outlierFilter: 'mark',
-                    textCleaning: 'html'
-                });
-                
-                // 数据源配置
-                // 在setup()函数中添加
-                const dataSources = ref({
-                    interactionLogs: true,
-                    robotStatus: true,
-                    userFeedback: true,
-                    taskExecution: false,
-                    performance: true,
-                    errorLogs: false
-                });
-                
-                // 计算已选择的数据源数量
-                const selectedDataSourcesCount = computed(() => {
-                    return Object.values(dataSources.value).filter(Boolean).length;
-                });
                 
                 // 刷新记录方法
                 const refreshRecords = () => {
@@ -1380,18 +2902,306 @@
                     // 阻止默认的页面刷新行为，改为客户端路由
                     // 注意：这里我们不阻止默认行为，而是让 hash 变化触发 updateFromHash
                 };
+    
+                 //数据清洗规则配置   
+                const cleaningRules = ref({
+                    fieldValidation: 'mark',
+                    timeFormat: 'iso8601',
+                    statusMapping: 'enum',
+                    outlierFilter: 'mark',
+                    textCleaning: 'html',
+                    duplicateHandling: 'keep_first',
+                    executionType: 'schedule',
+                    scheduleFrequency: 'daily',
+                    scheduleTime: '02:00',
+                    scheduleDay: '1'
+                });
+                
+                const dataSources = ref({
+                    interactionLogs: true,
+                    robotStatus: true,
+                    userFeedback: true,
+                    taskExecution: false,
+                    performance: true,
+                    errorLogs: false
+                });
+                
+                // 计算已选择的数据源数量
+                const selectedDataSourcesCount = computed(() => {
+                    return Object.values(dataSources.value).filter(Boolean).length;
+                });
                 
                 // 保存清洗规则
                 const saveCleaningRules = () => {
                     ElMessage.success('数据清洗规则已保存');
-                    console.log('保存的规则:', cleaningRules.value);
-                    console.log('数据源配置:', dataSources.value);
                 };
                 
                 // 测试清洗规则
                 const testCleaningRules = () => {
                     ElMessage.info('测试规则功能正在执行...');
-                    // 这里可以添加测试规则的逻辑
+                };
+                
+                // 立即执行清洗
+                const executeCleaningNow = () => {
+                    ElMessage.info('正在执行数据清洗...');
+                };
+
+
+                //数据仪表盘部分
+                // 在setup()函数中添加
+                const dashboardTimeRange = ref('today');
+                const feedbackType = ref('all');
+                
+                // 机器人统计数据
+                const robotStats = ref({
+                    total: 156,
+                    online: 117,
+                    offline: 15,
+                    busy: 24,
+                    byGroup: {
+                        customerService: 45,
+                        operations: 32,
+                        quality: 40
+                    },
+                    totalByGroup: {
+                        customerService: 50,
+                        operations: 40,
+                        quality: 50
+                    }
+                });
+                
+                // 异常统计数据
+                const exceptionStats = ref({
+                    today: 23,
+                    week: 156,
+                    trendChange: 12,
+                    trend: [
+                        { day: '周一', count: 18 },
+                        { day: '周二', count: 22 },
+                        { day: '周三', count: 25 },
+                        { day: '周四', count: 20 },
+                        { day: '周五', count: 23 },
+                        { day: '周六', count: 15 },
+                        { day: '周日', count: 12 }
+                    ]
+                });
+                
+                // 反馈统计数据
+                const feedbackStats = ref({
+                    today: 42,
+                    total: 1256,
+                    satisfaction: 87
+                });
+                
+                // 任务统计数据
+                const taskStats = ref({
+                    completed: 1245
+                });
+                
+                // 最近上线机器人
+                const recentOnlineRobots = ref([
+                    { id: 1, name: '客服机器人-01', time: '10:25' },
+                    { id: 2, name: '运维机器人-03', time: '09:45' },
+                    { id: 3, name: '质检机器人-07', time: '09:20' },
+                    { id: 4, name: '客服机器人-12', time: '08:55' }
+                ]);
+                
+                // 词云数据
+                const wordCloud = ref([
+                    { text: '响应快', size: 24, color: '#1890ff' },
+                    { text: '准确', size: 22, color: '#52c41a' },
+                    { text: '专业', size: 20, color: '#1890ff' },
+                    { text: '耐心', size: 18, color: '#52c41a' },
+                    { text: '效率高', size: 22, color: '#1890ff' },
+                    { text: '服务好', size: 24, color: '#52c41a' },
+                    { text: '智能', size: 20, color: '#1890ff' },
+                    { text: '有时延迟', size: 16, color: '#fa8c16' },
+                    { text: '偶尔错误', size: 14, color: '#f5222d' }
+                ]);
+                
+                // 刷新仪表盘
+                const refreshDashboard = () => {
+                    ElMessage.info('正在刷新仪表盘数据...');
+                };
+
+                //指标分析页面
+                // 在setup()函数中添加
+                const metricSearch = ref('');
+                const metricCategory = ref('');
+                const metricDialogVisible = ref(false);
+                const isEditingMetric = ref(false);
+                const tagInputVisible = ref(false);
+                const tagInputValue = ref('');
+                const currentMetricId = ref('');
+                
+                // 响应时间数据
+                const responseTimeData = ref([
+                    { day: '周一', value: 2.5 },
+                    { day: '周二', value: 2.3 },
+                    { day: '周三', value: 2.4 },
+                    { day: '周四', value: 2.2 },
+                    { day: '周五', value: 2.3 },
+                    { day: '周六', value: 2.1 },
+                    { day: '周日', value: 2.0 }
+                ]);
+                
+                // 指标表单
+                const metricForm = ref({
+                    name: '',
+                    category: '',
+                    description: '',
+                    calculationType: 'average',
+                    dataSources: [],
+                    updateFrequency: 'daily',
+                    chartType: 'bar',
+                    enableAlert: false,
+                    alertThreshold: 0,
+                    tags: []
+                });
+                
+                // 显示创建指标对话框
+                const showCreateMetricDialog = () => {
+                    isEditingMetric.value = false;
+                    resetMetricForm();
+                    metricDialogVisible.value = true;
+                };
+                
+                // 处理指标操作
+                const handleMetricCommand = (metricId, command) => {
+                    switch (command) {
+                        case 'edit':
+                            editMetric(metricId);
+                            break;
+                        case 'configure':
+                            configureMetric(metricId);
+                            break;
+                        case 'disable':
+                            disableMetric(metricId);
+                            break;
+                        case 'delete':
+                            deleteMetric(metricId);
+                            break;
+                        case 'export':
+                            exportMetricData(metricId);
+                            break;
+                    }
+                };
+                
+                // 编辑指标
+                const editMetric = (metricId) => {
+                    isEditingMetric.value = true;
+                    currentMetricId.value = metricId;
+                    
+                    // 模拟加载指标数据
+                    if (metricId === 'satisfaction') {
+                        metricForm.value = {
+                            name: '用户满意度分布',
+                            category: 'satisfaction',
+                            description: '统计用户对机器人服务的满意度评分分布情况',
+                            calculationType: 'percentage',
+                            dataSources: ['feedback'],
+                            updateFrequency: 'daily',
+                            chartType: 'pie',
+                            enableAlert: true,
+                            alertThreshold: 3.5,
+                            tags: ['满意度', '用户反馈']
+                        };
+                    } else if (metricId === 'response') {
+                        metricForm.value = {
+                            name: '平均响应时间',
+                            category: 'response',
+                            description: '监控机器人从接收请求到给出响应的平均时间',
+                            calculationType: 'average',
+                            dataSources: ['interaction', 'task'],
+                            updateFrequency: 'realtime',
+                            chartType: 'line',
+                            enableAlert: true,
+                            alertThreshold: 3.0,
+                            tags: ['性能指标', '实时监控']
+                        };
+                    }
+                    
+                    metricDialogVisible.value = true;
+                };
+                
+                // 配置指标
+                const configureMetric = (metricId) => {
+                    ElMessage.info(`开始配置指标: ${metricId}`);
+                };
+                
+                // 停用指标
+                const disableMetric = (metricId) => {
+                    ElMessage.warning(`停用指标: ${metricId}`);
+                };
+                
+                // 删除指标
+                const deleteMetric = (metricId) => {
+                    ElMessageBox.confirm(
+                        '确定要删除这个指标吗？删除后无法恢复。',
+                        '确认删除',
+                        {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning',
+                        }
+                    ).then(() => {
+                        ElMessage.success('指标已删除');
+                    });
+                };
+                
+                // 导出指标数据
+                const exportMetricData = (metricId) => {
+                    ElMessage.info(`正在导出 ${metricId} 的数据...`);
+                };
+                
+                // 保存指标
+                const saveMetric = () => {
+                    if (!metricForm.value.name) {
+                        ElMessage.warning('请填写指标名称');
+                        return;
+                    }
+                    
+                    if (isEditingMetric.value) {
+                        ElMessage.success('指标配置已更新');
+                    } else {
+                        ElMessage.success('新指标已创建');
+                    }
+                    
+                    metricDialogVisible.value = false;
+                    resetMetricForm();
+                };
+                
+                // 重置指标表单
+                const resetMetricForm = () => {
+                    metricForm.value = {
+                        name: '',
+                        category: '',
+                        description: '',
+                        calculationType: 'average',
+                        dataSources: [],
+                        updateFrequency: 'daily',
+                        chartType: 'bar',
+                        enableAlert: false,
+                        alertThreshold: 0,
+                        tags: []
+                    };
+                };
+                
+                // 标签管理
+                const showTagInput = () => {
+                    tagInputVisible.value = true;
+                };
+                
+                const addMetricTag = () => {
+                    if (tagInputValue.value) {
+                        metricForm.value.tags.push(tagInputValue.value);
+                        tagInputValue.value = '';
+                    }
+                    tagInputVisible.value = false;
+                };
+                
+                const removeMetricTag = (tag) => {
+                    metricForm.value.tags = metricForm.value.tags.filter(t => t !== tag);
                 };
                 
                 // 刷新数据
@@ -1435,5 +3245,6 @@
     </script>
 </body>
 </html>
+
 
 
