@@ -2856,7 +2856,7 @@
     <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
     <script>
         const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
-        const { ElMessage } = ElementPlus;
+        const { ElMessage, ElMessageBox } = ElementPlus;
         
         createApp({
             setup() {
@@ -2865,16 +2865,6 @@
                 
                 // 当前 Tab（根据 URL hash 决定）
                 const currentTab = ref('dashboard');
-                
-                // 刷新记录方法
-                const refreshRecords = () => {
-                    ElMessage.info('正在刷新处理记录...');
-                };
-                
-                // 查看全部记录方法
-                const showAllRecords = () => {
-                    ElMessage.info('跳转到完整记录页面...');
-                };
                 
                 // 页面标题映射
                 const titles = {
@@ -2902,8 +2892,8 @@
                     // 阻止默认的页面刷新行为，改为客户端路由
                     // 注意：这里我们不阻止默认行为，而是让 hash 变化触发 updateFromHash
                 };
-    
-                 //数据清洗规则配置   
+            
+                // ========== 数据清洗规则配置 ==========
                 const cleaningRules = ref({
                     fieldValidation: 'mark',
                     timeFormat: 'iso8601',
@@ -2945,10 +2935,8 @@
                 const executeCleaningNow = () => {
                     ElMessage.info('正在执行数据清洗...');
                 };
-
-
-                //数据仪表盘部分
-                // 在setup()函数中添加
+            
+                // ========== 数据仪表盘部分 ==========
                 const dashboardTimeRange = ref('today');
                 const feedbackType = ref('all');
                 
@@ -3023,9 +3011,54 @@
                 const refreshDashboard = () => {
                     ElMessage.info('正在刷新仪表盘数据...');
                 };
-
-                //指标分析页面
-                // 在setup()函数中添加
+                
+                // 刷新记录方法
+                const refreshRecords = () => {
+                    ElMessage.info('正在刷新处理记录...');
+                };
+                
+                // 查看全部记录方法
+                const showAllRecords = () => {
+                    ElMessage.info('跳转到完整记录页面...');
+                };
+                
+                // 计算下次执行时间
+                const calculateNextExecutionTime = () => {
+                    const now = new Date();
+                    const next = new Date();
+                    
+                    if (cleaningRules.value.scheduleFrequency === 'hourly') {
+                        next.setHours(now.getHours() + 1, 0, 0, 0);
+                    } else if (cleaningRules.value.scheduleFrequency === 'daily') {
+                        const [hours, minutes] = cleaningRules.value.scheduleTime.split(':');
+                        next.setDate(now.getDate() + 1);
+                        next.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                    } else if (cleaningRules.value.scheduleFrequency === 'weekly') {
+                        const targetDay = parseInt(cleaningRules.value.scheduleDay);
+                        const currentDay = now.getDay();
+                        const daysToAdd = (targetDay - currentDay + 7) % 7 || 7;
+                        next.setDate(now.getDate() + daysToAdd);
+                        next.setHours(2, 0, 0, 0);
+                    }
+                    
+                    return next.toLocaleString('zh-CN', {
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    });
+                };
+                
+                // 全选数据源
+                const selectAllSources = () => {
+                    const allChecked = selectedDataSourcesCount.value === Object.keys(dataSources.value).length;
+                    Object.keys(dataSources.value).forEach(key => {
+                        dataSources.value[key] = !allChecked;
+                    });
+                };
+            
+                // ========== 指标分析页面 ==========
                 const metricSearch = ref('');
                 const metricCategory = ref('');
                 const metricDialogVisible = ref(false);
@@ -3228,23 +3261,68 @@
                     window.removeEventListener('hashchange', updateFromHash);
                 });
                 
+                // 返回所有在模板中使用的变量和方法
                 return {
+                    // 基础
                     expandedMenu,
                     currentTab,
-                    cleaningRules,
-                    dataSources,
                     pageTitle,
                     toggleMenu,
                     handleSubMenuClick,
+                    refreshData,
+                    
+                    // 数据清洗规则配置
+                    cleaningRules,
+                    dataSources,
+                    selectedDataSourcesCount,
                     saveCleaningRules,
                     testCleaningRules,
-                    refreshData
+                    executeCleaningNow,
+                    calculateNextExecutionTime,
+                    selectAllSources,
+                    
+                    // 数据仪表盘
+                    dashboardTimeRange,
+                    feedbackType,
+                    robotStats,
+                    exceptionStats,
+                    feedbackStats,
+                    taskStats,
+                    recentOnlineRobots,
+                    wordCloud,
+                    refreshDashboard,
+                    refreshRecords,
+                    showAllRecords,
+                    
+                    // 指标分析
+                    metricSearch,
+                    metricCategory,
+                    metricDialogVisible,
+                    isEditingMetric,
+                    tagInputVisible,
+                    tagInputValue,
+                    currentMetricId,
+                    responseTimeData,
+                    metricForm,
+                    showCreateMetricDialog,
+                    handleMetricCommand,
+                    saveMetric,
+                    resetMetricForm,
+                    showTagInput,
+                    addMetricTag,
+                    removeMetricTag,
+                    editMetric,
+                    configureMetric,
+                    disableMetric,
+                    deleteMetric,
+                    exportMetricData
                 };
             }
         }).use(ElementPlus).mount('#app');
     </script>
 </body>
 </html>
+
 
 
 
