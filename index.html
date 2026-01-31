@@ -811,6 +811,37 @@
     <i class="fas fa-robot"></i>
     <span class="nav-text">机器人管理</span>
 </a>
+			
+		<!-- 交互应用管理 - 当前页面高亮 -->
+                <div class="nav-item-wrapper">
+                    <div 
+                        class="nav-item active-parent"
+                        :class="{ 'expanded': expandedMenu === 'appManagement' }"
+                        @click="toggleMenu('appManagement')"
+                    >
+                        <i class="fas fa-cogs"></i>
+                        <span class="nav-text">交互应用管理</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon rotated" 
+                            :class="{ 'rotated': expandedMenu === 'appManagement' }"
+                        ></i>
+                    </div>
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'appManagement'">
+                        <a href="app.html#appLibrary" class="nav-item sub-item" :class="{ active: activeNav === 'appLibrary' }">
+                            <i class="fas fa-th"></i>
+                            <span class="nav-text">应用库管理</span>
+                        </a>
+                        <a href="app.html#appConfig" class="nav-item sub-item" :class="{ active: activeNav === 'appConfig' }">
+                            <i class="fas fa-sliders-h"></i>
+                            <span class="nav-text">应用配置管理</span>
+                        </a>
+                        <a href="app.html#appUpdate" class="nav-item sub-item" :class="{ active: activeNav === 'appUpdate' }">
+                            <i class="fas fa-sync-alt"></i>
+                            <span class="nav-text">应用更新管理</span>
+                        </a>
+                    </div>
+                </div>
+
 
 <!-- 数据管理与分析 - 包含子菜单 -->
 <div class="nav-item-wrapper">
@@ -3262,3 +3293,4 @@ resetTemplateFilter,
 </body>
 
 </html>
+
