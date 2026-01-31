@@ -1719,6 +1719,593 @@
             font-size: 14px;
             width: 160px;
         }
+
+        /* AI分析页面样式 */
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .ai-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        /* 通用部分样式 */
+        .ai-section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        .section-header {
+            margin-bottom: 24px;
+        }
+        
+        .section-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-header h3 i {
+            color: var(--primary-color);
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 报告生成区域 */
+        .report-generation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        @media (max-width: 1200px) {
+            .report-generation {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .generation-form {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .form-row {
+            margin-bottom: 20px;
+        }
+        
+        .form-row label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .report-preview {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .preview-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .preview-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .preview-status.ready {
+            background-color: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+        
+        .preview-status.processing {
+            background-color: #fff7e6;
+            color: #fa8c16;
+            border: 1px solid #ffd591;
+        }
+        
+        .preview-status.empty {
+            background-color: #f0f0f0;
+            color: #595959;
+            border: 1px solid #d9d9d9;
+        }
+        
+        .preview-card {
+            padding: 16px;
+            background-color: #fafafa;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .preview-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        
+        .preview-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .preview-meta i {
+            margin-right: 4px;
+        }
+        
+        .preview-summary h5 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .preview-summary ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .preview-summary li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        
+        .preview-summary li i {
+            color: var(--primary-color);
+            margin-right: 8px;
+            font-size: 12px;
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .no-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #999;
+        }
+        
+        .no-preview i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #d9d9d9;
+        }
+        
+        .no-preview p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 历史报告列表 */
+        .historical-reports {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reports-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .reports-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .report-title-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .report-title-cell i {
+            font-size: 16px;
+        }
+        
+        /* 问题智能分类展示 */
+        .problem-classification {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .classification-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 992px) {
+            .classification-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .classification-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .overview-card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            gap: 16px;
+        }
+        
+        .overview-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .overview-content {
+            flex: 1;
+        }
+        
+        .overview-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .overview-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        /* 分类详情 */
+        .classification-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 1200px) {
+            .classification-details {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .classification-chart {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .distribution-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .pie-chart-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .pie-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        
+        .chart-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .center-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .center-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .chart-legend {
+            width: 100%;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .legend-item:last-child {
+            border-bottom: none;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 8px;
+        }
+        
+        .legend-text {
+            flex: 1;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+        
+        .legend-percentage {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .classification-list {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .list-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .category-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .category-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        
+        .category-name {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .trend-cell {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .trend-cell.up {
+            color: #52c41a;
+        }
+        
+        .trend-cell.down {
+            color: #f5222d;
+        }
+        
+        .trend-cell.stable {
+            color: #595959;
+        }
+        
+        .suggestion-cell {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* 热门问题示例 */
+        .hot-problems {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .hot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .hot-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .hot-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .problem-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .problem-examples {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .example-card {
+            padding: 16px;
+            background-color: #fafafa;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .problem-category {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .problem-frequency {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .problem-frequency i {
+            margin-right: 4px;
+        }
+        
+        .example-body {
+            margin-bottom: 12px;
+        }
+        
+        .problem-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        
+        .problem-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .problem-meta i {
+            margin-right: 4px;
+        }
+        
+        .example-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         
         /* 响应式调整 */
         @media (max-width: 1200px) {
@@ -2399,7 +2986,6 @@
                 <div v-if="currentTab === 'dashboard'" class="data-dashboard">
                     <!-- 页面标题和筛选 -->
                     <div class="dashboard-header">
-                        <div class="page-title">数据仪表盘</div>
                         <div class="dashboard-controls">
                             <div class="time-range">
                                 <el-select v-model="dashboardTimeRange" size="small" style="width: 120px;">
@@ -2435,16 +3021,6 @@
                             <div class="metric-content">
                                 <div class="metric-value">{{ robotStats.online }}</div>
                                 <div class="metric-label">在线机器人</div>
-                            </div>
-                        </div>
-                        
-                        <div class="metric-card">
-                            <div class="metric-icon" style="background-color: #fff7e6;">
-                                <i class="fas fa-exclamation-triangle" style="color: #fa8c16;"></i>
-                            </div>
-                            <div class="metric-content">
-                                <div class="metric-value">{{ robotStats.offline }}</div>
-                                <div class="metric-label">离线机器人</div>
                             </div>
                         </div>
                         
@@ -2519,6 +3095,34 @@
                                                 <div class="legend-item">
                                                     <span class="legend-color" style="background-color: #f5222d;"></span>
                                                     <span class="legend-text">离线 ({{ robotStats.offline }})</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="robot-status-details">
+                                        <div class="status-detail">
+                                            <div class="detail-label">机器人分组</div>
+                                            <div class="detail-list">
+                                                <div class="detail-item">
+                                                    <span class="item-name">示例客服组</span>
+                                                    <span class="item-value">{{ robotStats.byGroup.customerService }}/{{ robotStats.totalByGroup.customerService }}</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="item-name">示例运维组</span>
+                                                    <span class="item-value">{{ robotStats.byGroup.operations }}/{{ robotStats.totalByGroup.operations }}</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="item-name">示例质检组</span>
+                                                    <span class="item-value">{{ robotStats.byGroup.quality }}/{{ robotStats.totalByGroup.quality }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="status-detail">
+                                            <div class="detail-label">最近上线</div>
+                                            <div class="recent-list">
+                                                <div class="recent-item" v-for="robot in recentOnlineRobots" :key="robot.id">
+                                                    <span class="robot-name">{{ robot.name }}</span>
+                                                    <span class="robot-time">{{ robot.time }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -2614,7 +3218,6 @@
                 <div v-if="currentTab === 'metrics'" class="data-metrics">
                     <!-- 页面标题和操作 -->
                     <div class="metrics-header">
-                        <div class="page-title">指标分析</div>
                         <div class="metrics-actions">
                             <el-button type="primary" @click="showCreateMetricDialog">
                                 <i class="fas fa-plus"></i>
@@ -2992,11 +3595,364 @@
                     </el-dialog>
                 </div>
 
+                <!-- AI分析页面 -->
                 <div v-if="currentTab === 'ai'" class="data-ai">
-                    <!-- AI分析内容 -->
-                    <div class="empty-placeholder">
-                        <i class="fas fa-brain"></i>
-                        <p>AI分析内容开发中...</p>
+                    <!-- 页面标题和操作 -->
+                    <div class="ai-header">
+                        <div class="ai-actions">
+                            <el-button type="primary" @click="generateNewReport">
+                                <i class="fas fa-magic"></i>
+                                生成新报告
+                            </el-button>
+                            <el-button @click="refreshAIData">
+                                <i class="fas fa-sync-alt"></i>
+                                刷新数据
+                            </el-button>
+                        </div>
+                    </div>
+                
+                    <!-- 分析报告生成区域 -->
+                    <div class="ai-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-file-alt"></i> 分析报告生成</h3>
+                            <div class="section-subtitle">使用AI分析生成服务质量评估报告</div>
+                        </div>
+                        
+                        <div class="report-generation">
+                            <div class="generation-form">
+                                <div class="form-row">
+                                    <label>报告类型</label>
+                                    <el-select v-model="reportType" placeholder="选择报告类型" style="width: 300px;">
+                                        <el-option label="服务质量评估报告" value="quality"></el-option>
+                                        <el-option label="用户满意度分析报告" value="satisfaction"></el-option>
+                                        <el-option label="机器人性能分析报告" value="performance"></el-option>
+                                        <el-option label="异常趋势分析报告" value="exception"></el-option>
+                                        <el-option label="综合运营报告" value="overall"></el-option>
+                                    </el-select>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <label>时间范围</label>
+                                    <el-date-picker
+                                        v-model="reportDateRange"
+                                        type="daterange"
+                                        range-separator="至"
+                                        start-placeholder="开始日期"
+                                        end-placeholder="结束日期"
+                                        style="width: 300px;"
+                                    ></el-date-picker>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <label>分析维度</label>
+                                    <el-checkbox-group v-model="reportDimensions">
+                                        <el-checkbox label="responseTime">响应时间</el-checkbox>
+                                        <el-checkbox label="accuracy">准确率</el-checkbox>
+                                        <el-checkbox label="satisfaction">用户满意度</el-checkbox>
+                                        <el-checkbox label="exception">异常情况</el-checkbox>
+                                        <el-checkbox label="trend">趋势分析</el-checkbox>
+                                    </el-checkbox-group>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <label>报告深度</label>
+                                    <el-radio-group v-model="reportDepth">
+                                        <el-radio label="summary">摘要版</el-radio>
+                                        <el-radio label="standard">标准版</el-radio>
+                                        <el-radio label="detailed">详细版</el-radio>
+                                    </el-radio-group>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <el-button type="primary" @click="startGeneratingReport" :loading="generatingReport">
+                                        <i class="fas fa-play"></i>
+                                        开始生成报告
+                                    </el-button>
+                                    <el-button @click="resetReportForm">
+                                        <i class="fas fa-undo"></i>
+                                        重置
+                                    </el-button>
+                                </div>
+                            </div>
+                            
+                            <div class="report-preview">
+                                <div class="preview-header">
+                                    <h4>报告预览</h4>
+                                    <span class="preview-status" :class="previewStatusClass">{{ previewStatusText }}</span>
+                                </div>
+                                
+                                <div class="preview-content" v-if="activeReport">
+                                    <div class="preview-card">
+                                        <div class="preview-title">{{ activeReport.title }}</div>
+                                        <div class="preview-meta">
+                                            <span><i class="fas fa-calendar"></i> {{ activeReport.date }}</span>
+                                            <span><i class="fas fa-clock"></i> {{ activeReport.duration }}</span>
+                                            <span><i class="fas fa-file"></i> {{ activeReport.pages }} 页</span>
+                                        </div>
+                                        
+                                        <div class="preview-summary">
+                                            <h5>核心发现</h5>
+                                            <ul>
+                                                <li v-for="finding in activeReport.findings" :key="finding.id">
+                                                    <i class="fas fa-bullseye"></i> {{ finding.text }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="preview-actions">
+                                            <el-button size="small" @click="downloadReport(activeReport.id)">
+                                                <i class="fas fa-download"></i> 下载
+                                            </el-button>
+                                            <el-button size="small" @click="viewReportDetail(activeReport.id)">
+                                                <i class="fas fa-eye"></i> 查看详情
+                                            </el-button>
+                                            <el-button size="small" @click="shareReport(activeReport.id)">
+                                                <i class="fas fa-share-alt"></i> 分享
+                                            </el-button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="no-preview" v-else>
+                                    <i class="fas fa-file-import"></i>
+                                    <p>选择参数并生成报告后，将在此处显示预览</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 历史报告列表 -->
+                        <div class="historical-reports">
+                            <div class="reports-header">
+                                <h4>历史报告列表</h4>
+                                <el-input
+                                    v-model="reportSearch"
+                                    placeholder="搜索报告"
+                                    size="small"
+                                    style="width: 200px;"
+                                >
+                                    <template #prefix>
+                                        <i class="fas fa-search"></i>
+                                    </template>
+                                </el-input>
+                            </div>
+                            
+                            <div class="reports-list">
+                                <el-table :data="filteredReports" style="width: 100%">
+                                    <el-table-column prop="title" label="报告名称" width="250">
+                                        <template #default="scope">
+                                            <div class="report-title-cell">
+                                                <i class="fas fa-file-alt" :style="{color: scope.row.typeColor}"></i>
+                                                <span>{{ scope.row.title }}</span>
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="type" label="类型" width="120"></el-table-column>
+                                    <el-table-column prop="date" label="生成时间" width="180"></el-table-column>
+                                    <el-table-column prop="duration" label="分析耗时" width="100"></el-table-column>
+                                    <el-table-column label="状态" width="100">
+                                        <template #default="scope">
+                                            <el-tag :type="scope.row.status === 'completed' ? 'success' : 'warning'" size="small">
+                                                {{ scope.row.status === 'completed' ? '已完成' : '处理中' }}
+                                            </el-tag>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="操作" width="200">
+                                        <template #default="scope">
+                                            <el-button size="small" @click="viewReport(scope.row)">查看</el-button>
+                                            <el-button size="small" @click="downloadReport(scope.row.id)">下载</el-button>
+                                            <el-button size="small" type="danger" @click="deleteReport(scope.row.id)">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- 问题智能分类展示 -->
+                    <div class="ai-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-tags"></i> 问题智能分类</h3>
+                            <div class="section-subtitle">AI自动识别和分类的问题类型分布</div>
+                        </div>
+                        
+                        <div class="problem-classification">
+                            <!-- 分类概览卡片 -->
+                            <div class="classification-overview">
+                                <div class="overview-card">
+                                    <div class="overview-icon" style="background-color: #e6f7ff;">
+                                        <i class="fas fa-exclamation-circle" style="color: #1890ff;"></i>
+                                    </div>
+                                    <div class="overview-content">
+                                        <div class="overview-value">{{ classificationStats.total }}</div>
+                                        <div class="overview-label">总问题数</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="overview-icon" style="background-color: #f6ffed;">
+                                        <i class="fas fa-tags" style="color: #52c41a;"></i>
+                                    </div>
+                                    <div class="overview-content">
+                                        <div class="overview-value">{{ classificationStats.categories }}</div>
+                                        <div class="overview-label">分类数量</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="overview-icon" style="background-color: #fff7e6;">
+                                        <i class="fas fa-chart-line" style="color: #fa8c16;"></i>
+                                    </div>
+                                    <div class="overview-content">
+                                        <div class="overview-value">{{ classificationStats.trend }}%</div>
+                                        <div class="overview-label">周环比变化</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="overview-icon" style="background-color: #fff1f0;">
+                                        <i class="fas fa-clock" style="color: #f5222d;"></i>
+                                    </div>
+                                    <div class="overview-content">
+                                        <div class="overview-value">{{ classificationStats.avgResponse }}</div>
+                                        <div class="overview-label">平均处理时间</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 分类图表和列表 -->
+                            <div class="classification-details">
+                                <div class="classification-chart">
+                                    <div class="chart-header">
+                                        <h4>问题分类分布</h4>
+                                        <el-select v-model="classificationTimeRange" size="small" style="width: 120px;">
+                                            <el-option label="本周" value="week"></el-option>
+                                            <el-option label="本月" value="month"></el-option>
+                                            <el-option label="本年" value="year"></el-option>
+                                        </el-select>
+                                    </div>
+                                    
+                                    <div class="chart-content">
+                                        <div class="distribution-chart">
+                                            <!-- 饼图展示 -->
+                                            <div class="pie-chart-container">
+                                                <div class="pie-chart" :style="pieChartStyle">
+                                                    <div class="pie-segment" 
+                                                         v-for="segment in pieSegments" 
+                                                         :key="segment.id"
+                                                         :style="segment.style"
+                                                         :title="`${segment.name}: ${segment.percentage}%`">
+                                                    </div>
+                                                </div>
+                                                <div class="chart-center">
+                                                    <div class="center-value">{{ classificationStats.total }}</div>
+                                                    <div class="center-label">问题总数</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="chart-legend">
+                                                <div class="legend-item" v-for="category in problemCategories" :key="category.id">
+                                                    <span class="legend-color" :style="{backgroundColor: category.color}"></span>
+                                                    <span class="legend-text">{{ category.name }} ({{ category.count }})</span>
+                                                    <span class="legend-percentage">{{ category.percentage }}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="classification-list">
+                                    <div class="list-header">
+                                        <h4>分类详情</h4>
+                                        <el-button size="small" @click="exportClassifications">
+                                            <i class="fas fa-download"></i> 导出
+                                        </el-button>
+                                    </div>
+                                    
+                                    <div class="list-content">
+                                        <el-table :data="problemCategories" style="width: 100%" height="300">
+                                            <el-table-column label="分类" width="180">
+                                                <template #default="scope">
+                                                    <div class="category-cell">
+                                                        <span class="category-color" :style="{backgroundColor: scope.row.color}"></span>
+                                                        <span class="category-name">{{ scope.row.name }}</span>
+                                                    </div>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="count" label="问题数量" width="100">
+                                                <template #default="scope">
+                                                    <el-tag size="small">{{ scope.row.count }}</el-tag>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="percentage" label="占比" width="100">
+                                                <template #default="scope">
+                                                    {{ scope.row.percentage }}%
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column label="趋势" width="120">
+                                                <template #default="scope">
+                                                    <div class="trend-cell" :class="scope.row.trend > 0 ? 'up' : scope.row.trend < 0 ? 'down' : 'stable'">
+                                                        <i class="fas" :class="getTrendIcon(scope.row.trend)"></i>
+                                                        <span>{{ scope.row.trend > 0 ? '+' : '' }}{{ scope.row.trend }}%</span>
+                                                    </div>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column label="处理建议">
+                                                <template #default="scope">
+                                                    <div class="suggestion-cell">
+                                                        {{ scope.row.suggestion }}
+                                                    </div>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column label="操作" width="120">
+                                                <template #default="scope">
+                                                    <el-button size="small" @click="viewCategoryDetail(scope.row)">
+                                                        详情
+                                                    </el-button>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 热门问题示例 -->
+                            <div class="hot-problems">
+                                <div class="hot-header">
+                                    <h4>热门问题示例</h4>
+                                    <span class="hot-subtitle">AI识别的高频问题</span>
+                                </div>
+                                
+                                <div class="hot-content">
+                                    <div class="problem-examples">
+                                        <div class="example-card" v-for="problem in hotProblems" :key="problem.id">
+                                            <div class="example-header">
+                                                <span class="problem-category" :style="{backgroundColor: problem.color}">
+                                                    {{ problem.category }}
+                                                </span>
+                                                <span class="problem-frequency">
+                                                    <i class="fas fa-chart-bar"></i> {{ problem.frequency }}次
+                                                </span>
+                                            </div>
+                                            <div class="example-body">
+                                                <div class="problem-text">{{ problem.text }}</div>
+                                                <div class="problem-meta">
+                                                    <span><i class="fas fa-clock"></i> 最近出现: {{ problem.lastOccurred }}</span>
+                                                    <span><i class="fas fa-user"></i> 影响用户: {{ problem.affectedUsers }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="example-footer">
+                                                <el-tag size="small" :type="problem.priority === 'high' ? 'danger' : problem.priority === 'medium' ? 'warning' : ''">
+                                                    {{ problem.priority === 'high' ? '高优先级' : problem.priority === 'medium' ? '中优先级' : '低优先级' }}
+                                                </el-tag>
+                                                <el-button size="small" type="text" @click="viewProblemDetail(problem)">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                </el-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3387,6 +4343,236 @@
                 const removeMetricTag = (tag) => {
                     metricForm.value.tags = metricForm.value.tags.filter(t => t !== tag);
                 };
+
+                //ai分析
+                // 在setup()函数中添加
+                const reportType = ref('quality');
+                const reportDateRange = ref([]);
+                const reportDimensions = ref(['responseTime', 'accuracy', 'satisfaction']);
+                const reportDepth = ref('standard');
+                const generatingReport = ref(false);
+                const activeReport = ref(null);
+                const previewStatusText = ref('未生成报告');
+                const previewStatusClass = ref('empty');
+                const reportSearch = ref('');
+                
+                // 问题分类相关数据
+                const classificationTimeRange = ref('week');
+                const classificationStats = ref({
+                    total: 1245,
+                    categories: 8,
+                    trend: 12,
+                    avgResponse: '2.3小时'
+                });
+                
+                // 问题分类数据
+                const problemCategories = ref([
+                    { id: 1, name: '响应时间过长', color: '#f5222d', count: 325, percentage: 26, trend: 8, suggestion: '优化服务器配置，增加缓存机制' },
+                    { id: 2, name: '回答不准确', color: '#fa8c16', count: 280, percentage: 22, trend: -5, suggestion: '更新知识库，加强AI训练' },
+                    { id: 3, name: '服务中断', color: '#faad14', count: 195, percentage: 16, trend: 12, suggestion: '检查服务器稳定性，增加冗余' },
+                    { id: 4, name: '功能缺失', color: '#1890ff', count: 156, percentage: 12, trend: 3, suggestion: '收集用户反馈，规划新功能' },
+                    { id: 5, name: '用户体验差', color: '#52c41a', count: 125, percentage: 10, trend: -2, suggestion: '优化交互流程，改进UI设计' },
+                    { id: 6, name: '数据错误', color: '#722ed1', count: 89, percentage: 7, trend: 15, suggestion: '加强数据验证机制' },
+                    { id: 7, name: '权限问题', color: '#eb2f96', count: 56, percentage: 5, trend: 0, suggestion: '检查权限配置，优化访问控制' },
+                    { id: 8, name: '其他问题', color: '#595959', count: 19, percentage: 2, trend: -8, suggestion: '持续监控，分类处理' }
+                ]);
+                
+                // 热门问题示例
+                const hotProblems = ref([
+                    { id: 1, category: '响应时间过长', color: '#f5222d', text: '查询用户订单信息时响应时间超过5秒', frequency: 45, lastOccurred: '今天 10:30', affectedUsers: 23, priority: 'high' },
+                    { id: 2, category: '回答不准确', color: '#fa8c16', text: '无法正确识别用户关于退款政策的询问', frequency: 38, lastOccurred: '今天 09:15', affectedUsers: 19, priority: 'high' },
+                    { id: 3, category: '服务中断', color: '#faad14', text: '客服机器人服务在凌晨2点-3点间中断', frequency: 12, lastOccurred: '昨天 02:30', affectedUsers: 156, priority: 'high' },
+                    { id: 4, category: '功能缺失', color: '#1890ff', text: '无法处理用户的多语言查询请求', frequency: 25, lastOccurred: '今天 11:45', affectedUsers: 42, priority: 'medium' }
+                ]);
+                
+                // 历史报告数据
+                const historicalReports = ref([
+                    { id: 1, title: '服务质量评估报告 - 2024年1月', type: '服务质量评估报告', date: '2024-01-28 14:30', duration: '45秒', pages: 12, status: 'completed', typeColor: '#1890ff' },
+                    { id: 2, title: '用户满意度分析报告', type: '用户满意度分析报告', date: '2024-01-27 10:15', duration: '1分20秒', pages: 18, status: 'completed', typeColor: '#52c41a' },
+                    { id: 3, title: '机器人性能周报', type: '机器人性能分析报告', date: '2024-01-26 09:00', duration: '58秒', pages: 8, status: 'completed', typeColor: '#fa8c16' },
+                    { id: 4, title: '异常趋势分析报告', type: '异常趋势分析报告', date: '2024-01-25 16:45', duration: '1分30秒', pages: 15, status: 'completed', typeColor: '#f5222d' }
+                ]);
+                
+                // 计算饼图样式
+                const pieChartStyle = computed(() => {
+                    let gradientString = '';
+                    let accumulatedPercent = 0;
+                    
+                    problemCategories.value.forEach((category, index) => {
+                        const startPercent = accumulatedPercent;
+                        const endPercent = accumulatedPercent + category.percentage;
+                        
+                        if (index === 0) {
+                            gradientString += `${category.color} 0% ${endPercent}%`;
+                        } else {
+                            gradientString += `, ${category.color} ${startPercent}% ${endPercent}%`;
+                        }
+                        
+                        accumulatedPercent = endPercent;
+                    });
+                    
+                    return {
+                        background: `conic-gradient(${gradientString})`
+                    };
+                });
+                
+                // 饼图分段数据
+                const pieSegments = computed(() => {
+                    return problemCategories.value.map(category => ({
+                        id: category.id,
+                        name: category.name,
+                        percentage: category.percentage,
+                        style: { backgroundColor: category.color }
+                    }));
+                });
+                
+                // 过滤历史报告
+                const filteredReports = computed(() => {
+                    if (!reportSearch.value) {
+                        return historicalReports.value;
+                    }
+                    return historicalReports.value.filter(report => 
+                        report.title.toLowerCase().includes(reportSearch.value.toLowerCase()) ||
+                        report.type.toLowerCase().includes(reportSearch.value.toLowerCase())
+                    );
+                });
+                
+                // 生成新报告
+                const generateNewReport = () => {
+                    ElMessage.info('准备生成新报告，请填写参数');
+                };
+                
+                // 开始生成报告
+                const startGeneratingReport = () => {
+                    if (!reportDateRange.value || reportDateRange.value.length === 0) {
+                        ElMessage.warning('请选择时间范围');
+                        return;
+                    }
+                    
+                    generatingReport.value = true;
+                    previewStatusText.value = '正在生成报告...';
+                    previewStatusClass.value = 'processing';
+                    
+                    // 模拟生成报告的过程
+                    setTimeout(() => {
+                        activeReport.value = {
+                            id: Date.now(),
+                            title: `${getReportTypeText(reportType.value)} - ${formatDateRange(reportDateRange.value)}`,
+                            date: new Date().toLocaleDateString('zh-CN'),
+                            duration: '1分15秒',
+                            pages: 15,
+                            findings: [
+                                { id: 1, text: '整体服务质量评分为8.7/10，较上月提升5%' },
+                                { id: 2, text: '平均响应时间为2.3秒，达到优秀水平' },
+                                { id: 3, text: '用户满意度为92%，较上月提升3个百分点' },
+                                { id: 4, text: '发现3个主要问题类型需要重点关注' }
+                            ]
+                        };
+                        
+                        generatingReport.value = false;
+                        previewStatusText.value = '报告已生成';
+                        previewStatusClass.value = 'ready';
+                        
+                        ElMessage.success('报告生成完成！');
+                    }, 2000);
+                };
+                
+                // 重置报告表单
+                const resetReportForm = () => {
+                    reportType.value = 'quality';
+                    reportDateRange.value = [];
+                    reportDimensions.value = ['responseTime', 'accuracy', 'satisfaction'];
+                    reportDepth.value = 'standard';
+                    activeReport.value = null;
+                    previewStatusText.value = '未生成报告';
+                    previewStatusClass.value = 'empty';
+                };
+                
+                // 获取报告类型文本
+                const getReportTypeText = (type) => {
+                    const types = {
+                        quality: '服务质量评估报告',
+                        satisfaction: '用户满意度分析报告',
+                        performance: '机器人性能分析报告',
+                        exception: '异常趋势分析报告',
+                        overall: '综合运营报告'
+                    };
+                    return types[type] || '报告';
+                };
+                
+                // 格式化日期范围
+                const formatDateRange = (range) => {
+                    if (!range || range.length !== 2) return '';
+                    const start = new Date(range[0]).toLocaleDateString('zh-CN');
+                    const end = new Date(range[1]).toLocaleDateString('zh-CN');
+                    return `${start} 至 ${end}`;
+                };
+                
+                // 下载报告
+                const downloadReport = (reportId) => {
+                    ElMessage.info(`正在下载报告 ${reportId}`);
+                };
+                
+                // 查看报告详情
+                const viewReportDetail = (reportId) => {
+                    ElMessage.info(`查看报告详情 ${reportId}`);
+                };
+                
+                // 查看报告
+                const viewReport = (report) => {
+                    activeReport.value = report;
+                    previewStatusText.value = '报告已加载';
+                    previewStatusClass.value = 'ready';
+                    ElMessage.info(`查看报告: ${report.title}`);
+                };
+                
+                // 分享报告
+                const shareReport = (reportId) => {
+                    ElMessage.info(`分享报告 ${reportId}`);
+                };
+                
+                // 删除报告
+                const deleteReport = (reportId) => {
+                    ElMessageBox.confirm(
+                        '确定要删除这个报告吗？删除后无法恢复。',
+                        '确认删除',
+                        {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning',
+                        }
+                    ).then(() => {
+                        historicalReports.value = historicalReports.value.filter(report => report.id !== reportId);
+                        ElMessage.success('报告已删除');
+                    });
+                };
+                
+                // 刷新AI数据
+                const refreshAIData = () => {
+                    ElMessage.success('AI分析数据已刷新');
+                };
+                
+                // 导出分类数据
+                const exportClassifications = () => {
+                    ElMessage.info('正在导出问题分类数据...');
+                };
+                
+                // 获取趋势图标
+                const getTrendIcon = (trend) => {
+                    if (trend > 0) return 'fa-arrow-up';
+                    if (trend < 0) return 'fa-arrow-down';
+                    return 'fa-minus';
+                };
+                
+                // 查看分类详情
+                const viewCategoryDetail = (category) => {
+                    ElMessage.info(`查看分类详情: ${category.name}`);
+                };
+                
+                // 查看问题详情
+                const viewProblemDetail = (problem) => {
+                    ElMessage.info(`查看问题详情: ${problem.text}`);
+                };
                 
                 // 刷新数据
                 const refreshData = () => {
@@ -3466,13 +4652,55 @@
                     configureMetric,
                     disableMetric,
                     deleteMetric,
-                    exportMetricData
+                    exportMetricData,
+                    
+                    // AI分析（新增）
+                    // 报告生成相关
+                    reportType,
+                    reportDateRange,
+                    reportDimensions,
+                    reportDepth,
+                    generatingReport,
+                    activeReport,
+                    previewStatusText,
+                    previewStatusClass,
+                    reportSearch,
+                    historicalReports,
+                    
+                    // 问题分类相关
+                    classificationTimeRange,
+                    classificationStats,
+                    problemCategories,
+                    hotProblems,
+                    
+                    // 计算属性
+                    pieChartStyle,
+                    pieSegments,
+                    filteredReports,
+                    
+                    // AI分析方法
+                    generateNewReport,
+                    startGeneratingReport,
+                    resetReportForm,
+                    getReportTypeText,
+                    formatDateRange,
+                    downloadReport,
+                    viewReportDetail,
+                    viewReport,
+                    shareReport,
+                    deleteReport,
+                    refreshAIData,
+                    exportClassifications,
+                    getTrendIcon,
+                    viewCategoryDetail,
+                    viewProblemDetail
                 };
             }
         }).use(ElementPlus).mount('#app');
     </script>
 </body>
 </html>
+
 
 
 
