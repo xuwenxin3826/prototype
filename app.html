@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互应用管理 - 机器人管理平台</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1890ff;
+            --primary-light: #e6f7ff;
+            --success-color: #52c41a;
+            --warning-color: #faad14;
+            --error-color: #f5222d;
+            --info-color: #1890ff;
+            --bg-color: #f0f2f5;
+            --sidebar-bg: #001529;
+            --header-bg: #fff;
+            --card-bg: #fff;
+            --text-primary: #000000e0;
+            --text-secondary: #000000a6;
+            --border-color: #f0f0f0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 256px;
+            background-color: var(--sidebar-bg);
+            color: rgba(255, 255, 255, 0.85);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item-wrapper {
+            margin-bottom: 4px;
+        }
+
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-item.active-parent {
+            background-color: rgba(24, 144, 255, 0.2);
+            color: white;
+            border-right: 3px solid var(--primary-color);
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            font-size: 12px;
+            transition: transform 0.3s;
+            opacity: 0.7;
+        }
+
+        .arrow-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .sub-nav-menu {
+            background-color: rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-item.sub-item {
+            padding: 10px 24px 10px 48px;
+            font-size: 13px;
+            border-left: 2px solid transparent;
+            margin-left: 0;
+        }
+
+        .nav-item.sub-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-item.sub-item.active {
+            background-color: rgba(24, 144, 255, 0.25);
+            color: #fff;
+            border-left-color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-item.sub-item i {
+            font-size: 14px;
+            width: 18px;
+            margin-right: 8px;
+        }
+        
+        /* 主内容区样式 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            height: 64px;
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+        /* 筛选栏样式 */
+        .filter-bar {
+            background-color: #fafafa;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        /* 状态标签样式 */
+        .status-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-enabled {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .status-disabled {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+        }
+
+        /* 应用类型标签样式 */
+        .app-type-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .type-interactive {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .type-control {
+            background-color: #f0fff4;
+            color: #36cfc9;
+        }
+        
+        .type-monitor {
+            background-color: #f9f9f9;
+            color: #8c8c8c;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo-text, .nav-text, .arrow-icon {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 16px 0;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .sub-nav-menu {
+                display: none !important;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* 子模块切换标签样式 */
+        .module-tabs {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e4e7ed;
+        }
+        
+        .module-tab {
+            display: inline-block;
+            padding: 8px 20px;
+            margin-bottom: -1px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .module-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .module-tab:hover {
+            color: var(--primary-color);
+        }
+
+        /* 空状态样式 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #ccc;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* 配置项样式 */
+        .config-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .config-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .config-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .config-desc {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        /* 更新管理样式 */
+        .update-panel {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+        .update-panel .left-panel {
+            flex: 1;
+        }
+        .update-panel .right-panel {
+            flex: 1;
+        }
+        .robot-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e4e7ed;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .update-status-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-pending {
+            background-color: #fff7e6;
+            color: #faad14;
+        }
+        .status-success {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        .status-failed {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+        }
+        .status-processing {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span class="logo-text">机器人管理平台</span>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <!-- 任务管理折叠菜单 -->
+                <div class="nav-item-wrapper">
+                    <div 
+                        class="nav-item" 
+                        :class="{ 
+                            'active-parent': isTaskManagementActive,
+                            'expanded': expandedMenu === 'taskManagement'
+                        }"
+                        @click="toggleMenu('taskManagement')"
+                    >
+                        <i class="fas fa-tasks"></i>
+                        <span class="nav-text">任务管理</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon" 
+                            :class="{ 'rotated': expandedMenu === 'taskManagement' }"
+                        ></i>
+                    </div>
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
+                        <a href="index.html#templates" class="nav-item sub-item" :class="{ active: activeNav === 'templates' }">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span class="nav-text">模板管理</span>
+                        </a>
+                        <a href="index.html#tasks" class="nav-item sub-item" :class="{ active: activeNav === 'tasks' }">
+                            <i class="fas fa-list-ul"></i>
+                            <span class="nav-text">任务列表</span>
+                        </a>
+                        <a href="index.html#scheduling" class="nav-item sub-item" :class="{ active: activeNav === 'scheduling' }">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="nav-text">任务调度</span>
+                        </a>
+                        <a href="index.html#monitoring" class="nav-item sub-item" :class="{ active: activeNav === 'monitoring' }">
+                            <i class="fas fa-eye"></i>
+                            <span class="nav-text">任务监控</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 机器人管理 -->
+                <a href="robots.html" class="nav-item" :class="{ active: activeNav === 'robots' }">
+                    <i class="fas fa-robot"></i>
+                    <span class="nav-text">机器人管理</span>
+                </a>
+
+                <!-- 交互应用管理 - 当前页面高亮 -->
+                <div class="nav-item-wrapper">
+                    <div 
+                        class="nav-item active-parent"
+                        :class="{ 'expanded': expandedMenu === 'appManagement' }"
+                        @click="toggleMenu('appManagement')"
+                    >
+                        <i class="fas fa-cogs"></i>
+                        <span class="nav-text">交互应用管理</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon rotated" 
+                            :class="{ 'rotated': expandedMenu === 'appManagement' }"
+                        ></i>
+                    </div>
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'appManagement'">
+                        <a href="app.html#appLibrary" class="nav-item sub-item" :class="{ active: activeNav === 'appLibrary' }">
+                            <i class="fas fa-th"></i>
+                            <span class="nav-text">应用库管理</span>
+                        </a>
+                        <a href="app.html#appConfig" class="nav-item sub-item" :class="{ active: activeNav === 'appConfig' }">
+                            <i class="fas fa-sliders-h"></i>
+                            <span class="nav-text">应用配置管理</span>
+                        </a>
+                        <a href="app.html#appUpdate" class="nav-item sub-item" :class="{ active: activeNav === 'appUpdate' }">
+                            <i class="fas fa-sync-alt"></i>
+                            <span class="nav-text">应用更新管理</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 数据管理与分析 -->
+                <div class="nav-item-wrapper">
+                    <div 
+                        class="nav-item" 
+                        :class="{ 
+                            'active-parent': isDataAnalysisActive,
+                            'expanded': expandedMenu === 'dataAnalysis'
+                        }"
+                        @click="toggleMenu('dataAnalysis')"
+                    >
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-text">数据管理与分析</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon" 
+                            :class="{ 'rotated': expandedMenu === 'dataAnalysis' }"
+                        ></i>
+                    </div>
+                    
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
+                        <a href="data.html#tools" class="nav-item sub-item">
+                            <i class="fas fa-database"></i>
+                            <span class="nav-text">数据管理工具</span>
+                        </a>
+                        <a href="data.html" class="nav-item sub-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="nav-text">数据仪表盘</span>
+                        </a>
+                        <a href="data.html#metrics" class="nav-item sub-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="nav-text">指标分析</span>
+                        </a>
+                        <a href="data.html#ai" class="nav-item sub-item">
+                            <i class="fas fa-brain"></i>
+                            <span class="nav-text">AI分析</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <span class="header-title">交互应用管理</span>
+                </div>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <span>管理员</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-wrapper">
+                <!-- 子模块切换标签 -->
+                <div class="module-tabs">
+                    <div 
+                        class="module-tab" 
+                        :class="{ active: activeModule === 'appLibrary' }"
+                        @click="switchModule('appLibrary')"
+                    >
+                        应用库管理
+                    </div>
+                    <div 
+                        class="module-tab" 
+                        :class="{ active: activeModule === 'appConfig' }"
+                        @click="switchModule('appConfig')"
+                    >
+                        应用配置管理
+                    </div>
+                    <div 
+                        class="module-tab" 
+                        :class="{ active: activeModule === 'appUpdate' }"
+                        @click="switchModule('appUpdate')"
+                    >
+                        应用更新管理
+                    </div>
+                </div>
+                
+                <!-- 应用库管理模块 -->
+                <div v-if="activeModule === 'appLibrary'">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">应用库列表</div>
+                            <el-button type="primary" @click="showAddApp">
+                                <i class="fas fa-plus"></i> 新增应用
+                            </el-button>
+                        </div>
+                        
+                        <!-- 筛选栏 -->
+                        <div class="filter-bar">
+                            <div class="filter-item">
+                                <span class="filter-label">应用类型：</span>
+                                <el-select 
+                                    v-model="appFilter.type" 
+                                    placeholder="全部类型" 
+                                    clearable 
+                                    style="width: 160px"
+                                    @change="handleFilterChange"
+                                >
+                                    <el-option label="交互类" value="interactive"></el-option>
+                                    <el-option label="控制类" value="control"></el-option>
+                                    <el-option label="监控类" value="monitor"></el-option>
+                                </el-select>
+                            </div>
+                            
+                            <div class="filter-item">
+                                <span class="filter-label">启用状态：</span>
+                                <el-select 
+                                    v-model="appFilter.status" 
+                                    placeholder="全部状态" 
+                                    clearable 
+                                    style="width: 140px"
+                                    @change="handleFilterChange"
+                                >
+                                    <el-option label="已启用" value="enabled"></el-option>
+                                    <el-option label="已禁用" value="disabled"></el-option>
+                                </el-select>
+                            </div>
+                            
+                            <div class="filter-item">
+                                <span class="filter-label">搜索：</span>
+                                <el-input 
+                                    v-model="appFilter.keyword" 
+                                    placeholder="请输入应用ID/应用名称" 
+                                    style="width: 200px"
+                                    clearable
+                                    @input="handleFilterChange"
+                                ></el-input>
+                            </div>
+                            
+                            <div class="filter-item" style="margin-left: auto;">
+                                <el-button @click="resetAppFilter" type="default">
+                                    <i class="fas fa-undo" style="margin-right: 6px;"></i>重置筛选
+                                </el-button>
+                                <span style="margin-left: 12px; color: #999; font-size: 14px;">
+                                    共 {{ filteredApps.length }} 个应用
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <el-table :data="filteredApps" style="width: 100%" v-loading="loading">
+                                <el-table-column prop="appId" label="应用ID" width="180"></el-table-column>
+                                <el-table-column prop="name" label="应用名称" width="180"></el-table-column>
+                                <el-table-column prop="type" label="应用类型" width="120">
+                                    <template #default="scope">
+                                        <span :class="[
+                                            scope.row.type === 'interactive' ? 'app-type-tag type-interactive' :
+                                            scope.row.type === 'control' ? 'app-type-tag type-control' :
+                                            'app-type-tag type-monitor'
+                                        ]">
+                                            {{ 
+                                                scope.row.type === 'interactive' ? '交互类' : 
+                                                scope.row.type === 'control' ? '控制类' : '监控类' 
+                                            }}
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="createTime" label="创建时间" width="200">
+                                    <template #default="scope">
+                                        <span style="font-size: 12px;">{{ scope.row.createTime }}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="是否启用" width="140">
+                                    <template #default="scope">
+                                        <el-switch 
+                                            v-model="scope.row.enabled" 
+                                            active-text="启用" 
+                                            inactive-text="禁用"
+                                            @change="handleStatusChange(scope.row)"
+                                        ></el-switch>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="操作" width="180" fixed="right">
+                                    <template #default="scope">
+                                        <el-button size="small" @click="editApp(scope.row)">编辑</el-button>
+                                        <el-button size="small" type="danger" @click="deleteApp(scope.row)">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            
+                            <!-- 空状态提示 -->
+                            <div v-if="filteredApps.length === 0" class="empty-state">
+                                <i class="fas fa-app-store-ios"></i>
+                                <p>暂无符合条件的应用</p>
+                                <el-button type="primary" @click="showAddApp">创建第一个应用</el-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 应用配置管理模块（完善版） -->
+                <div v-if="activeModule === 'appConfig'">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">应用配置管理</div>
+                            <el-button type="primary" @click="sendConfig">
+                                <i class="fas fa-send"></i> 下发配置
+                            </el-button>
+                        </div>
+                        
+                        <!-- 筛选栏 -->
+                        <div class="filter-bar">
+                            <div class="filter-item">
+                                <span class="filter-label">选择应用：</span>
+                                <el-select 
+                                    v-model="selectedAppId" 
+                                    placeholder="请选择要配置的应用" 
+                                    style="width: 200px"
+                                    clearable
+                                >
+                                    <el-option 
+                                        v-for="app in apps" 
+                                        :key="app.id" 
+                                        :label="app.name" 
+                                        :value="app.appId"
+                                    ></el-option>
+                                </el-select>
+                            </div>
+                            <div class="filter-item">
+                                <span class="filter-label">搜索配置项：</span>
+                                <el-input 
+                                    v-model="configFilter" 
+                                    placeholder="请输入配置项名称" 
+                                    style="width: 200px"
+                                    clearable
+                                ></el-input>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <!-- 未选择应用提示 -->
+                            <div v-if="!selectedAppId" class="empty-state">
+                                <i class="fas fa-sliders-h"></i>
+                                <p>请先选择要配置的应用</p>
+                            </div>
+                            
+                            <!-- 应用配置项展示 -->
+                            <div v-else>
+                                <div class="config-item">
+                                    <div class="config-label">基础配置</div>
+                                    <div class="config-desc">应用运行的基础参数配置</div>
+                                    <el-form :model="appConfig.basic" label-width="120px">
+                                        <el-form-item label="运行模式">
+                                            <el-select v-model="appConfig.basic.runMode" style="width: 200px">
+                                                <el-option label="调试模式" value="debug"></el-option>
+                                                <el-option label="生产模式" value="prod"></el-option>
+                                                <el-option label="测试模式" value="test"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                        <el-form-item label="超时时间(秒)">
+                                            <el-input-number v-model="appConfig.basic.timeout" :min="1" :max="300" style="width: 200px"></el-input-number>
+                                        </el-form-item>
+                                        <el-form-item label="自动重连">
+                                            <el-switch v-model="appConfig.basic.autoReconnect" active-text="开启" inactive-text="关闭"></el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                </div>
+                                
+                                <div class="config-item">
+                                    <div class="config-label">网络配置</div>
+                                    <div class="config-desc">应用网络相关参数配置</div>
+                                    <el-form :model="appConfig.network" label-width="120px">
+                                        <el-form-item label="服务地址">
+                                            <el-input v-model="appConfig.network.serverUrl" placeholder="如：http://192.168.1.100:8080"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="心跳间隔(秒)">
+                                            <el-input-number v-model="appConfig.network.heartbeatInterval" :min="5" :max="60" style="width: 200px"></el-input-number>
+                                        </el-form-item>
+                                        <el-form-item label="数据加密">
+                                            <el-switch v-model="appConfig.network.encryptData" active-text="开启" inactive-text="关闭"></el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                </div>
+                                
+                                <div class="config-item">
+                                    <div class="config-label">日志配置</div>
+                                    <div class="config-desc">应用日志输出相关配置</div>
+                                    <el-form :model="appConfig.log" label-width="120px">
+                                        <el-form-item label="日志级别">
+                                            <el-select v-model="appConfig.log.level" style="width: 200px">
+                                                <el-option label="ERROR" value="error"></el-option>
+                                                <el-option label="WARN" value="warn"></el-option>
+                                                <el-option label="INFO" value="info"></el-option>
+                                                <el-option label="DEBUG" value="debug"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                        <el-form-item label="日志保存天数">
+                                            <el-input-number v-model="appConfig.log.saveDays" :min="1" :max="30" style="width: 200px"></el-input-number>
+                                        </el-form-item>
+                                        <el-form-item label="控制台输出">
+                                            <el-switch v-model="appConfig.log.consoleOutput" active-text="开启" inactive-text="关闭"></el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 应用更新管理模块（完善版） -->
+                <div v-if="activeModule === 'appUpdate'">
+                    <!-- 应用更新操作面板 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">应用更新操作</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="update-panel">
+                                <div class="left-panel">
+                                    <div class="filter-item mb-4">
+                                        <span class="filter-label">选择应用：</span>
+                                        <el-select 
+                                            v-model="updateForm.appId" 
+                                            placeholder="请选择要更新的应用" 
+                                            style="width: 200px"
+                                            clearable
+                                            @change="loadRobotList"
+                                        >
+                                            <el-option 
+                                                v-for="app in apps" 
+                                                :key="app.id" 
+                                                :label="app.name" 
+                                                :value="app.appId"
+                                            ></el-option>
+                                        </el-select>
+                                    </div>
+                                    
+                                    <div class="filter-item mb-4">
+                                        <span class="filter-label">更新版本：</span>
+                                        <el-select v-model="updateForm.version" style="width: 200px" disabled>
+                                            <el-option label="v2.1.0 (最新)" value="v2.1.0"></el-option>
+                                            <el-option label="v2.0.1" value="v2.0.1"></el-option>
+                                            <el-option label="v2.0.0" value="v2.0.0"></el-option>
+                                        </el-select>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="config-label mb-2">选择机器人</div>
+                                        <div class="robot-list">
+                                            <el-checkbox-group v-model="updateForm.selectedRobots">
+                                                <el-checkbox 
+                                                    v-for="robot in robotList" 
+                                                    :key="robot.robotId" 
+                                                    :label="robot.robotId"
+                                                    style="display: block; margin-bottom: 8px;"
+                                                >
+                                                    {{ robot.name }} ({{ robot.robotId }}) - {{ robot.status }}
+                                                </el-checkbox>
+                                            </el-checkbox-group>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 16px;">
+                                        <el-button type="primary" @click="createUpdateTask" :disabled="!updateForm.appId || updateForm.selectedRobots.length === 0">
+                                            <i class="fas fa-play"></i> 发起更新任务
+                                        </el-button>
+                                        <el-button type="default" @click="clearUpdateForm" style="margin-left: 8px;">
+                                            <i class="fas fa-undo"></i> 清空选择
+                                        </el-button>
+                                    </div>
+                                </div>
+                                
+                                <div class="right-panel">
+                                    <div class="config-label mb-2">更新说明</div>
+                                    <el-input 
+                                        v-model="updateForm.desc" 
+                                        type="textarea" 
+                                        :rows="10" 
+                                        placeholder="请输入更新说明（选填）"
+                                        style="width: 100%; margin-bottom: 16px;"
+                                    ></el-input>
+                                    
+                                    <div class="config-label">更新注意事项</div>
+                                    <div style="font-size: 12px; color: #999; line-height: 1.6; margin-top: 8px;">
+                                        <p>1. 更新过程中机器人将暂时停止服务，请避开业务高峰期操作</p>
+                                        <p>2. 建议先选择少量机器人测试更新，确认无误后再批量更新</p>
+                                        <p>3. 更新完成后请验证应用功能是否正常</p>
+                                        <p>4. 如更新失败可在更新任务列表中查看失败原因并重试</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 更新任务列表 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">更新任务列表</div>
+                            <el-button type="default" @click="refreshUpdateTasks">
+                                <i class="fas fa-sync"></i> 刷新
+                            </el-button>
+                        </div>
+                        
+                        <div class="filter-bar">
+                            <div class="filter-item">
+                                <span class="filter-label">任务状态：</span>
+                                <el-select 
+                                    v-model="taskFilter.status" 
+                                    placeholder="全部状态" 
+                                    clearable 
+                                    style="width: 140px"
+                                    @change="filterUpdateTasks"
+                                >
+                                    <el-option label="待执行" value="pending"></el-option>
+                                    <el-option label="执行中" value="processing"></el-option>
+                                    <el-option label="成功" value="success"></el-option>
+                                    <el-option label="失败" value="failed"></el-option>
+                                </el-select>
+                            </div>
+                            
+                            <div class="filter-item">
+                                <span class="filter-label">搜索：</span>
+                                <el-input 
+                                    v-model="taskFilter.keyword" 
+                                    placeholder="应用ID/机器人ID/版本号" 
+                                    style="width: 200px"
+                                    clearable
+                                    @input="filterUpdateTasks"
+                                ></el-input>
+                            </div>
+                            
+                            <div class="filter-item" style="margin-left: auto;">
+                                <span style="color: #999; font-size: 14px;">
+                                    共 {{ filteredUpdateTasks.length }} 个更新任务
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <el-table :data="filteredUpdateTasks" style="width: 100%" v-loading="taskLoading">
+                                <el-table-column prop="taskId" label="任务ID" width="180"></el-table-column>
+                                <el-table-column prop="appId" label="应用ID" width="120"></el-table-column>
+                                <el-table-column prop="appName" label="应用名称" width="150"></el-table-column>
+                                <el-table-column prop="version" label="更新版本" width="120"></el-table-column>
+                                <el-table-column prop="robotCount" label="机器人数量" width="100">
+                                    <template #default="scope">
+                                        {{ scope.row.selectedRobots.length }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="createTime" label="创建时间" width="200">
+                                    <template #default="scope">
+                                        <span style="font-size: 12px;">{{ scope.row.createTime }}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="status" label="任务状态" width="120">
+                                    <template #default="scope">
+                                        <span :class="[
+                                            scope.row.status === 'pending' ? 'update-status-tag status-pending' :
+                                            scope.row.status === 'processing' ? 'update-status-tag status-processing' :
+                                            scope.row.status === 'success' ? 'update-status-tag status-success' :
+                                            'update-status-tag status-failed'
+                                        ]">
+                                            {{ 
+                                                scope.row.status === 'pending' ? '待执行' : 
+                                                scope.row.status === 'processing' ? '执行中' :
+                                                scope.row.status === 'success' ? '成功' : '失败' 
+                                            }}
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="操作" width="200" fixed="right">
+                                    <template #default="scope">
+                                        <el-button size="small" @click="viewTaskDetail(scope.row)" type="default">查看详情</el-button>
+                                        <el-button 
+                                            size="small" 
+                                            @click="retryUpdateTask(scope.row)" 
+                                            type="primary"
+                                            v-if="scope.row.status === 'failed'"
+                                        >
+                                            重试
+                                        </el-button>
+                                        <el-button 
+                                            size="small" 
+                                            @click="cancelUpdateTask(scope.row)" 
+                                            type="danger"
+                                            v-if="scope.row.status === 'pending'"
+                                        >
+                                            取消
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            
+                            <!-- 空状态提示 -->
+                            <div v-if="filteredUpdateTasks.length === 0" class="empty-state">
+                                <i class="fas fa-history"></i>
+                                <p>暂无更新任务记录</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 添加/编辑应用对话框 -->
+                <el-dialog v-model="dialogVisible" :title="dialogTitle" width="600px" destroy-on-close>
+                    <el-form :model="appForm" label-width="100px" :rules="appRules" ref="appFormRef">
+                        <el-form-item label="应用ID" prop="appId">
+                            <el-input 
+                                v-model="appForm.appId" 
+                                placeholder="请输入应用ID（如：APP-001）"
+                                :disabled="!!appForm.id"  <!-- 编辑时应用ID不可修改 -->
+                            ></el-input>
+                        </el-form-item>
+                        <el-form-item label="应用名称" prop="name">
+                            <el-input v-model="appForm.name" placeholder="请输入应用名称"></el-input>
+                        </el-form-item>
+                        <el-form-item label="应用类型" prop="type">
+                            <el-select v-model="appForm.type" style="width: 100%" placeholder="请选择应用类型">
+                                <el-option label="交互类" value="interactive"></el-option>
+                                <el-option label="控制类" value="control"></el-option>
+                                <el-option label="监控类" value="monitor"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="是否启用" prop="enabled">
+                            <el-switch v-model="appForm.enabled" active-text="启用" inactive-text="禁用"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="应用描述">
+                            <el-input 
+                                v-model="appForm.description" 
+                                type="textarea" 
+                                :rows="3" 
+                                placeholder="请输入应用描述信息"
+                            ></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <template #footer>
+                        <span class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取消</el-button>
+                            <el-button type="primary" @click="saveApp">保存</el-button>
+                        </span>
+                    </template>
+                </el-dialog>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script>
+        const { createApp, ref, reactive, computed } = Vue;
+        const { ElMessage, ElMessageBox } = ElementPlus;
+        
+        createApp({
+            setup() {
+                // 默认展开交互应用管理菜单
+                const expandedMenu = ref('appManagement');
+                const activeNav = ref('appLibrary');
+                const loading = ref(false);
+                
+                // 当前激活的子模块
+                const activeModule = ref('appLibrary');
+                
+                // 切换子模块
+                const switchModule = (module) => {
+                    activeModule.value = module;
+                    // 更新导航激活状态
+                    activeNav.value = module;
+                };
+                
+                // 计算是否高亮任务管理父菜单
+                const isTaskManagementActive = computed(() => {
+                    return ['templates', 'tasks', 'scheduling', 'monitoring'].includes(activeNav.value);
+                });
+                
+                const isDataAnalysisActive = computed(() => {
+                    return ['data-management', 'data-dashboard', 'metrics-analysis', 'ai-analysis'].includes(activeNav.value);
+                });
+                
+                const toggleMenu = (menu) => {
+                    expandedMenu.value = expandedMenu.value === menu ? '' : menu;
+                };
+                
+                // 应用筛选条件
+                const appFilter = reactive({
+                    type: '',
+                    status: '',
+                    keyword: ''
+                });
+                
+                // 应用数据
+                const apps = ref([
+                    { 
+                        id: 1, 
+                        appId: 'APP-001', 
+                        name: '语音交互应用', 
+                        type: 'interactive', 
+                        createTime: '2026-01-10 14:30:25', 
+                        enabled: true,
+                        description: '机器人语音交互控制应用' 
+                    },
+                    { 
+                        id: 2, 
+                        appId: 'APP-002', 
+                        name: '路径控制应用', 
+                        type: 'control', 
+                        createTime: '2026-01-12 09:15:40', 
+                        enabled: true,
+                        description: '机器人路径规划与控制应用' 
+                    },
+                    { 
+                        id: 3, 
+                        appId: 'APP-003', 
+                        name: '状态监控应用', 
+                        type: 'monitor', 
+                        createTime: '2026-01-15 16:20:10', 
+                        enabled: false,
+                        description: '机器人状态实时监控应用' 
+                    },
+                    { 
+                        id: 4, 
+                        appId: 'APP-004', 
+                        name: '视频交互应用', 
+                        type: 'interactive', 
+                        createTime: '2026-01-20 11:05:30', 
+                        enabled: true,
+                        description: '机器人视频交互应用' 
+                    },
+                    { 
+                        id: 5, 
+                        appId: 'APP-005', 
+                        name: '远程控制应用', 
+                        type: 'control', 
+                        createTime: '2026-01-25 15:40:15', 
+                        enabled: false,
+                        description: '机器人远程控制应用' 
+                    }
+                ]);
+                
+                // 筛选后的应用列表
+                const filteredApps = computed(() => {
+                    let result = apps.value;
+                    
+                    // 按类型筛选
+                    if (appFilter.type !== '') {
+                        result = result.filter(app => app.type === appFilter.type);
+                    }
+                    
+                    // 按启用状态筛选
+                    if (appFilter.status !== '') {
+                        const isEnabled = appFilter.status === 'enabled';
+                        result = result.filter(app => app.enabled === isEnabled);
+                    }
+                    
+                    // 按关键词搜索（应用ID/名称）
+                    if (appFilter.keyword) {
+                        const keyword = appFilter.keyword.toLowerCase();
+                        result = result.filter(app => 
+                            app.appId.toLowerCase().includes(keyword) || 
+                            app.name.toLowerCase().includes(keyword)
+                        );
+                    }
+                    
+                    return result;
+                });
+                
+                // 重置筛选
+                const resetAppFilter = () => {
+                    appFilter.type = '';
+                    appFilter.status = '';
+                    appFilter.keyword = '';
+                    ElMessage.success('筛选条件已重置');
+                };
+                
+                // 筛选变化处理
+                const handleFilterChange = () => {
+                    loading.value = true;
+                    setTimeout(() => {
+                        loading.value = false;
+                    }, 200);
+                };
+                
+                // 切换应用启用/禁用状态
+                const handleStatusChange = (app) => {
+                    const statusText = app.enabled ? '启用' : '禁用';
+                    ElMessageBox.confirm(
+                        `确认要${statusText}该应用吗？`,
+                        '提示',
+                        {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: app.enabled ? 'warning' : 'info'
+                        }
+                    ).then(() => {
+                        ElMessage.success(`已${statusText}应用：${app.name}`);
+                    }).catch(() => {
+                        // 取消操作，恢复原有状态
+                        app.enabled = !app.enabled;
+                        ElMessage.info('已取消操作');
+                    });
+                };
+                
+                // 应用对话框
+                const dialogVisible = ref(false);
+                const dialogTitle = ref('新增应用');
+                const appForm = reactive({
+                    id: '',
+                    appId: '',
+                    name: '',
+                    type: '',
+                    enabled: true,
+                    description: ''
+                });
+                const appFormRef = ref(null);
+                const appRules = {
+                    appId: [{ required: true, message: '请输入应用ID', trigger: 'blur' }],
+                    name: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
+                    type: [{ required: true, message: '请选择应用类型', trigger: 'change' }]
+                };
+                
+                // 显示新增应用弹窗
+                const showAddApp = () => {
+                    dialogTitle.value = '新增应用';
+                    Object.assign(appForm, {
+                        id: '',
+                        appId: '',
+                        name: '',
+                        type: '',
+                        enabled: true,
+                        description: ''
+                    });
+                    dialogVisible.value = true;
+                };
+                
+                // 编辑应用
+                const editApp = (row) => {
+                    dialogTitle.value = '编辑应用';
+                    Object.assign(appForm, {
+                        id: row.id,
+                        appId: row.appId,
+                        name: row.name,
+                        type: row.type,
+                        enabled: row.enabled,
+                        description: row.description || ''
+                    });
+                    dialogVisible.value = true;
+                };
+                
+                // 删除应用
+                const deleteApp = (row) => {
+                    ElMessageBox.confirm(
+                        `确认要删除应用【${row.name}】吗？此操作不可撤销！`,
+                        '删除确认',
+                        {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'danger'
+                        }
+                    ).then(() => {
+                        const index = apps.value.findIndex(item => item.id === row.id);
+                        if (index > -1) {
+                            apps.value.splice(index, 1);
+                            ElMessage.success(`已删除应用：${row.name}`);
+                        }
+                    }).catch(() => {
+                        ElMessage.info('已取消删除操作');
+                    });
+                };
+                
+                // 保存应用
+                const saveApp = () => {
+                    appFormRef.value.validate((valid) => {
+                        if (valid) {
+                            if (appForm.id) {
+                                // 编辑
+                                const index = apps.value.findIndex(item => item.id === appForm.id);
+                                if (index > -1) {
+                                    apps.value[index] = {
+                                        ...apps.value[index],
+                                        appId: appForm.appId,
+                                        name: appForm.name,
+                                        type: appForm.type,
+                                        enabled: appForm.enabled,
+                                        description: appForm.description
+                                    };
+                                    ElMessage.success('应用编辑成功');
+                                }
+                            } else {
+                                // 新增
+                                const newId = apps.value.length > 0 ? Math.max(...apps.value.map(item => item.id)) + 1 : 1;
+                                apps.value.push({
+                                    id: newId,
+                                    appId: appForm.appId,
+                                    name: appForm.name,
+                                    type: appForm.type,
+                                    createTime: new Date().toLocaleString('zh-CN', { 
+                                        year: 'numeric', 
+                                        month: '2-digit', 
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit'
+                                    }).replace(/\//g, '-'),
+                                    enabled: appForm.enabled,
+                                    description: appForm.description
+                                });
+                                ElMessage.success('应用新增成功');
+                            }
+                            dialogVisible.value = false;
+                        }
+                    });
+                };
+
+                // ---------------------- 应用配置管理相关 ----------------------
+                const selectedAppId = ref('');
+                const configFilter = ref('');
+                // 应用配置数据
+                const appConfig = reactive({
+                    basic: {
+                        runMode: 'prod',
+                        timeout: 30,
+                        autoReconnect: true
+                    },
+                    network: {
+                        serverUrl: '',
+                        heartbeatInterval: 10,
+                        encryptData: false
+                    },
+                    log: {
+                        level: 'info',
+                        saveDays: 7,
+                        consoleOutput: true
+                    }
+                });
+
+                // 下发配置
+                const sendConfig = () => {
+                    if (!selectedAppId.value) {
+                        ElMessage.warning('请先选择要下发配置的应用');
+                        return;
+                    }
+                    ElMessageBox.confirm(
+                        `确认要将配置下发到应用【${apps.value.find(item => item.appId === selectedAppId.value)?.name}】吗？`,
+                        '下发配置',
+                        {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'info'
+                        }
+                    ).then(() => {
+                        ElMessage.success('配置下发成功');
+                    }).catch(() => {
+                        ElMessage.info('已取消下发配置操作');
+                    });
+                };
+
+                // ---------------------- 应用更新管理相关 ----------------------
+                // 更新表单
+                const updateForm = reactive({
+                    appId: '',
+                    version: 'v2.1.0',
+                    selectedRobots: [],
+                    desc: ''
+                });
+
+                // 机器人列表
+                const robotList = ref([
+                    { robotId: 'ROBOT-001', name: '服务机器人001', status: '在线' },
+                    { robotId: 'ROBOT-002', name: '服务机器人002', status: '在线' },
+                    { robotId: 'ROBOT-003', name: '服务机器人003', status: '离线' },
+                    { robotId: 'ROBOT-004', name: '服务机器人004', status: '在线' },
+                    { robotId: 'ROBOT-005', name: '服务机器人005', status: '维护中' },
+                    { robotId: 'ROBOT-006', name: '服务机器人006', status: '在线' },
+                    { robotId: 'ROBOT-007', name: '服务机器人007', status: '在线' },
+                    { robotId: 'ROBOT-008', name: '服务机器人008', status: '离线' }
+                ]);
+
+                // 加载机器人列表（模拟）
+                const loadRobotList = () => {
+                    // 实际场景可根据应用ID加载关联的机器人列表
+                    ElMessage.info(`已加载应用【${apps.value.find(item => item.appId === updateForm.appId)?.name}】关联的机器人列表`);
+                };
+
+                // 清空更新表单
+                const clearUpdateForm = () => {
+                    updateForm.appId = '';
+                    updateForm.version = 'v2.1.0';
+                    updateForm.selectedRobots = [];
+                    updateForm.desc = '';
+                };
+
+                // 更新任务列表
+                const updateTasks = ref([
+                    {
+                        taskId: 'TASK-20260101001',
+                        appId: 'APP-001',
+                        appName: '语音交互应用',
+                        version: 'v2.1.0',
+                        selectedRobots: ['ROBOT-001', 'ROBOT-002'],
+                        createTime: '2026-01-01 09:30:25',
+                        status: 'success'
+                    },
+                    {
+                        taskId: 'TASK-20260101002',
+                        appId: 'APP-002',
+                        appName: '路径控制应用',
+                        version: 'v2.0.1',
+                        selectedRobots: ['ROBOT-003', 'ROBOT-004', 'ROBOT-005'],
+                        createTime: '2026-01-01 14:20:10',
+                        status: 'failed'
+                    },
+                    {
+                        taskId: 'TASK-20260102001',
+                        appId: 'APP-001',
+                        appName: '语音交互应用',
+                        version: 'v2.1.0',
+                        selectedRobots: ['ROBOT-006', 'ROBOT-007', 'ROBOT-008'],
+                        createTime: '2026-01-02 10:15:30',
+                        status: 'processing'
+                    },
+                    {
+                        taskId: 'TASK-20260102002',
+                        appId: 'APP-003',
+                        appName: '状态监控应用',
+                        version: 'v1.5.0',
+                        selectedRobots: ['ROBOT-001'],
+                        createTime: '2026-01-02 16:40:15',
+                        status: 'pending'
+                    }
+                ]);
+
+                // 任务筛选条件
+                const taskFilter = reactive({
+                    status: '',
+                    keyword: ''
+                });
+
+                const taskLoading = ref(false);
+
+                // 筛选更新任务
+                const filteredUpdateTasks = computed(() => {
+                    let result = updateTasks.value;
+                    
+                    // 按状态筛选
+                    if (taskFilter.status !== '') {
+                        result = result.filter(task => task.status === taskFilter.status);
+                    }
+                    
+                    // 按关键词搜索
+                    if (taskFilter.keyword) {
+                        const keyword = taskFilter.keyword.toLowerCase();
+                        result = result.filter(task => 
+                            task.appId.toLowerCase().includes(keyword) || 
+                            task.version.toLowerCase().includes(keyword) ||
+                            task.selectedRobots.some(robotId => robotId.toLowerCase().includes(keyword))
+                        );
+                    }
+                    
+                    return result;
+                });
+
+                // 筛选更新任务
+                const filterUpdateTasks = () => {
+                    taskLoading.value = true;
+                    setTimeout(() => {
+                        taskLoading.value = false;
+                    }, 200);
+                };
+
+                // 刷新更新任务
+                const refreshUpdateTasks = () => {
+                    taskLoading.value = true;
+                    setTimeout(() => {
+                        taskLoading.value = false;
+                        ElMessage.success('任务列表已刷新');
+                    }, 500);
+                };
+
+                // 创建更新任务
+                const createUpdateTask = () => {
+                    const newTaskId = `TASK-${new Date().getTime().toString().slice(-8)}`;
+                    const newTask = {
+                        taskId: newTaskId,
+                        appId: updateForm.appId,
+                        appName: apps.value.find(item => item.appId === updateForm.appId)?.name || '',
+                        version: updateForm.version,
+                        selectedRobots: [...updateForm.selectedRobots],
+                        createTime: new Date().toLocaleString('zh-CN', { 
+                            year: 'numeric', 
+                            month: '2-digit', 
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        }).replace(/\//g, '-'),
+                        status: 'pending'
+                    };
+                    updateTasks.value.unshift(newTask);
+                    ElMessage.success('更新任务创建成功');
+                    clearUpdateForm();
+                };
+
+                // 查看任务详情
+                const viewTaskDetail = (row) => {
+                    ElMessageBox.alert(
+                        `<div style="text-align: left;">
+                            <p><strong>任务ID：</strong>${row.taskId}</p>
+                            <p><strong>应用名称：</strong>${row.appName}</p>
+                            <p><strong>应用ID：</strong>${row.appId}</p>
+                            <p><strong>更新版本：</strong>${row.version}</p>
+                            <p><strong>机器人数量：</strong>${row.selectedRobots.length} 台</p>
+                            <p><strong>选择的机器人：</strong>${row.selectedRobots.join(', ')}</p>
+                            <p><strong>创建时间：</strong>${row.createTime}</p>
+                            <p><strong>任务状态：</strong>${
+                                row.status === 'pending' ? '待执行' : 
+                                row.status === 'processing' ? '执行中' :
+                                row.status === 'success' ? '成功' : '失败'
+                            }</p>
+                            ${row.status === 'failed' ? '<p><strong>失败原因：</strong>机器人ROBOT-003离线，更新超时</p>' : ''}
+                        </div>`,
+                        '任务详情',
+                        {
+                            dangerouslyUseHTMLString: true,
+                            confirmButtonText: '关闭'
+                        }
+                    );
+                };
+
+                // 重试更新任务
+                const retryUpdateTask = (row) => {
+                    ElMessageBox.confirm(
+                        `确认要重试更新任务【${row.taskId}】吗？`,
+                        '重试任务',
+                        {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }
+                    ).then(() => {
+                        row.status = 'pending';
+                        ElMessage.success('任务已重置为待执行状态，将重新执行');
+                    }).catch(() => {
+                        ElMessage.info('已取消重试操作');
+                    });
+                };
+
+                // 取消更新任务
+                const cancelUpdateTask = (row) => {
+                    ElMessageBox.confirm(
+                        `确认要取消更新任务【${row.taskId}】吗？`,
+                        '取消任务',
+                        {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'info'
+                        }
+                    ).then(() => {
+                        const index = updateTasks.value.findIndex(item => item.taskId === row.taskId);
+                        if (index > -1) {
+                            updateTasks.value.splice(index, 1);
+                            ElMessage.success('更新任务已取消');
+                        }
+                    }).catch(() => {
+                        ElMessage.info('已取消操作');
+                    });
+                };
+                
+                return {
+                    expandedMenu,
+                    activeNav,
+                    loading,
+                    activeModule,
+                    switchModule,
+                    isTaskManagementActive,
+                    isDataAnalysisActive,
+                    toggleMenu,
+                    appFilter,
+                    apps,
+                    filteredApps,
+                    resetAppFilter,
+                    handleFilterChange,
+                    handleStatusChange,
+                    dialogVisible,
+                    dialogTitle,
+                    appForm,
+                    appFormRef,
+                    appRules,
+                    showAddApp,
+                    editApp,
+                    deleteApp,
+                    saveApp,
+                    // 应用配置管理
+                    selectedAppId,
+                    configFilter,
+                    appConfig,
+                    sendConfig,
+                    // 应用更新管理
+                    updateForm,
+                    robotList,
+                    loadRobotList,
+                    clearUpdateForm,
+                    updateTasks,
+                    taskFilter,
+                    taskLoading,
+                    filteredUpdateTasks,
+                    filterUpdateTasks,
+                    refreshUpdateTasks,
+                    createUpdateTask,
+                    viewTaskDetail,
+                    retryUpdateTask,
+                    cancelUpdateTask
+                };
+            }
+        }).use(ElementPlus).mount('#app');
+    </script>
+</body>
+</html>
