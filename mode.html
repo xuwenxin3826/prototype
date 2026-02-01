@@ -15,8 +15,8 @@
         }
         
         :root {
-            --primary-color: #2c6fbb;    /* 主色调：深蓝色 */
-            --secondary-color: #4a9ff5;  /* 次要色调：浅蓝色 */
+            --primary-color:#1890ff;
+            --secondary-color: #e6f7ff;
             --success-color: #2ecc71;    /* 成功色：绿色 */
             --warning-color: #f39c12;    /* 警告色：橙色 */
             --danger-color: #e74c3c;     /* 危险色：红色 */
@@ -29,8 +29,8 @@
             --sidebar-bg: #001529;
             --header-bg: #fff;
             --card-bg: #fff;
-            --text-primary: #000000;     /* 修改为纯黑色 */
-            --text-secondary: #333333;   /* 修改为深灰色 */
+            --text-primary: #000000;     
+            --text-secondary: #333333;
         }
         
         body {
@@ -43,8 +43,7 @@
             display: flex;
             min-height: 100vh;
         }
-        
-        /* 左侧侧边栏样式 */
+          /* 侧边栏样式 */
         .sidebar {
             width: 256px;
             background-color: var(--sidebar-bg);
@@ -70,7 +69,7 @@
         
         .logo i {
             font-size: 24px;
-            color: var(--secondary-color);
+            color: var(--primary-color);
         }
         
         .logo-text {
@@ -86,7 +85,7 @@
         .nav-item-wrapper {
             margin-bottom: 4px;
         }
-        
+
         .nav-item {
             position: relative;
             display: flex;
@@ -97,68 +96,66 @@
             color: rgba(255, 255, 255, 0.65);
             text-decoration: none;
         }
-        
+
         .nav-item:hover {
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
         }
-        
+
         .nav-item.active {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
+        .nav-item.active-parent {
+            background-color: rgba(24, 144, 255, 0.2);
+            color: white;
+            border-right: 3px solid var(--primary-color);
+        }
+
         .arrow-icon {
             margin-left: auto;
             font-size: 12px;
             transition: transform 0.3s;
             opacity: 0.7;
         }
-        
+
         .arrow-icon.rotated {
             transform: rotate(180deg);
         }
-        
+
         .sub-nav-menu {
             background-color: rgba(0, 0, 0, 0.15);
             overflow: hidden;
             transition: all 0.3s ease-in-out;
         }
-        
+
         .nav-item.sub-item {
             padding: 10px 24px 10px 48px;
             font-size: 13px;
             border-left: 2px solid transparent;
             margin-left: 0;
-            cursor: pointer;
         }
-        
+
         .nav-item.sub-item:hover {
             background-color: rgba(255, 255, 255, 0.05);
             color: white;
             border-left-color: rgba(255, 255, 255, 0.3);
         }
-        
+
         .nav-item.sub-item.active {
-            background-color: rgba(44, 111, 187, 0.25);
+            background-color: rgba(24, 144, 255, 0.25);
             color: #fff;
             border-left-color: var(--primary-color);
             font-weight: 500;
         }
-        
+
         .nav-item.sub-item i {
             font-size: 14px;
             width: 18px;
             margin-right: 8px;
         }
-        
-        .nav-item i {
-            font-size: 16px;
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
-        }
-        
+
         /* 主内容区样式 */
         .main-content {
             flex: 1;
@@ -653,7 +650,7 @@
         .pulse {
             animation: pulse 2s infinite;
         }
-        
+
         /* ==================== 模式配置页面专属样式 ==================== */
         
         /* 模式选择卡片网格 */
@@ -1232,7 +1229,6 @@
 </head>
 <body>
     <div id="app" class="dashboard-container">
-        <!-- 左侧侧边栏 -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
@@ -1242,11 +1238,14 @@
             </div>
             
             <div class="nav-menu">
-                <!-- 任务管理 -->
+                <!-- 任务管理折叠菜单 -->
                 <div class="nav-item-wrapper">
                     <div 
                         class="nav-item" 
-                        :class="{ expanded: expandedMenu === 'taskManagement' }"
+                        :class="{ 
+                            'active-parent': isTaskManagementActive,
+                            'expanded': expandedMenu === 'taskManagement'
+                        }"
                         @click="toggleMenu('taskManagement')"
                     >
                         <i class="fas fa-tasks"></i>
@@ -1256,97 +1255,133 @@
                             :class="{ 'rotated': expandedMenu === 'taskManagement' }"
                         ></i>
                     </div>
-                    
                     <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
-                        <a href="index.html#templates" class="nav-item sub-item">
+                        <a href="index.html#templates" class="nav-item sub-item" :class="{ active: activeNav === 'templates' }">
                             <i class="fas fa-clipboard-list"></i>
                             <span class="nav-text">模板管理</span>
                         </a>
-                        <a href="index.html#tasks" class="nav-item sub-item">
+                        <a href="index.html#tasks" class="nav-item sub-item" :class="{ active: activeNav === 'tasks' }">
                             <i class="fas fa-list-ul"></i>
                             <span class="nav-text">任务列表</span>
                         </a>
-                        <a href="index.html#scheduling" class="nav-item sub-item">
+                        <a href="index.html#scheduling" class="nav-item sub-item" :class="{ active: activeNav === 'scheduling' }">
                             <i class="fas fa-calendar-alt"></i>
                             <span class="nav-text">任务调度</span>
                         </a>
-                        <a href="index.html#monitoring" class="nav-item sub-item">
+                        <a href="index.html#monitoring" class="nav-item sub-item" :class="{ active: activeNav === 'monitoring' }">
                             <i class="fas fa-eye"></i>
                             <span class="nav-text">任务监控</span>
                         </a>
                     </div>
                 </div>
-
-                <!-- 机器人管理 -->
-                <a href="robots.html" class="nav-item">
+                
+                <!-- 机器人管理 - 当前页面高亮 -->
+                <a href="robots.html" class="nav-item" :class="{ active: activeNav === 'robots' }">
                     <i class="fas fa-robot"></i>
                     <span class="nav-text">机器人管理</span>
                 </a>
-
-                <!-- 模式管理（当前页面高亮） -->
+		<!-- 交互应用管理 - 当前页面高亮 -->
                 <div class="nav-item-wrapper">
                     <div 
-                        class="nav-item active" 
-                        :class="{ expanded: expandedMenu === 'modeManagement' }"
-                        @click="toggleMenu('modeManagement')"
+                        class="nav-item active-parent"
+                        :class="{ 'expanded': expandedMenu === 'appManagement' }"
+                        @click="toggleMenu('appManagement')"
                     >
                         <i class="fas fa-cogs"></i>
-                        <span class="nav-text">模式管理</span>
+                        <span class="nav-text">交互应用管理</span>
                         <i 
-                            class="fas fa-chevron-down arrow-icon" 
-                            :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+                            class="fas fa-chevron-down arrow-icon rotated" 
+                            :class="{ 'rotated': expandedMenu === 'appManagement' }"
                         ></i>
                     </div>
-                    
-                    <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
-                        <div 
-                            class="nav-item sub-item" 
-                            :class="{ active: activeModeTab === 'status' }"
-                            @click="switchModeTab('status')"
-                        >
-                            <i class="fas fa-heartbeat"></i>
-                            <span class="nav-text">状态监控</span>
-                        </div>
-                        <div 
-                            class="nav-item sub-item" 
-                            :class="{ active: activeModeTab === 'config' }"
-                            @click="switchModeTab('config')"
-                        >
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'appManagement'">
+                        <a href="app.html#appLibrary" class="nav-item sub-item" :class="{ active: activeNav === 'appLibrary' }">
+                            <i class="fas fa-th"></i>
+                            <span class="nav-text">应用库管理</span>
+                        </a>
+                        <a href="app.html#appConfig" class="nav-item sub-item" :class="{ active: activeNav === 'appConfig' }">
                             <i class="fas fa-sliders-h"></i>
-                            <span class="nav-text">模式配置</span>
-                        </div>
-                        <div 
-                            class="nav-item sub-item" 
-                            :class="{ active: activeModeTab === 'switch' }"
-                            @click="switchModeTab('switch')"
-                        >
-                            <i class="fas fa-exchange-alt"></i>
-                            <span class="nav-text">模式切换</span>
-                        </div>
-                        <div 
-                            class="nav-item sub-item" 
-                            :class="{ active: activeModeTab === 'history' }"
-                            @click="switchModeTab('history')"
-                        >
-                            <i class="fas fa-history"></i>
-                            <span class="nav-text">历史记录</span>
-                        </div>
-                        <div 
-                            class="nav-item sub-item" 
-                            :class="{ active: activeModeTab === 'quick' }"
-                            @click="switchModeTab('quick')"
-                        >
-                            <i class="fas fa-bolt"></i>
-                            <span class="nav-text">快速操作</span>
-                        </div>
+                            <span class="nav-text">应用配置管理</span>
+                        </a>
+                        <a href="app.html#appUpdate" class="nav-item sub-item" :class="{ active: activeNav === 'appUpdate' }">
+                            <i class="fas fa-sync-alt"></i>
+                            <span class="nav-text">应用更新管理</span>
+                        </a>
                     </div>
                 </div>
-
-                <!-- 数据管理与分析 -->
+<!-- 模式管理（当前页面高亮） -->
+<div class="nav-item-wrapper">
+    <a 
+        href="mode.html#status" 
+        class="nav-item active"
+        :class="{ expanded: expandedMenu === 'modeManagement' }"
+        @click.stop="toggleMenu('modeManagement')"
+    >
+        <i class="fas fa-cogs"></i>
+        <span class="nav-text">模式管理</span>
+        <i 
+            class="fas fa-chevron-down arrow-icon" 
+            :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+        ></i>
+    </a>
+    
+    <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
+        <a 
+            href="mode.html#status" 
+            class="nav-item sub-item" 
+            :class="{ active: activeModeTab === 'status' }"
+            @click.stop="switchModeTab('status')"
+        >
+            <i class="fas fa-heartbeat"></i>
+            <span class="nav-text">状态监控</span>
+        </a>
+        <a 
+            href="mode.html#config" 
+            class="nav-item sub-item" 
+            :class="{ active: activeModeTab === 'config' }"
+            @click.stop="switchModeTab('config')"
+        >
+            <i class="fas fa-sliders-h"></i>
+            <span class="nav-text">模式配置</span>
+        </a>
+        <a 
+            href="mode.html#switch" 
+            class="nav-item sub-item" 
+            :class="{ active: activeModeTab === 'switch' }"
+            @click.stop="switchModeTab('switch')"
+        >
+            <i class="fas fa-exchange-alt"></i>
+            <span class="nav-text">模式切换</span>
+        </a>
+        <a 
+            href="mode.html#history" 
+            class="nav-item sub-item" 
+            :class="{ active: activeModeTab === 'history' }"
+            @click.stop="switchModeTab('history')"
+        >
+            <i class="fas fa-history"></i>
+            <span class="nav-text">历史记录</span>
+        </a>
+        <a 
+            href="mode.html#quick" 
+            class="nav-item sub-item" 
+            :class="{ active: activeModeTab === 'quick' }"
+            @click.stop="switchModeTab('quick')"
+        >
+            <i class="fas fa-bolt"></i>
+            <span class="nav-text">快速操作</span>
+        </a>
+    </div>
+</div>
+                
+                <!-- 数据管理与分析 - 包含子菜单 -->
                 <div class="nav-item-wrapper">
                     <div 
                         class="nav-item" 
-                        :class="{ expanded: expandedMenu === 'dataAnalysis' }"
+                        :class="{ 
+                            'active-parent': isDataAnalysisActive,
+                            'expanded': expandedMenu === 'dataAnalysis'
+                        }"
                         @click="toggleMenu('dataAnalysis')"
                     >
                         <i class="fas fa-chart-line"></i>
@@ -1362,7 +1397,7 @@
                             <i class="fas fa-database"></i>
                             <span class="nav-text">数据管理工具</span>
                         </a>
-                        <a href="data.html#dashboard" class="nav-item sub-item">
+                        <a href="data.html" class="nav-item sub-item">
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="nav-text">数据仪表盘</span>
                         </a>
@@ -1378,26 +1413,21 @@
                 </div>
             </div>
         </div>
-    
-        <!-- 主内容区 -->
+        
         <div class="main-content">
             <div class="header">
                 <div class="header-left">
-                     <span class="header-title">{{ modePageTitle }}</span>
-                     <span v-if="selectedRobot && activeModeTab === 'status'" style="margin-left: 20px; color: var(--primary-color); font-weight: 500;">
-                        <i class="fas fa-robot"></i> 当前查看: {{ selectedRobot.name }}
-                     </span>
+                    <span class="header-title">机器人管理</span>
                 </div>
                 <div class="header-actions">
-                    <el-button type="text" @click="refreshData">
-                        <i class="fas fa-sync-alt"></i> 刷新数据
-                    </el-button>
                     <div class="user-info">
                         <div class="user-avatar">A</div>
                         <span>管理员</span>
                     </div>
                 </div>
             </div>
+            
+
 
             <div class="content-wrapper">
                 <!-- 状态监控页面 -->
