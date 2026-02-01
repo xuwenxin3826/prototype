@@ -31,6 +31,13 @@
             --card-bg: #fff;
             --text-primary: #000000;     
             --text-secondary: #333333;
+            --medicine-color: #3498db;   /* 药品配送模式颜色 */
+            --bank-color: #9b59b6;       /* 银行巡检模式颜色 */
+            --clean-color: #1abc9c;      /* 清洁任务模式颜色 */
+            --security-color: #e67e22;   /* 安防巡逻模式颜色 */
+            --standby-color: #95a5a6;    /* 待机模式颜色 */
+            --maintenance-color: #f1c40f; /* 维护模式颜色 */
+            --charge-color: #2ecc71;     /* 充电模式颜色 */
         }
         
         body {
@@ -651,73 +658,220 @@
             animation: pulse 2s infinite;
         }
 
-        /* ==================== 模式配置页面专属样式 ==================== */
+        /* ==================== 模式切换页面专属样式 ==================== */
         
-        /* 模式选择卡片网格 */
-        .mode-cards {
+        /* 机器人选择区域 */
+        .robot-select-section {
+            margin-bottom: 30px;
+        }
+
+        .robot-select-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 模式切换按钮组 */
+        .mode-switch-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
         }
 
-        /* 单个模式卡片 */
-        .mode-config-card {
-            background-color: var(--light-color);
+        .mode-switch-btn {
+            padding: 20px 15px;
+            border: 2px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 20px;
-            text-align: center;
+            background-color: white;
             cursor: pointer;
             transition: all 0.3s;
-            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-color);
         }
 
-        .mode-config-card.active {
-            background-color: var(--primary-color);
+        .mode-switch-btn i {
+            font-size: 32px;
+        }
+
+        .mode-switch-btn.active {
             color: white;
-            border-color: var(--secondary-color);
+            border-color: rgba(255, 255, 255, 0.3);
             box-shadow: var(--shadow);
         }
 
-        .mode-config-card:hover {
+        .mode-switch-btn:hover:not(.active) {
             transform: translateY(-5px);
         }
 
-        .mode-config-card i {
-            font-size: 32px;
-            margin-bottom: 10px;
+        /* 模式切换按钮颜色 */
+        .mode-switch-btn[data-mode="standby"] i {
+            color: var(--standby-color);
+        }
+        .mode-switch-btn[data-mode="standby"].active {
+            background-color: var(--standby-color);
+        }
+
+        .mode-switch-btn[data-mode="maintenance"] i {
+            color: var(--maintenance-color);
+        }
+        .mode-switch-btn[data-mode="maintenance"].active {
+            background-color: var(--maintenance-color);
+        }
+
+        .mode-switch-btn[data-mode="task"] i {
             color: var(--primary-color);
         }
-
-        .mode-config-card.active i {
-            color: white;
+        .mode-switch-btn[data-mode="task"].active {
+            background-color: var(--primary-color);
         }
 
-        .mode-config-card h3 {
+        .mode-switch-btn[data-mode="charge"] i {
+            color: var(--charge-color);
+        }
+        .mode-switch-btn[data-mode="charge"].active {
+            background-color: var(--charge-color);
+        }
+
+        /* 子模式选择器标题 */
+        .submode-selector-title {
             font-size: 16px;
-            margin-bottom: 5px;
+            font-weight: 600;
+            margin: 20px 0 15px 0;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 子模式卡片 */
+        .submode-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .submode-config-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid var(--border-color);
+        }
+
+        .submode-config-card.active {
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow);
+        }
+
+        .submode-config-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .submode-config-card i {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .submode-config-card h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
             font-weight: 600;
         }
 
-        .mode-config-card p {
-            font-size: 12px;
+        .submode-config-card p {
+            font-size: 11px;
             color: #666;
         }
 
-        .mode-config-card.active p {
+        .submode-config-card.active p {
             color: rgba(255, 255, 255, 0.8);
         }
 
-        /* 模式表单容器 */
-        .mode-form-container {
+        /* 子模式卡片颜色 */
+        .submode-config-card[data-submode="medicine"] {
+            border-color: var(--medicine-color);
+        }
+        .submode-config-card[data-submode="medicine"] i {
+            color: var(--medicine-color);
+        }
+        .submode-config-card[data-submode="medicine"].active {
+            background-color: var(--medicine-color);
+        }
+
+        .submode-config-card[data-submode="bank"] {
+            border-color: var(--bank-color);
+        }
+        .submode-config-card[data-submode="bank"] i {
+            color: var(--bank-color);
+        }
+        .submode-config-card[data-submode="bank"].active {
+            background-color: var(--bank-color);
+        }
+
+        .submode-config-card[data-submode="clean"] {
+            border-color: var(--clean-color);
+        }
+        .submode-config-card[data-submode="clean"] i {
+            color: var(--clean-color);
+        }
+        .submode-config-card[data-submode="clean"].active {
+            background-color: var(--clean-color);
+        }
+
+        .submode-config-card[data-submode="security"] {
+            border-color: var(--security-color);
+        }
+        .submode-config-card[data-submode="security"] i {
+            color: var(--security-color);
+        }
+        .submode-config-card[data-submode="security"].active {
+            background-color: var(--security-color);
+        }
+
+        /* 模式配置区域 */
+        .mode-config-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(44, 111, 187, 0.03);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .mode-config-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 模式配置表单容器 */
+        .mode-config-container {
             margin-top: 20px;
         }
 
-        .mode-form {
+        .mode-config-form {
             display: none;
         }
 
-        .mode-form.active {
+        .mode-config-form.active {
             display: block;
         }
 
@@ -826,82 +980,13 @@
             color: var(--primary-color);
         }
 
-        /* 表单操作按钮 */
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            justify-content: flex-end;
-        }
-        
-        /* ==================== 模式切换页面专属样式 ==================== */
-        
-        /* 机器人选择区域 */
-        .robot-select-section {
-            margin-bottom: 30px;
-        }
-
-        .robot-select-section label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* 模式切换按钮组 */
-        .mode-switch-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .mode-switch-btn {
-            padding: 20px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: var(--border-radius);
-            background-color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-
-        .mode-switch-btn i {
-            font-size: 32px;
-            color: var(--primary-color);
-        }
-
-        .mode-switch-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--secondary-color);
-            box-shadow: var(--shadow);
-        }
-
-        .mode-switch-btn.active i {
-            color: white;
-        }
-
-        .mode-switch-btn:hover:not(.active) {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-        }
-
         /* 切换确认区域 */
         .switch-confirm-section {
             display: flex;
             flex-direction: column;
             gap: 15px;
             align-items: flex-end;
+            margin-top: 30px;
         }
 
         .switch-info {
@@ -926,6 +1011,14 @@
             margin: 0;
         }
 
+        /* 表单操作按钮 */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: flex-end;
+        }
+        
         /* ==================== 历史记录页面专属样式 ==================== */
         
         /* 筛选区域 */
@@ -1144,10 +1237,6 @@
                 grid-template-columns: 1fr;
             }
             
-            .mode-cards {
-                grid-template-columns: 1fr 1fr;
-            }
-            
             .mode-switch-buttons {
                 grid-template-columns: 1fr 1fr;
             }
@@ -1168,10 +1257,6 @@
             }
             
             .robot-group-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .mode-cards {
                 grid-template-columns: 1fr;
             }
             
@@ -1275,12 +1360,12 @@
                     </div>
                 </div>
                 
-                <!-- 机器人管理 - 当前页面高亮 -->
-                <a href="robots.html" class="nav-item" :class="{ active: activeNav === 'robots' }">
+   <!-- 机器人管理 -->
+                <a href="robots.html" class="nav-item">
                     <i class="fas fa-robot"></i>
                     <span class="nav-text">机器人管理</span>
                 </a>
-		<!-- 交互应用管理 - 当前页面高亮 -->
+                <!-- 交互应用管理 - 当前页面高亮 -->
                 <div class="nav-item-wrapper">
                 <div
                         class="nav-item"
@@ -1313,10 +1398,13 @@
                     </a>
                 </div>
             </div>
-<!-- 模式管理（当前页面高亮） -->
+
+
+               
+<!-- 修改导航菜单部分 -->
 <div class="nav-item-wrapper">
     <a 
-        href="mode.html#status" 
+        href="javascript:void(0);" 
         class="nav-item active"
         :class="{ expanded: expandedMenu === 'modeManagement' }"
         @click.stop="toggleMenu('modeManagement')"
@@ -1331,7 +1419,7 @@
     
     <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
         <a 
-            href="mode.html#status" 
+            href="javascript:void(0);" 
             class="nav-item sub-item" 
             :class="{ active: activeModeTab === 'status' }"
             @click.stop="switchModeTab('status')"
@@ -1340,16 +1428,7 @@
             <span class="nav-text">状态监控</span>
         </a>
         <a 
-            href="mode.html#config" 
-            class="nav-item sub-item" 
-            :class="{ active: activeModeTab === 'config' }"
-            @click.stop="switchModeTab('config')"
-        >
-            <i class="fas fa-sliders-h"></i>
-            <span class="nav-text">模式配置</span>
-        </a>
-        <a 
-            href="mode.html#switch" 
+            href="javascript:void(0);" 
             class="nav-item sub-item" 
             :class="{ active: activeModeTab === 'switch' }"
             @click.stop="switchModeTab('switch')"
@@ -1358,7 +1437,7 @@
             <span class="nav-text">模式切换</span>
         </a>
         <a 
-            href="mode.html#history" 
+            href="javascript:void(0);" 
             class="nav-item sub-item" 
             :class="{ active: activeModeTab === 'history' }"
             @click.stop="switchModeTab('history')"
@@ -1367,7 +1446,7 @@
             <span class="nav-text">历史记录</span>
         </a>
         <a 
-            href="mode.html#quick" 
+            href="javascript:void(0);" 
             class="nav-item sub-item" 
             :class="{ active: activeModeTab === 'quick' }"
             @click.stop="switchModeTab('quick')"
@@ -1377,7 +1456,8 @@
         </a>
     </div>
 </div>
-                
+
+
                 <!-- 数据管理与分析 - 包含子菜单 -->
                 <div class="nav-item-wrapper">
                     <div 
@@ -1421,7 +1501,7 @@
         <div class="main-content">
             <div class="header">
                 <div class="header-left">
-                    <span class="header-title">机器人管理</span>
+                    <span class="header-title">模式管理</span>
                 </div>
                 <div class="header-actions">
                     <div class="user-info">
@@ -1601,7 +1681,7 @@
                                     <button class="btn btn-success" @click="sendCommand('return_charge')" :disabled="selectedRobot.status === 'offline'">
                                         <i class="fas fa-battery-charging"></i> 返回充电
                                     </button>
-                                    <button class="btn btn-secondary" @click="sendCommand('refresh_status')">
+                                    <button class="btn btn-success" @click="sendCommand('refresh_status')">
                                         <i class="fas fa-sync-alt"></i> 刷新状态
                                     </button>
                                     <button class="btn btn-warning" @click="sendCommand('emergency_stop')" :disabled="selectedRobot.status === 'offline'">
@@ -1703,199 +1783,6 @@
                     </div>
                 </div>
 
-                <!-- 模式配置页面 -->
-                <div v-else-if="activeModeTab === 'config'" class="card">
-                    <div class="card-title">
-                        <h2><i class="fas fa-cog"></i> 模式配置</h2>
-                        <span>最后保存: <span id="last-save">{{ lastSaveTime }}</span></span>
-                    </div>
-                    
-                    <div class="card-body">
-                        <!-- 模式选择卡片 -->
-                        <div class="mode-cards">
-                            <div 
-                                class="mode-config-card" 
-                                :class="{ active: activeMode === 'cruise' }"
-                                @click="switchModeCard('cruise')"
-                                data-mode="cruise"
-                            >
-                                <i class="fas fa-route"></i>
-                                <h3>巡航模式</h3>
-                                <p>自动按预设路线巡航</p>
-                            </div>
-                            <div 
-                                class="mode-config-card" 
-                                :class="{ active: activeMode === 'standby' }"
-                                @click="switchModeCard('standby')"
-                                data-mode="standby"
-                            >
-                                <i class="fas fa-pause-circle"></i>
-                                <h3>待机模式</h3>
-                                <p>低功耗待机，等待唤醒</p>
-                            </div>
-                            <div 
-                                class="mode-config-card" 
-                                :class="{ active: activeMode === 'task' }"
-                                @click="switchModeCard('task')"
-                                data-mode="task"
-                            >
-                                <i class="fas fa-tasks"></i>
-                                <h3>任务模式</h3>
-                                <p>执行自定义任务指令</p>
-                            </div>
-                            <div 
-                                class="mode-config-card" 
-                                :class="{ active: activeMode === 'charge' }"
-                                @click="switchModeCard('charge')"
-                                data-mode="charge"
-                            >
-                                <i class="fas fa-battery-charging"></i>
-                                <h3>充电模式</h3>
-                                <p>低电量自动返回充电</p>
-                            </div>
-                        </div>
-
-                        <!-- 模式配置表单 -->
-                        <div class="mode-form-container">
-                            <!-- 巡航模式配置 -->
-                            <div class="mode-form" :class="{ active: activeMode === 'cruise' }">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-map-marker-alt"></i> 巡航路线</label>
-                                        <select v-model="configData.cruise.route" class="form-control">
-                                            <option value="route1">路线1（主区域）</option>
-                                            <option value="route2">路线2（副区域）</option>
-                                            <option value="route3">路线3（全区域）</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><i class="fas fa-clock"></i> 巡航间隔（分钟）</label>
-                                        <input type="number" v-model="configData.cruise.interval" class="form-control" min="5" max="60">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-eye"></i> 巡检精度</label>
-                                        <select v-model="configData.cruise.precision" class="form-control">
-                                            <option value="high">高精度（慢）</option>
-                                            <option value="medium">中精度（平衡）</option>
-                                            <option value="low">低精度（快）</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><i class="fas fa-volume-up"></i> 巡航提示音</label>
-                                        <div class="form-switch">
-                                            <input type="checkbox" v-model="configData.cruise.sound" :checked="configData.cruise.sound">
-                                            <label>开启</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 待机模式配置 -->
-                            <div class="mode-form" :class="{ active: activeMode === 'standby' }">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-bell"></i> 唤醒触发条件</label>
-                                        <select v-model="configData.standby.trigger" class="form-control">
-                                            <option value="manual">仅手动唤醒</option>
-                                            <option value="schedule">定时唤醒</option>
-                                            <option value="sensor">传感器触发</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><i class="fas fa-clock"></i> 定时唤醒时间</label>
-                                        <input type="time" v-model="configData.standby.time" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-power-off"></i> 待机功耗</label>
-                                        <div class="form-slider">
-                                            <input type="range" v-model="configData.standby.power" min="10" max="100" @input="updateStandbyPower">
-                                            <span>{{ configData.standby.power }}%</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><i class="fas fa-wifi"></i> 网络保持</label>
-                                        <div class="form-switch">
-                                            <input type="checkbox" v-model="configData.standby.wifi" :checked="configData.standby.wifi">
-                                            <label>开启</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 任务模式配置 -->
-                            <div class="mode-form" :class="{ active: activeMode === 'task' }">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-file-alt"></i> 任务指令</label>
-                                        <textarea v-model="configData.task.commands" class="form-control" rows="4" placeholder="输入自定义任务指令，每行一条"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-repeat"></i> 任务重复次数</label>
-                                        <input type="number" v-model="configData.task.repeat" class="form-control" min="1" max="10">
-                                    </div>
-                                    <div class="form-group">
-                                        <label><i class="fas fa-alert"></i> 任务失败重试</label>
-                                        <div class="form-switch">
-                                            <input type="checkbox" v-model="configData.task.retry" :checked="configData.task.retry">
-                                            <label>开启</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 充电模式配置 -->
-                            <div class="mode-form" :class="{ active: activeMode === 'charge' }">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-battery-quarter"></i> 低电量阈值</label>
-                                        <div class="form-slider">
-                                            <input type="range" v-model="configData.charge.threshold" min="5" max="30" @input="updateChargeThreshold">
-                                            <span>{{ configData.charge.threshold }}%</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><i class="fas fa-plug"></i> 充电优先级</label>
-                                        <select v-model="configData.charge.priority" class="form-control">
-                                            <option value="immediate">立即充电</option>
-                                            <option value="complete">完成当前任务后充电</option>
-                                            <option value="schedule">定时充电</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label><i class="fas fa-battery-full"></i> 充满电阈值</label>
-                                        <input type="number" v-model="configData.charge.full" class="form-control" min="80" max="100">
-                                    </div>
-                                    <div class="form-group">
-                                        <label><i class="fas fa-notification"></i> 充电完成提醒</label>
-                                        <div class="form-switch">
-                                            <input type="checkbox" v-model="configData.charge.alert" :checked="configData.charge.alert">
-                                            <label>开启</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 保存按钮 -->
-                        <div class="form-actions">
-                            <button class="btn btn-primary" @click="saveModeConfig">
-                                <i class="fas fa-save"></i> 保存模式配置
-                            </button>
-                            <button class="btn btn-secondary" @click="resetModeConfig">
-                                <i class="fas fa-undo"></i> 重置配置
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- 模式切换页面 -->
                 <div v-else-if="activeModeTab === 'switch'" class="card">
                     <div class="card-title">
@@ -1917,21 +1804,21 @@
                         <div class="mode-switch-buttons">
                             <button 
                                 class="mode-switch-btn" 
-                                :class="{ active: switchSelectedMode === 'cruise' }"
-                                @click="selectSwitchMode('cruise')"
-                                data-mode="cruise"
-                            >
-                                <i class="fas fa-route"></i>
-                                <span>巡航模式</span>
-                            </button>
-                            <button 
-                                class="mode-switch-btn" 
                                 :class="{ active: switchSelectedMode === 'standby' }"
                                 @click="selectSwitchMode('standby')"
                                 data-mode="standby"
                             >
                                 <i class="fas fa-pause-circle"></i>
                                 <span>待机模式</span>
+                            </button>
+                            <button 
+                                class="mode-switch-btn" 
+                                :class="{ active: switchSelectedMode === 'maintenance' }"
+                                @click="selectSwitchMode('maintenance')"
+                                data-mode="maintenance"
+                            >
+                                <i class="fas fa-tools"></i>
+                                <span>维护模式</span>
                             </button>
                             <button 
                                 class="mode-switch-btn" 
@@ -1953,11 +1840,418 @@
                             </button>
                         </div>
 
+                        <!-- 任务子模式选择（仅在任务模式下显示） -->
+                        <div v-if="switchSelectedMode === 'task'" class="submode-selector" style="margin-bottom: 30px;">
+                            <div class="submode-selector-title">
+                                <i class="fas fa-layer-group"></i> 请选择任务子模式
+                            </div>
+                            <div class="submode-cards">
+                                <div 
+                                    class="submode-config-card" 
+                                    :class="{ active: switchSelectedSubMode === 'medicine' }"
+                                    @click="selectSwitchSubMode('medicine')"
+                                    data-submode="medicine"
+                                >
+                                    <i class="fas fa-pills"></i>
+                                    <h4>药品配送</h4>
+                                    <p>医院药品智能配送</p>
+                                </div>
+                                <div 
+                                    class="submode-config-card" 
+                                    :class="{ active: switchSelectedSubMode === 'bank' }"
+                                    @click="selectSwitchSubMode('bank')"
+                                    data-submode="bank"
+                                >
+                                    <i class="fas fa-university"></i>
+                                    <h4>银行巡检</h4>
+                                    <p>银行安防巡检</p>
+                                </div>
+                                <div 
+                                    class="submode-config-card" 
+                                    :class="{ active: switchSelectedSubMode === 'clean' }"
+                                    @click="selectSwitchSubMode('clean')"
+                                    data-submode="clean"
+                                >
+                                    <i class="fas fa-broom"></i>
+                                    <h4>清洁任务</h4>
+                                    <p>智能清洁与打扫</p>
+                                </div>
+                                <div 
+                                    class="submode-config-card" 
+                                    :class="{ active: switchSelectedSubMode === 'security' }"
+                                    @click="selectSwitchSubMode('security')"
+                                    data-submode="security"
+                                >
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h4>安防巡逻</h4>
+                                    <p>安防巡逻与监控</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 模式配置区域 -->
+                        <div class="mode-config-section">
+                            <h3><i class="fas fa-sliders-h"></i> 模式配置</h3>
+                            
+                            <!-- 模式配置表单 -->
+                            <div class="mode-config-container">
+                                <!-- 待机模式配置 -->
+                                <div class="mode-config-form" :class="{ active: switchSelectedMode === 'standby' }">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-bell"></i> 唤醒触发条件</label>
+                                            <select v-model="configData.standby.trigger" class="form-control">
+                                                <option value="manual">仅手动唤醒</option>
+                                                <option value="schedule">定时唤醒</option>
+                                                <option value="sensor">传感器触发</option>
+                                                <option value="remote">远程唤醒</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-clock"></i> 定时唤醒时间</label>
+                                            <input type="time" v-model="configData.standby.time" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-power-off"></i> 待机功耗</label>
+                                            <div class="form-slider">
+                                                <input type="range" v-model="configData.standby.power" min="5" max="50" @input="updateStandbyPower">
+                                                <span>{{ configData.standby.power }}%</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-wifi"></i> 网络保持</label>
+                                            <div class="form-switch">
+                                                <input type="checkbox" v-model="configData.standby.wifi" :checked="configData.standby.wifi">
+                                                <label>开启</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-temperature-low"></i> 低温保护</label>
+                                            <div class="form-switch">
+                                                <input type="checkbox" v-model="configData.standby.tempProtect" :checked="configData.standby.tempProtect">
+                                                <label>开启</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-battery-three-quarters"></i> 唤醒电量阈值</label>
+                                            <input type="number" v-model="configData.standby.wakeBattery" class="form-control" min="20" max="100">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 维护模式配置 -->
+                                <div class="mode-config-form" :class="{ active: switchSelectedMode === 'maintenance' }">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-user-cog"></i> 维护人员权限</label>
+                                            <select v-model="configData.maintenance.permission" class="form-control">
+                                                <option value="basic">基础权限</option>
+                                                <option value="advanced">高级权限</option>
+                                                <option value="admin">管理员权限</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-clock"></i> 维护超时时间（分钟）</label>
+                                            <input type="number" v-model="configData.maintenance.timeout" class="form-control" min="5" max="120">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-lock"></i> 安全锁定</label>
+                                            <div class="form-switch">
+                                                <input type="checkbox" v-model="configData.maintenance.safetyLock" :checked="configData.maintenance.safetyLock">
+                                                <label>开启</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-exclamation-triangle"></i> 警告提示</label>
+                                            <div class="form-switch">
+                                                <input type="checkbox" v-model="configData.maintenance.warningAlert" :checked="configData.maintenance.warningAlert">
+                                                <label>开启</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-diagnoses"></i> 诊断模式</label>
+                                            <select v-model="configData.maintenance.diagnostic" class="form-control">
+                                                <option value="basic">基础诊断</option>
+                                                <option value="comprehensive">全面诊断</option>
+                                                <option value="custom">自定义诊断</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-file-export"></i> 日志记录级别</label>
+                                            <select v-model="configData.maintenance.logLevel" class="form-control">
+                                                <option value="info">信息</option>
+                                                <option value="debug">调试</option>
+                                                <option value="error">错误</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 任务模式配置（统一配置部分） -->
+                                <div class="mode-config-form" :class="{ active: switchSelectedMode === 'task' }">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-robot"></i> 任务执行机器人</label>
+                                            <select v-model="configData.task.robotSelection" class="form-control">
+                                                <option value="all">所有机器人</option>
+                                                <option value="group">按分组选择</option>
+                                                <option value="single">单个机器人</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-route"></i> 任务优先级</label>
+                                            <select v-model="configData.task.priority" class="form-control">
+                                                <option value="high">高优先级</option>
+                                                <option value="medium">中优先级</option>
+                                                <option value="low">低优先级</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-redo"></i> 失败重试次数</label>
+                                            <input type="number" v-model="configData.task.retryCount" class="form-control" min="0" max="5">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-clock"></i> 任务超时时间（分钟）</label>
+                                            <input type="number" v-model="configData.task.timeout" class="form-control" min="5" max="180">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 药品配送模式配置 -->
+                                    <div v-if="switchSelectedSubMode === 'medicine'" class="submode-form">
+                                        <h4 style="margin: 20px 0 15px 0; color: var(--medicine-color); display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-pills"></i> 药品配送模式配置
+                                        </h4>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-map-marker-alt"></i> 药品配送路线</label>
+                                                <select v-model="configData.task.medicine.route" class="form-control">
+                                                    <option value="pharmacy_to_ward">药房到病房</option>
+                                                    <option value="central_to_dept">中心药房到科室</option>
+                                                    <option value="emergency_route">急救药品路线</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-temperature-low"></i> 温控要求</label>
+                                                <select v-model="configData.task.medicine.tempControl" class="form-control">
+                                                    <option value="normal">常温</option>
+                                                    <option value="cool">冷藏(2-8°C)</option>
+                                                    <option value="freeze">冷冻(<-18°C)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-shield-alt"></i> 安全等级</label>
+                                                <select v-model="configData.task.medicine.safetyLevel" class="form-control">
+                                                    <option value="general">普通药品</option>
+                                                    <option value="controlled">管制药品</option>
+                                                    <option value="emergency">急救药品</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-check-circle"></i> 签收确认</label>
+                                                <div class="form-switch">
+                                                    <input type="checkbox" v-model="configData.task.medicine.signConfirm" :checked="configData.task.medicine.signConfirm">
+                                                    <label>开启</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 银行巡检模式配置 -->
+                                    <div v-if="switchSelectedSubMode === 'bank'" class="submode-form">
+                                        <h4 style="margin: 20px 0 15px 0; color: var(--bank-color); display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-university"></i> 银行巡检模式配置
+                                        </h4>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-route"></i> 巡检路线</label>
+                                                <select v-model="configData.task.bank.route" class="form-control">
+                                                    <option value="lobby">营业大厅</option>
+                                                    <option value="vip_area">VIP区域</option>
+                                                    <option value="atm_area">ATM区域</option>
+                                                    <option value="full">全区域巡检</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-clock"></i> 巡检频率（分钟）</label>
+                                                <input type="number" v-model="configData.task.bank.frequency" class="form-control" min="10" max="120">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-camera"></i> 视频监控</label>
+                                                <div class="form-switch">
+                                                    <input type="checkbox" v-model="configData.task.bank.videoMonitor" :checked="configData.task.bank.videoMonitor">
+                                                    <label>开启</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-exclamation-triangle"></i> 异常报警</label>
+                                                <div class="form-switch">
+                                                    <input type="checkbox" v-model="configData.task.bank.alert" :checked="configData.task.bank.alert">
+                                                    <label>开启</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 清洁任务模式配置 -->
+                                    <div v-if="switchSelectedSubMode === 'clean'" class="submode-form">
+                                        <h4 style="margin: 20px 0 15px 0; color: var(--clean-color); display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-broom"></i> 清洁任务模式配置
+                                        </h4>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-map"></i> 清洁区域</label>
+                                                <select v-model="configData.task.clean.area" class="form-control">
+                                                    <option value="floor">地面清洁</option>
+                                                    <option value="window">窗户清洁</option>
+                                                    <option value="full">全面清洁</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-clock"></i> 清洁时间表</label>
+                                                <input type="time" v-model="configData.task.clean.schedule" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-tint"></i> 水量控制</label>
+                                                <div class="form-slider">
+                                                    <input type="range" v-model="configData.task.clean.waterLevel" min="10" max="100" @input="updateCleanWaterLevel">
+                                                    <span>{{ configData.task.clean.waterLevel }}%</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-recycle"></i> 自动回充</label>
+                                                <div class="form-switch">
+                                                    <input type="checkbox" v-model="configData.task.clean.autoCharge" :checked="configData.task.clean.autoCharge">
+                                                    <label>开启</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 安防巡逻模式配置 -->
+                                    <div v-if="switchSelectedSubMode === 'security'" class="submode-form">
+                                        <h4 style="margin: 20px 0 15px 0; color: var(--security-color); display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-shield-alt"></i> 安防巡逻模式配置
+                                        </h4>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-route"></i> 巡逻路线</label>
+                                                <select v-model="configData.task.security.route" class="form-control">
+                                                    <option value="perimeter">周边巡逻</option>
+                                                    <option value="keypoints">重点区域巡逻</option>
+                                                    <option value="random">随机巡逻</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-user-secret"></i> 巡逻模式</label>
+                                                <select v-model="configData.task.security.mode" class="form-control">
+                                                    <option value="continuous">持续巡逻</option>
+                                                    <option value="interval">间隔巡逻</option>
+                                                    <option value="event">事件触发巡逻</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-camera"></i> 红外夜视</label>
+                                                <div class="form-switch">
+                                                    <input type="checkbox" v-model="configData.task.security.nightVision" :checked="configData.task.security.nightVision">
+                                                    <label>开启</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><i class="fas fa-bell"></i> 入侵报警</label>
+                                                <div class="form-switch">
+                                                    <input type="checkbox" v-model="configData.task.security.intrusionAlert" :checked="configData.task.security.intrusionAlert">
+                                                    <label>开启</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 充电模式配置 -->
+                                <div class="mode-config-form" :class="{ active: switchSelectedMode === 'charge' }">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-battery-quarter"></i> 低电量阈值</label>
+                                            <div class="form-slider">
+                                                <input type="range" v-model="configData.charge.threshold" min="10" max="40" @input="updateChargeThreshold">
+                                                <span>{{ configData.charge.threshold }}%</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-plug"></i> 充电优先级</label>
+                                            <select v-model="configData.charge.priority" class="form-control">
+                                                <option value="immediate">立即充电</option>
+                                                <option value="complete">完成当前任务后充电</option>
+                                                <option value="schedule">定时充电</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-battery-full"></i> 充满电阈值</label>
+                                            <input type="number" v-model="configData.charge.full" class="form-control" min="80" max="100">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-bell"></i> 充电完成提醒</label>
+                                            <div class="form-switch">
+                                                <input type="checkbox" v-model="configData.charge.alert" :checked="configData.charge.alert">
+                                                <label>开启</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-temperature-high"></i> 充电温度保护</label>
+                                            <div class="form-switch">
+                                                <input type="checkbox" v-model="configData.charge.tempProtect" :checked="configData.charge.tempProtect">
+                                                <label>开启</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-history"></i> 充电记录保存</label>
+                                            <div class="form-switch">
+                                                <input type="checkbox" v-model="configData.charge.saveLog" :checked="configData.charge.saveLog">
+                                                <label>开启</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 配置操作按钮 -->
+                                <div class="form-actions">
+                                    <button class="btn btn-primary" @click="saveModeConfig">
+                                        <i class="fas fa-save"></i> 保存当前配置
+                                    </button>
+                                    <button class="btn btn-secondary" @click="resetCurrentModeConfig">
+                                        <i class="fas fa-undo"></i> 重置当前配置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- 切换确认区域 -->
                         <div class="switch-confirm-section">
                             <div class="switch-info">
                                 <i class="fas fa-info-circle"></i>
-                                <p>切换模式将立即生效，当前任务会被中断（充电模式除外）</p>
+                                <p>{{ getSwitchWarningText() }}</p>
                             </div>
                             <button id="confirm-mode-switch" class="btn btn-primary" @click="confirmModeSwitch">
                                 <i class="fas fa-check"></i> 确认切换模式
@@ -2053,7 +2347,7 @@
                                 <button id="emergency-stop" class="quick-operation-btn btn-danger" @click="emergencyStop">
                                     <i class="fas fa-stop-circle"></i> 全部紧急停止
                                 </button>
-                                <button id="refresh-status" class="quick-operation-btn btn-secondary" @click="refreshStatus">
+                                <button id="refresh-status" class="quick-operation-btn btn-success" @click="refreshStatus">
                                     <i class="fas fa-sync-alt"></i> 刷新状态
                                 </button>
                                 <button id="test-alert" class="quick-operation-btn btn-warning" @click="testAlert">
@@ -2096,41 +2390,68 @@
                 // 当前选中的机器人
                 const selectedRobot = ref(null);
                 
-                // 模式配置相关
-                const activeMode = ref('cruise'); // 当前选中的模式卡片
+                // 模式切换相关
+                const switchSelectedRobot = ref('all'); // 选择的机器人
+                const switchSelectedMode = ref('standby'); // 选择的大模式
+                const switchSelectedSubMode = ref('medicine'); // 选择的任务子模式
+                
+                // 模式配置数据
                 const configData = ref({
-                    cruise: {
-                        route: 'route1',
-                        interval: 15,
-                        precision: 'medium',
-                        sound: true
-                    },
                     standby: {
                         trigger: 'schedule',
                         time: '08:00',
-                        power: 30,
-                        wifi: true
+                        power: 20,
+                        wifi: true,
+                        tempProtect: true,
+                        wakeBattery: 30
+                    },
+                    maintenance: {
+                        permission: 'advanced',
+                        timeout: 30,
+                        safetyLock: true,
+                        warningAlert: true,
+                        diagnostic: 'comprehensive',
+                        logLevel: 'debug'
                     },
                     task: {
-                        commands: `# 示例任务指令
-move_to(10,20)
-scan_area()
-take_photo()
-return_base()`,
-                        repeat: 1,
-                        retry: true
+                        robotSelection: 'all',
+                        priority: 'medium',
+                        retryCount: 2,
+                        timeout: 60,
+                        medicine: {
+                            route: 'pharmacy_to_ward',
+                            tempControl: 'normal',
+                            safetyLevel: 'general',
+                            signConfirm: true
+                        },
+                        bank: {
+                            route: 'lobby',
+                            frequency: 30,
+                            videoMonitor: true,
+                            alert: true
+                        },
+                        clean: {
+                            area: 'floor',
+                            schedule: '09:00',
+                            waterLevel: 60,
+                            autoCharge: true
+                        },
+                        security: {
+                            route: 'perimeter',
+                            mode: 'continuous',
+                            nightVision: true,
+                            intrusionAlert: true
+                        }
                     },
                     charge: {
-                        threshold: 20,
-                        priority: 'immediate',
-                        full: 100,
-                        alert: true
+                        threshold: 25,
+                        priority: 'complete',
+                        full: 95,
+                        alert: true,
+                        tempProtect: true,
+                        saveLog: true
                     }
                 });
-                
-                // 模式切换相关
-                const switchSelectedRobot = ref('all'); // 选择的机器人
-                const switchSelectedMode = ref('cruise'); // 选择的模式
                 
                 // 历史记录相关
                 const historyFilterType = ref('all');
@@ -2149,7 +2470,7 @@ return_base()`,
                         time: '2024-01-31 09:25:18',
                         type: 'mode-switch',
                         robot: '所有机器人',
-                        content: '从巡航模式切换为任务模式',
+                        content: '从任务模式切换为待机模式',
                         operator: '管理员',
                         status: 'success'
                     },
@@ -2158,7 +2479,7 @@ return_base()`,
                         time: '2024-01-31 08:10:45',
                         type: 'config-change',
                         robot: '机器人A',
-                        content: '修改巡航模式间隔为20分钟',
+                        content: '修改待机模式功耗为20%',
                         operator: '管理员',
                         status: 'success'
                     },
@@ -2167,7 +2488,7 @@ return_base()`,
                         time: '2024-01-30 17:45:22',
                         type: 'alert',
                         robot: '机器人B',
-                        content: '电量低于20%，触发低电量告警',
+                        content: '电量低于25%，触发低电量告警',
                         operator: '系统',
                         status: 'warning'
                     },
@@ -2203,7 +2524,7 @@ return_base()`,
                         time: '2024-01-29 14:05:12',
                         type: 'alert',
                         robot: '机器人A',
-                        content: '偏离预设巡航路线，触发路线偏离告警',
+                        content: '偏离预设巡检路线，触发路线偏离告警',
                         operator: '系统',
                         status: 'warning'
                     },
@@ -2212,7 +2533,7 @@ return_base()`,
                         time: '2024-01-29 09:40:28',
                         type: 'mode-switch',
                         robot: '机器人B',
-                        content: '从任务模式切换为待机模式',
+                        content: '从药品配送模式切换为银行巡检模式',
                         operator: '管理员',
                         status: 'success'
                     },
@@ -2233,11 +2554,11 @@ return_base()`,
                         id: 1, 
                         name: '机器人A', 
                         groupId: 1, 
-                        groupName: '配送机器人组', 
+                        groupName: '配送机器人', 
                         battery: 85, 
                         status: 'online', 
                         location: '药房',
-                        currentMode: '任务模式', // 修改为任务模式
+                        currentMode: '任务模式',
                         runtime: '125小时',
                         speed: '1.2m/s',
                         temperature: '28°C',
@@ -2247,11 +2568,11 @@ return_base()`,
                         id: 2, 
                         name: '机器人B', 
                         groupId: 1, 
-                        groupName: '配送机器人组', 
+                        groupName: '配送机器人', 
                         battery: 42, 
                         status: 'low_battery', 
                         location: '病房区',
-                        currentMode: '任务模式', // 修改为任务模式
+                        currentMode: '任务模式',
                         runtime: '89小时',
                         speed: '0.8m/s',
                         temperature: '32°C',
@@ -2261,11 +2582,11 @@ return_base()`,
                         id: 3, 
                         name: '机器人C', 
                         groupId: 2, 
-                        groupName: '巡检机器人组', 
+                        groupName: '巡检机器人', 
                         battery: 92, 
                         status: 'online', 
                         location: '门诊大厅',
-                        currentMode: '巡航模式', // 修改为巡航模式
+                        currentMode: '银行巡检模式',
                         runtime: '156小时',
                         speed: '0.5m/s',
                         temperature: '30°C',
@@ -2275,11 +2596,11 @@ return_base()`,
                         id: 4, 
                         name: '机器人D', 
                         groupId: 3, 
-                        groupName: '清洁机器人组', 
+                        groupName: '清洁机器人', 
                         battery: 78, 
                         status: 'online', 
                         location: '走廊',
-                        currentMode: '任务模式', // 修改为任务模式
+                        currentMode: '清洁任务模式',
                         runtime: '210小时',
                         speed: '0.3m/s',
                         temperature: '26°C',
@@ -2289,11 +2610,11 @@ return_base()`,
                         id: 5, 
                         name: '机器人E', 
                         groupId: 1, 
-                        groupName: '安防机器人组', 
+                        groupName: '安防机器人', 
                         battery: 15, 
                         status: 'offline', 
                         location: '监控室',
-                        currentMode: '待机模式', // 修改为待机模式
+                        currentMode: '待机模式',
                         runtime: '92小时',
                         speed: '0m/s',
                         temperature: '31°C',
@@ -2304,7 +2625,6 @@ return_base()`,
                 // 页面标题映射
                 const modeTitles = {
                     'status': '状态监控',
-                    'config': '模式配置',
                     'switch': '模式切换',
                     'history': '历史记录',
                     'quick': '快速操作'
@@ -2334,12 +2654,26 @@ return_base()`,
                 // 当前生效模式显示
                 const activeModeDisplay = computed(() => {
                     const modeNameMap = {
-                        'cruise': '巡航模式',
                         'standby': '待机模式',
+                        'maintenance': '维护模式',
                         'task': '任务模式',
                         'charge': '充电模式'
                     };
-                    return modeNameMap[switchSelectedMode.value] || '巡航模式';
+                    
+                    let display = modeNameMap[switchSelectedMode.value] || '待机模式';
+                    
+                    // 如果是任务模式，显示具体的子模式
+                    if (switchSelectedMode.value === 'task') {
+                        const subModeNameMap = {
+                            'medicine': '药品配送模式',
+                            'bank': '银行巡检模式',
+                            'clean': '清洁任务模式',
+                            'security': '安防巡逻模式'
+                        };
+                        display = subModeNameMap[switchSelectedSubMode.value] || '药品配送模式';
+                    }
+                    
+                    return display;
                 });
                 
                 // 分组后的机器人数据
@@ -2451,16 +2785,6 @@ return_base()`,
                     }
                 };
                 
-                // 根据机器人状态获取状态图标类
-                const getRobotStatusIconClass = (robot) => {
-                    switch(robot.status) {
-                        case 'online': return 'robot-status-success';
-                        case 'low_battery': return 'robot-status-warning';
-                        case 'offline': return 'robot-status-danger';
-                        default: return 'robot-status-danger';
-                    }
-                };
-                
                 // 根据电量获取颜色
                 const getBatteryColor = (battery) => {
                     if (battery >= 80) return 'var(--success-color)';
@@ -2508,8 +2832,13 @@ return_base()`,
                     }
                 };
                 
-                // 切换模式标签页
-                const switchModeTab = (tab) => {
+                const switchModeTab = (tab, event) => {
+                    // 如果有event参数，阻止默认行为
+                    if (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    
                     activeModeTab.value = tab;
                     // 切换到历史记录页面时重置筛选条件
                     if (tab === 'history') {
@@ -2667,8 +2996,8 @@ return_base()`,
                         const defaultStates = [
                             { status: 'online', battery: 85, currentMode: '任务模式' },
                             { status: 'low_battery', battery: 42, currentMode: '任务模式' },
-                            { status: 'online', battery: 92, currentMode: '巡航模式' },
-                            { status: 'online', battery: 78, currentMode: '任务模式' },
+                            { status: 'online', battery: 92, currentMode: '银行巡检模式' },
+                            { status: 'online', battery: 78, currentMode: '清洁任务模式' },
                             { status: 'offline', battery: 15, currentMode: '待机模式' }
                         ];
                         
@@ -2704,7 +3033,7 @@ return_base()`,
                         if (robot.id === 1) { // 机器人A
                             robot.status = 'low_battery';
                             robot.battery = 15;
-                            robot.currentMode = '巡航中 | 电量15%（低电量告警）';
+                            robot.currentMode = '药品配送模式 | 电量15%（低电量告警）';
                         }
                     });
                     
@@ -2794,13 +3123,13 @@ return_base()`,
                     updateLastUpdateTime();
                 };
                 
-                // 切换模式卡片（配置页面）
-                const switchModeCard = (mode) => {
-                    activeMode.value = mode;
-                };
-                
                 // 更新待机功耗值显示
                 const updateStandbyPower = () => {
+                    // Vue的双向绑定已经处理，这里不需要额外操作
+                };
+                
+                // 更新清洁水量显示
+                const updateCleanWaterLevel = () => {
                     // Vue的双向绑定已经处理，这里不需要额外操作
                 };
                 
@@ -2812,30 +3141,46 @@ return_base()`,
                 // 保存模式配置
                 const saveModeConfig = () => {
                     const modeNames = {
-                        'cruise': '巡航',
                         'standby': '待机',
+                        'maintenance': '维护',
                         'task': '任务',
                         'charge': '充电'
                     };
                     
+                    let modeName = modeNames[switchSelectedMode.value] || '模式';
+                    
+                    // 如果是任务模式，显示具体的子模式名称
+                    if (switchSelectedMode.value === 'task') {
+                        const subModeNames = {
+                            'medicine': '药品配送',
+                            'bank': '银行巡检',
+                            'clean': '清洁任务',
+                            'security': '安防巡逻'
+                        };
+                        const subModeName = subModeNames[switchSelectedSubMode.value] || '任务';
+                        modeName = `任务模式（${subModeName}）`;
+                    }
+                    
                     updateLastSaveTime();
-                    ElMessage.success(`已成功保存${modeNames[activeMode.value]}模式配置！`);
+                    ElMessage.success(`已成功保存${modeName}配置！`);
                     
                     // 记录操作历史
                     addHistoryRecord({
                         time: new Date().toLocaleString('zh-CN'),
                         type: 'config-change',
                         robot: '系统配置',
-                        content: `保存${modeNames[activeMode.value]}模式配置`,
+                        content: `保存${modeName}配置`,
                         operator: '管理员',
                         status: 'success'
                     });
                 };
                 
-                // 重置模式配置
-                const resetModeConfig = () => {
+                // 重置当前模式配置
+                const resetCurrentModeConfig = () => {
+                    const modeName = getModeName(switchSelectedMode.value);
+                    
                     ElMessageBox.confirm(
-                        '确定要重置所有模式配置为默认值吗？',
+                        `确定要重置${modeName}配置为默认值吗？`,
                         '重置配置确认',
                         {
                             confirmButtonText: '确定',
@@ -2843,49 +3188,83 @@ return_base()`,
                             type: 'warning',
                         }
                     ).then(() => {
-                        // 重置巡航模式
-                        configData.value.cruise = {
-                            route: 'route1',
-                            interval: 15,
-                            precision: 'medium',
-                            sound: true
-                        };
+                        // 根据当前选择的模式重置配置
+                        const mode = switchSelectedMode.value;
                         
-                        // 重置待机模式
-                        configData.value.standby = {
-                            trigger: 'schedule',
-                            time: '08:00',
-                            power: 30,
-                            wifi: true
-                        };
+                        if (mode === 'standby') {
+                            configData.value.standby = {
+                                trigger: 'schedule',
+                                time: '08:00',
+                                power: 20,
+                                wifi: true,
+                                tempProtect: true,
+                                wakeBattery: 30
+                            };
+                        } else if (mode === 'maintenance') {
+                            configData.value.maintenance = {
+                                permission: 'advanced',
+                                timeout: 30,
+                                safetyLock: true,
+                                warningAlert: true,
+                                diagnostic: 'comprehensive',
+                                logLevel: 'debug'
+                            };
+                        } else if (mode === 'task') {
+                            // 重置任务模式通用配置
+                            configData.value.task.robotSelection = 'all';
+                            configData.value.task.priority = 'medium';
+                            configData.value.task.retryCount = 2;
+                            configData.value.task.timeout = 60;
+                            
+                            // 根据当前子模式重置具体配置
+                            if (switchSelectedSubMode.value === 'medicine') {
+                                configData.value.task.medicine = {
+                                    route: 'pharmacy_to_ward',
+                                    tempControl: 'normal',
+                                    safetyLevel: 'general',
+                                    signConfirm: true
+                                };
+                            } else if (switchSelectedSubMode.value === 'bank') {
+                                configData.value.task.bank = {
+                                    route: 'lobby',
+                                    frequency: 30,
+                                    videoMonitor: true,
+                                    alert: true
+                                };
+                            } else if (switchSelectedSubMode.value === 'clean') {
+                                configData.value.task.clean = {
+                                    area: 'floor',
+                                    schedule: '09:00',
+                                    waterLevel: 60,
+                                    autoCharge: true
+                                };
+                            } else if (switchSelectedSubMode.value === 'security') {
+                                configData.value.task.security = {
+                                    route: 'perimeter',
+                                    mode: 'continuous',
+                                    nightVision: true,
+                                    intrusionAlert: true
+                                };
+                            }
+                        } else if (mode === 'charge') {
+                            configData.value.charge = {
+                                threshold: 25,
+                                priority: 'complete',
+                                full: 95,
+                                alert: true,
+                                tempProtect: true,
+                                saveLog: true
+                            };
+                        }
                         
-                        // 重置任务模式
-                        configData.value.task = {
-                            commands: `# 示例任务指令
-move_to(10,20)
-scan_area()
-take_photo()
-return_base()`,
-                            repeat: 1,
-                            retry: true
-                        };
-                        
-                        // 重置充电模式
-                        configData.value.charge = {
-                            threshold: 20,
-                            priority: 'immediate',
-                            full: 100,
-                            alert: true
-                        };
-                        
-                        ElMessage.success('所有模式配置已重置为默认值！');
+                        ElMessage.success(`${modeName}配置已重置为默认值！`);
                         
                         // 记录操作历史
                         addHistoryRecord({
                             time: new Date().toLocaleString('zh-CN'),
                             type: 'config-change',
-                            robot: '所有机器人',
-                            content: '重置所有模式配置为默认值',
+                            robot: '系统配置',
+                            content: `重置${modeName}配置为默认值`,
                             operator: '管理员',
                             status: 'success'
                         });
@@ -2894,17 +3273,73 @@ return_base()`,
                     });
                 };
                 
-                // 选择切换模式（模式切换页面）
+                // 获取模式名称
+                const getModeName = (mode) => {
+                    const modeNames = {
+                        'standby': '待机模式',
+                        'maintenance': '维护模式',
+                        'task': '任务模式',
+                        'charge': '充电模式'
+                    };
+                    
+                    let name = modeNames[mode] || '模式';
+                    
+                    // 如果是任务模式，显示具体的子模式名称
+                    if (mode === 'task') {
+                        const subModeNames = {
+                            'medicine': '药品配送模式',
+                            'bank': '银行巡检模式',
+                            'clean': '清洁任务模式',
+                            'security': '安防巡逻模式'
+                        };
+                        name = subModeNames[switchSelectedSubMode.value] || '任务模式';
+                    }
+                    
+                    return name;
+                };
+                
+                // 选择切换大模式（模式切换页面）
                 const selectSwitchMode = (mode) => {
                     switchSelectedMode.value = mode;
+                    // 如果切换到任务模式，默认选择第一个子模式
+                    if (mode === 'task') {
+                        switchSelectedSubMode.value = 'medicine';
+                    }
+                };
+                
+                // 选择切换任务子模式（模式切换页面）
+                const selectSwitchSubMode = (subMode) => {
+                    switchSelectedSubMode.value = subMode;
+                };
+                
+                // 获取切换警告文本
+                const getSwitchWarningText = () => {
+                    const mode = switchSelectedMode.value;
+                    if (mode === 'maintenance') {
+                        return '切换到维护模式将暂停所有任务，机器人将进入调试状态';
+                    } else if (mode === 'charge') {
+                        return '切换到充电模式将中断当前任务，机器人将返回充电站';
+                    } else if (mode === 'standby') {
+                        return '切换到待机模式将降低功耗，等待手动或定时唤醒';
+                    } else if (mode === 'task') {
+                        const subModeNameMap = {
+                            'medicine': '药品配送模式',
+                            'bank': '银行巡检模式',
+                            'clean': '清洁任务模式',
+                            'security': '安防巡逻模式'
+                        };
+                        const subModeName = subModeNameMap[switchSelectedSubMode.value] || '任务模式';
+                        return `切换到${subModeName}将执行相应的任务指令`;
+                    }
+                    return '切换模式将立即生效，当前任务会被中断（充电模式除外）';
                 };
                 
                 // 确认切换模式
                 const confirmModeSwitch = () => {
-                    // 模式名称映射
+                    // 大模式名称映射
                     const modeNameMap = {
-                        'cruise': '巡航模式',
                         'standby': '待机模式',
+                        'maintenance': '维护模式',
                         'task': '任务模式',
                         'charge': '充电模式'
                     };
@@ -2918,9 +3353,23 @@ return_base()`,
                         robotName = robot ? robot.name : '未知机器人';
                     }
                     
+                    // 确定模式名称
+                    let modeName = modeNameMap[switchSelectedMode.value] || '待机模式';
+                    
+                    // 如果是任务模式，显示具体的子模式名称
+                    if (switchSelectedMode.value === 'task') {
+                        const subModeNameMap = {
+                            'medicine': '药品配送模式',
+                            'bank': '银行巡检模式',
+                            'clean': '清洁任务模式',
+                            'security': '安防巡逻模式'
+                        };
+                        modeName = subModeNameMap[switchSelectedSubMode.value] || '药品配送模式';
+                    }
+                    
                     // 确认弹窗
                     ElMessageBox.confirm(
-                        `确定要将${robotName}切换为${modeNameMap[switchSelectedMode.value]}吗？`,
+                        `确定要将${robotName}切换为${modeName}吗？`,
                         '模式切换确认',
                         {
                             confirmButtonText: '确定',
@@ -2933,14 +3382,14 @@ return_base()`,
                             // 切换所有机器人
                             robots.value.forEach(robot => {
                                 if (robot.status !== 'offline') {
-                                    robot.currentMode = modeNameMap[switchSelectedMode.value];
+                                    robot.currentMode = modeName;
                                 }
                             });
                         } else {
                             // 切换单个机器人
                             const robot = robots.value.find(r => r.id == switchSelectedRobot.value);
                             if (robot && robot.status !== 'offline') {
-                                robot.currentMode = modeNameMap[switchSelectedMode.value];
+                                robot.currentMode = modeName;
                             }
                         }
                         
@@ -2949,12 +3398,12 @@ return_base()`,
                             time: new Date().toLocaleString('zh-CN'),
                             type: 'mode-switch',
                             robot: robotName,
-                            content: `从${robotName === '所有机器人' ? '当前模式' : robotName}切换为${modeNameMap[switchSelectedMode.value]}`,
+                            content: `切换为${modeName}（应用当前配置）`,
                             operator: '管理员',
                             status: 'success'
                         });
                         
-                        ElMessage.success(`已成功将${robotName}切换为${modeNameMap[switchSelectedMode.value]}，指令已下发！`);
+                        ElMessage.success(`已成功将${robotName}切换为${modeName}，当前配置已生效！`);
                     }).catch(() => {
                         // 用户取消操作
                     });
@@ -3042,7 +3491,6 @@ return_base()`,
                 return {
                     expandedMenu,
                     activeModeTab,
-                    activeMode,
                     lastUpdateTime,
                     lastSaveTime,
                     selectedRobot,
@@ -3052,6 +3500,7 @@ return_base()`,
                     configData,
                     switchSelectedRobot,
                     switchSelectedMode,
+                    switchSelectedSubMode,
                     historyFilterType,
                     historyFilterDate,
                     historyCurrentPage,
@@ -3073,15 +3522,14 @@ return_base()`,
                     getStatusText,
                     getStatusClass,
                     getStatusColor,
-                    getRobotStatusIconClass,
                     getBatteryColor,
                     getGroupStatusClass,
                     getGroupStatusText,
+                    getSwitchWarningText,
                     updateLastUpdateTime,
                     updateLastSaveTime,
                     toggleMenu,
                     switchModeTab,
-                    switchModeCard,
                     selectRobot,
                     refreshData,
                     sendCommand,
@@ -3091,10 +3539,12 @@ return_base()`,
                     batchRestart,
                     clearAlerts,
                     saveModeConfig,
-                    resetModeConfig,
+                    resetCurrentModeConfig,
                     updateStandbyPower,
+                    updateCleanWaterLevel,
                     updateChargeThreshold,
                     selectSwitchMode,
+                    selectSwitchSubMode,
                     confirmModeSwitch,
                     filterHistory,
                     clearHistoryFilter,
