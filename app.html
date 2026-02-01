@@ -523,34 +523,38 @@
                 </a>
 
                 <!-- 交互应用管理 - 当前页面高亮 -->
-                <div class="nav-item-wrapper">
-                    <div 
-                        class="nav-item active-parent"
-                        :class="{ 'expanded': expandedMenu === 'appManagement' }"
+               <div class="nav-item-wrapper">
+                <div
+                        class="nav-item"
+                        :class="{ 'active-parent': expandedMenu === 'appManagement', 'expanded': expandedMenu === 'appManagement' }"
                         @click="toggleMenu('appManagement')"
-                    >
-                        <i class="fas fa-cogs"></i>
-                        <span class="nav-text">交互应用管理</span>
-                        <i 
-                            class="fas fa-chevron-down arrow-icon" 
+                >
+                    <i class="fas fa-cogs"></i>
+                    <span class="nav-text">交互应用管理</span>
+                    <i
+                            class="fas fa-chevron-down arrow-icon"
                             :class="{ 'rotated': expandedMenu === 'appManagement' }"
-                        ></i>
-                    </div>
-                    <div class="sub-nav-menu" v-show="expandedMenu === 'appManagement'">
-                        <a href="app.html#appLibrary" class="nav-item sub-item" :class="{ active: activeNav === 'appLibrary' }" @click="setActiveNav('appLibrary')">
-                            <i class="fas fa-th"></i>
-                            <span class="nav-text">应用库管理</span>
-                        </a>
-                        <a href="app.html#appConfig" class="nav-item sub-item" :class="{ active: activeNav === 'appConfig' }" @click="setActiveNav('appConfig')">
-                            <i class="fas fa-sliders-h"></i>
-                            <span class="nav-text">应用配置管理</span>
-                        </a>
-                        <a href="app.html#appUpdate" class="nav-item sub-item" :class="{ active: activeNav === 'appUpdate' }" @click="setActiveNav('appUpdate')">
-                            <i class="fas fa-sync-alt"></i>
-                            <span class="nav-text">应用更新管理</span>
-                        </a>
-                    </div>
+                    ></i>
                 </div>
+
+                <div class="sub-nav-menu" v-show="expandedMenu === 'appManagement'">
+                    <a href="app.html#appLibrary" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'appLibrary' }" @click="setActiveNav('appLibrary')">
+                        <i class="fas fa-th"></i>
+                        <span class="nav-text">应用库管理</span>
+                    </a>
+                    <a href="app.html#appConfig" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'appConfig' }" @click="setActiveNav('appConfig')">
+                        <i class="fas fa-sliders-h"></i>
+                        <span class="nav-text">应用配置管理</span>
+                    </a>
+                    <a href="app.html#appUpdate" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'appUpdate' }" @click="setActiveNav('appUpdate')">
+                        <i class="fas fa-sync-alt"></i>
+                        <span class="nav-text">应用更新管理</span>
+                    </a>
+                </div>
+            </div>
 
                 <!-- 模式管理折叠菜单（修复a标签嵌套问题） -->
                 <div class="nav-item-wrapper">
@@ -1248,3 +1252,4 @@
     </script>
 </body>
 </html>
+
