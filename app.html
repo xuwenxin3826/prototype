@@ -552,6 +552,45 @@
                     </div>
                 </div>
 
+                <div class="nav-item-wrapper">
+                <!-- 模式管理折叠菜单 -->
+                <a 
+                   href="mode.html#status" 
+                   class="nav-item"
+                   :class="{ expanded: expandedMenu === 'modeManagement' }"
+                   @click.stop="toggleMenu('modeManagement')"
+                >
+                   <i class="fas fa-cogs"></i>
+                   <span class="nav-text">模式管理</span>
+                   <i 
+                     class="fas fa-chevron-down arrow-icon" 
+                     :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+                   ></i>
+                 </a>
+
+                 <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
+                   <a href="mode.html#status" class="nav-item sub-item">
+                     <i class="fas fa-heartbeat"></i>
+                     <span class="nav-text">状态监控</span>
+                   </a>
+                   <a href="mode.html#config" class="nav-item sub-item">
+                     <i class="fas fa-sliders-h"></i>
+                     <span class="nav-text">模式配置</span>
+                   </a>
+                   <a href="mode.html#switch" class="nav-item sub-item">
+                     <i class="fas fa-exchange-alt"></i>
+                     <span class="nav-text">模式切换</span>
+                   </a>
+                   <a href="mode.html#history" class="nav-item sub-item">
+                     <i class="fas fa-history"></i>
+                     <span class="nav-text">历史记录</span>
+                   </a>
+                   <a href="mode.html#quick" class="nav-item sub-item">
+                     <i class="fas fa-bolt"></i>
+                     <span class="nav-text">快速操作</span>
+                   </a>
+               </div>
+           </div>
                 <!-- 数据管理与分析 -->
                 <div class="nav-item-wrapper">
                     <div 
@@ -1658,4 +1697,5 @@
         }).use(ElementPlus).mount('#app');
     </script>
 </body>
+
 </html>
