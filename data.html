@@ -2455,6 +2455,10 @@
             </div>
             
             <div class="nav-menu">
+		<a href="index.html" class="nav-item">
+    			<i class="fas fa-home"></i>
+    			<span class="nav-text">首页</span>
+		</a>
                 <!-- 任务管理 -->
                 <div class="nav-item-wrapper">
                     <div 
@@ -2471,19 +2475,19 @@
                     </div>
                     
                     <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
-                        <a href="index.html#templates" class="nav-item sub-item">
+                        <a href="tasks.html#templates" class="nav-item sub-item">
                             <i class="fas fa-clipboard-list"></i>
                             <span class="nav-text">模板管理</span>
                         </a>
-                        <a href="index.html#tasks" class="nav-item sub-item">
+                        <a href="tasks.html#tasks" class="nav-item sub-item">
                             <i class="fas fa-list-ul"></i>
                             <span class="nav-text">任务列表</span>
                         </a>
-                        <a href="index.html#scheduling" class="nav-item sub-item">
+                        <a href="tasks.html#scheduling" class="nav-item sub-item">
                             <i class="fas fa-calendar-alt"></i>
                             <span class="nav-text">任务调度</span>
                         </a>
-                        <a href="index.html#monitoring" class="nav-item sub-item">
+                        <a href="tasks.html#monitoring" class="nav-item sub-item">
                             <i class="fas fa-eye"></i>
                             <span class="nav-text">任务监控</span>
                         </a>
@@ -2495,7 +2499,7 @@
                     <i class="fas fa-robot"></i>
                     <span class="nav-text">机器人管理</span>
                 </a>
-                <!-- 交互应用管理 - 当前页面高亮 -->
+                <!-- 交互应用管理 - >
                 <div class="nav-item-wrapper">
                 <div
                         class="nav-item"

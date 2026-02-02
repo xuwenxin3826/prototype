@@ -509,6 +509,10 @@
             </div>
             
             <div class="nav-menu">
+		<a href="index.html" class="nav-item">
+    			<i class="fas fa-home"></i>
+    			<span class="nav-text">首页</span>
+		</a>
                 <!-- 任务管理折叠菜单 -->
                 <div class="nav-item-wrapper">
                     <div 
@@ -527,19 +531,19 @@
                         ></i>
                     </div>
                     <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
-                        <a href="index.html#templates" class="nav-item sub-item" :class="{ active: activeNav === 'templates' }">
+                        <a href="tasks.html#templates" class="nav-item sub-item" :class="{ active: activeNav === 'templates' }">
                             <i class="fas fa-clipboard-list"></i>
                             <span class="nav-text">模板管理</span>
                         </a>
-                        <a href="index.html#tasks" class="nav-item sub-item" :class="{ active: activeNav === 'tasks' }">
+                        <a href="tasks.html#tasks" class="nav-item sub-item" :class="{ active: activeNav === 'tasks' }">
                             <i class="fas fa-list-ul"></i>
                             <span class="nav-text">任务列表</span>
                         </a>
-                        <a href="index.html#scheduling" class="nav-item sub-item" :class="{ active: activeNav === 'scheduling' }">
+                        <a href="tasks.html#scheduling" class="nav-item sub-item" :class="{ active: activeNav === 'scheduling' }">
                             <i class="fas fa-calendar-alt"></i>
                             <span class="nav-text">任务调度</span>
                         </a>
-                        <a href="index.html#monitoring" class="nav-item sub-item" :class="{ active: activeNav === 'monitoring' }">
+                        <a href="tasks.html#monitoring" class="nav-item sub-item" :class="{ active: activeNav === 'monitoring' }">
                             <i class="fas fa-eye"></i>
                             <span class="nav-text">任务监控</span>
                         </a>
