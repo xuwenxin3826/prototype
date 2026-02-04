@@ -2592,7 +2592,7 @@
                             href="#tools" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'tools' }"
-                            @click="handleSubMenuClick('tools')"
+                            @click="handleSubMenuClick($event, 'tools')"
                         >
                             <i class="fas fa-database"></i>
                             <span class="nav-text">数据管理工具</span>
@@ -2601,7 +2601,7 @@
                             href="#dashboard" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'dashboard' }"
-                            @click="handleSubMenuClick('dashboard')"
+                            @click="handleSubMenuClick($event, 'dashboard')"
                         >
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="nav-text">数据仪表盘</span>
@@ -2610,7 +2610,7 @@
                             href="#metrics" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'metrics' }"
-                            @click="handleSubMenuClick('metrics')"
+                            @click="handleSubMenuClick($event, 'metrics')"
                         >
                             <i class="fas fa-chart-bar"></i>
                             <span class="nav-text">指标分析</span>
@@ -2619,7 +2619,7 @@
                             href="#ai" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'ai' }"
-                            @click="handleSubMenuClick('ai')"
+                            @click="handleSubMenuClick($event, 'ai')"
                         >
                             <i class="fas fa-brain"></i>
                             <span class="nav-text">AI分析</span>
@@ -4747,6 +4747,7 @@
     </script>
 </body>
 </html>
+
 
 
 
