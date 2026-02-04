@@ -2589,37 +2589,37 @@
                     <!-- 修复：确保子按钮高亮逻辑正确 -->
                     <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
                         <a 
-                            href="#tools" 
+                            href="data.html#tools" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'tools' }"
-                            @click="handleSubMenuClick($event, 'tools')"
+                            @click="handleSubMenuClick('tools')"
                         >
                             <i class="fas fa-database"></i>
                             <span class="nav-text">数据管理工具</span>
                         </a>
                         <a 
-                            href="#dashboard" 
+                            href="data.html#dashboard" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'dashboard' }"
-                            @click="handleSubMenuClick($event, 'dashboard')"
+                            @click="handleSubMenuClick('dashboard')"
                         >
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="nav-text">数据仪表盘</span>
                         </a>
                         <a 
-                            href="#metrics" 
+                            href="data.html#metrics" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'metrics' }"
-                            @click="handleSubMenuClick($event, 'metrics')"
+                            @click="handleSubMenuClick('metrics')"
                         >
                             <i class="fas fa-chart-bar"></i>
                             <span class="nav-text">指标分析</span>
                         </a>
                         <a 
-                            href="#ai" 
+                            href="data.html#ai" 
                             class="nav-item sub-item" 
                             :class="{ active: currentTab === 'ai' }"
-                            @click="handleSubMenuClick($event, 'ai')"
+                            @click="handleSubMenuClick('ai')"
                         >
                             <i class="fas fa-brain"></i>
                             <span class="nav-text">AI分析</span>
@@ -4041,10 +4041,8 @@
                 
                 // 子菜单点击处理，阻止默认跳转并手动切换
                 const handleSubMenuClick = (tab) => {
-                        event.preventDefault(); // 阻止默认跳转行为
-					    currentTab.value = tab; // 直接设置当前tab
-					    // 更新URL hash
-					    window.location.hash = tab;
+ 					// 阻止默认的页面刷新行为，改为客户端路由
+                    // 注意：这里我们不阻止默认行为，而是让 hash 变化触发 updateFromHash
                 };
             
                 // ========== 数据清洗规则配置 ==========
@@ -4747,6 +4745,7 @@
     </script>
 </body>
 </html>
+
 
 
 
