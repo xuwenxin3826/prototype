@@ -2306,6 +2306,41 @@
             justify-content: space-between;
             align-items: center;
         }
+
+		.field-selection {
+		    border: 1px solid #e8e8e8;
+		    border-radius: 4px;
+		    padding: 12px;
+		    background-color: #fafafa;
+		}
+		
+		.field-group {
+		    margin-bottom: 15px;
+		}
+		
+		.field-group:last-child {
+		    margin-bottom: 0;
+		}
+		
+		.field-group-title {
+		    font-size: 14px;
+		    font-weight: 500;
+		    margin-bottom: 8px;
+		    color: #333;
+		}
+		
+		.field-row {
+		    display: flex;
+		    flex-wrap: wrap;
+		    gap: 15px;
+		    margin-bottom: 8px;
+		}
+		
+		.expression-hint {
+		    margin-top: 8px;
+		    font-size: 12px;
+		    color: #999;
+		}
         
         /* 响应式调整 */
         @media (max-width: 1200px) {
@@ -2666,6 +2701,7 @@
                                     <div class="form-row horizontal">
                                         <label>字段完整性校验</label>
                                         <select v-model="cleaningRules.fieldValidation">
+											<option value="" selected disabled>请选择</option>
                                             <option value="mark">缺失字段标记异常</option>
                                             <option value="discard">缺失字段自动丢弃</option>
                                             <option value="fill">缺失字段填充默认值</option>
@@ -2674,6 +2710,7 @@
                                     <div class="form-row horizontal">
                                         <label>时间格式统一</label>
                                         <select v-model="cleaningRules.timeFormat">
+											<option value="" selected disabled>请选择</option>
                                             <option value="iso8601">ISO 8601</option>
                                             <option value="timestamp_ms">时间戳（毫秒）</option>
                                             <option value="timestamp_s">时间戳（秒）</option>
@@ -2682,6 +2719,7 @@
                                     <div class="form-row horizontal">
                                         <label>状态码映射规则</label>
                                         <select v-model="cleaningRules.statusMapping">
+											<option value="" selected disabled>请选择</option>
                                             <option value="enum">映射为平台统一枚举</option>
                                             <option value="original">保留原始值</option>
                                             <option value="custom">自定义映射表</option>
@@ -2693,6 +2731,7 @@
                                     <div class="form-row horizontal">
                                         <label>异常值过滤策略</label>
                                         <select v-model="cleaningRules.outlierFilter">
+											<option value="" selected disabled>请选择</option>
                                             <option value="mark">标记异常</option>
                                             <option value="filter">直接过滤</option>
                                             <option value="correct">使用统计方法修正</option>
@@ -2701,6 +2740,7 @@
                                     <div class="form-row horizontal">
                                         <label>文本数据清洗</label>
                                         <select v-model="cleaningRules.textCleaning">
+											<option value="" selected disabled>请选择</option>
                                             <option value="html">去除HTML标签</option>
                                             <option value="special">去除特殊字符</option>
                                             <option value="original">保留原始文本</option>
@@ -2709,6 +2749,7 @@
                                     <div class="form-row horizontal">
                                         <label>重复数据处理</label>
                                         <select v-model="cleaningRules.duplicateHandling">
+											<option value="" selected disabled>请选择</option>
                                             <option value="keep_first">保留第一条</option>
                                             <option value="keep_last">保留最后一条</option>
                                             <option value="remove_all">删除所有重复</option>
@@ -2739,6 +2780,7 @@
                                                 <div class="detail-item">
                                                     <label>执行频率</label>
                                                     <select v-model="cleaningRules.scheduleFrequency">
+														<option value="" selected disabled>请选择</option>
                                                         <option value="hourly">每小时</option>
                                                         <option value="daily">每天</option>
                                                         <option value="weekly">每周</option>
@@ -2759,6 +2801,7 @@
                                                 <div class="detail-item" v-if="cleaningRules.scheduleFrequency === 'weekly'">
                                                     <label>执行星期</label>
                                                     <select v-model="cleaningRules.scheduleDay">
+														<option value="" selected disabled>请选择</option>
                                                         <option value="1">星期一</option>
                                                         <option value="2">星期二</option>
                                                         <option value="3">星期三</option>
@@ -3033,7 +3076,7 @@
                     <div class="dashboard-header">
                         <div class="dashboard-controls">
                             <div class="time-range">
-                                <el-select v-model="dashboardTimeRange" size="small" style="width: 120px;">
+                                <el-select v-model="dashboardTimeRange" placeholder="请选择时间" size="small" style="width: 120px;">
                                     <el-option label="今日" value="today"></el-option>
                                     <el-option label="本周" value="week"></el-option>
                                     <el-option label="本月" value="month"></el-option>
@@ -3171,6 +3214,13 @@
                                                 </div>
                                             </div>
                                         </div>
+										<!-- 新增：机器人当前位置图片 -->
+					                    <div class="status-detail robot-location-chart">
+					                        <div class="detail-label">机器人当前位置</div>
+					                        <div class="location-image-container">
+					                            <img src="map.png" alt="机器人当前位置图" class="location-image">
+					                        </div>
+					                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -3226,7 +3276,7 @@
                                 <div class="chart-header">
                                     <h3>用户反馈高频词</h3>
                                     <div class="chart-actions">
-                                        <el-select v-model="feedbackType" size="small" style="width: 100px;">
+                                        <el-select v-model="feedbackType" placeholder="请选择类型" size="small" style="width: 100px;">
                                             <el-option label="全部" value="all"></el-option>
                                             <el-option label="好评" value="positive"></el-option>
                                             <el-option label="差评" value="negative"></el-option>
@@ -3564,15 +3614,6 @@
                                 ></el-input>
                             </el-form-item>
                             
-                            <el-form-item label="计算方式" required>
-                                <el-radio-group v-model="metricForm.calculationType">
-                                    <el-radio label="count">计数统计</el-radio>
-                                    <el-radio label="average">平均值</el-radio>
-                                    <el-radio label="percentage">百分比</el-radio>
-                                    <el-radio label="sum">求和</el-radio>
-                                </el-radio-group>
-                            </el-form-item>
-                            
                             <el-form-item label="数据来源" required>
                                 <el-checkbox-group v-model="metricForm.dataSources">
                                     <el-checkbox label="interaction">交互日志</el-checkbox>
@@ -3581,6 +3622,51 @@
                                     <el-checkbox label="task">任务记录</el-checkbox>
                                 </el-checkbox-group>
                             </el-form-item>
+
+							<!-- 新增：字段选择（写死） -->
+					        <el-form-item label="字段选择">
+					            <div class="field-selection">
+					                <div class="field-group">
+					                    <div class="field-group-title">交互日志表字段：</div>
+					                    <el-checkbox-group v-model="metricForm.selectedFields">
+					                        <div class="field-row">
+					                            <el-checkbox label="response_time">响应时间</el-checkbox>
+					                            <el-checkbox label="success">是否成功</el-checkbox>
+					                            <el-checkbox label="error_code">错误码</el-checkbox>
+					                        </div>
+					                        <div class="field-row">
+					                            <el-checkbox label="user_id">用户ID</el-checkbox>
+					                            <el-checkbox label="robot_id">机器人ID</el-checkbox>
+					                            <el-checkbox label="timestamp">时间戳</el-checkbox>
+					                        </div>
+					                    </el-checkbox-group>
+					                </div>
+					                
+					                <div class="field-group">
+					                    <div class="field-group-title">机器人状态表字段：</div>
+					                    <el-checkbox-group v-model="metricForm.selectedFields">
+					                        <div class="field-row">
+					                            <el-checkbox label="cpu_usage">CPU使用率</el-checkbox>
+					                            <el-checkbox label="memory_usage">内存使用率</el-checkbox>
+					                            <el-checkbox label="status">状态</el-checkbox>
+					                        </div>
+					                    </el-checkbox-group>
+					                </div>
+					            </div>
+					        </el-form-item>
+					        
+					        <!-- 新增：自定义计算表达式 -->
+					        <el-form-item label="计算表达式" required>
+					            <el-input
+					                v-model="metricForm.calculationExpression"
+					                type="textarea"
+					                :rows="3"
+					                placeholder="例如：SUM(response_time) / COUNT(*) * 100"
+					            ></el-input>
+					            <div class="expression-hint">
+					                提示：可使用字段名和SQL函数，如 COUNT(), SUM(), AVG(), MAX(), MIN()
+					            </div>
+					        </el-form-item>
                             
                             <el-form-item label="更新频率" required>
                                 <el-select v-model="metricForm.updateFrequency" style="width: 200px;">
@@ -4235,8 +4321,9 @@
                     name: '',
                     category: '',
                     description: '',
-                    calculationType: 'average',
                     dataSources: [],
+					selectedFields: [], // 新增：选中的字段
+		            calculationExpression: '', // 新增：计算表达式
                     updateFrequency: 'daily',
                     chartType: 'bar',
                     enableAlert: false,
@@ -4745,6 +4832,7 @@
     </script>
 </body>
 </html>
+
 
 
 
