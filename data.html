@@ -2701,7 +2701,7 @@
                                     <div class="form-row horizontal">
                                         <label>字段完整性校验</label>
                                         <select v-model="cleaningRules.fieldValidation">
-											<option value="" selected disabled>请选择</option>
+											<option value="" selected>请选择</option>
                                             <option value="mark">缺失字段标记异常</option>
                                             <option value="discard">缺失字段自动丢弃</option>
                                             <option value="fill">缺失字段填充默认值</option>
@@ -2710,7 +2710,7 @@
                                     <div class="form-row horizontal">
                                         <label>时间格式统一</label>
                                         <select v-model="cleaningRules.timeFormat">
-											<option value="" selected disabled>请选择</option>
+											<option value="" selected >请选择</option>
                                             <option value="iso8601">ISO 8601</option>
                                             <option value="timestamp_ms">时间戳（毫秒）</option>
                                             <option value="timestamp_s">时间戳（秒）</option>
@@ -2719,7 +2719,7 @@
                                     <div class="form-row horizontal">
                                         <label>状态码映射规则</label>
                                         <select v-model="cleaningRules.statusMapping">
-											<option value="" selected disabled>请选择</option>
+											<option value="" selected >请选择</option>
                                             <option value="enum">映射为平台统一枚举</option>
                                             <option value="original">保留原始值</option>
                                             <option value="custom">自定义映射表</option>
@@ -2731,7 +2731,7 @@
                                     <div class="form-row horizontal">
                                         <label>异常值过滤策略</label>
                                         <select v-model="cleaningRules.outlierFilter">
-											<option value="" selected disabled>请选择</option>
+											<option value="" selected >请选择</option>
                                             <option value="mark">标记异常</option>
                                             <option value="filter">直接过滤</option>
                                             <option value="correct">使用统计方法修正</option>
@@ -2740,7 +2740,7 @@
                                     <div class="form-row horizontal">
                                         <label>文本数据清洗</label>
                                         <select v-model="cleaningRules.textCleaning">
-											<option value="" selected disabled>请选择</option>
+											<option value="" selected >请选择</option>
                                             <option value="html">去除HTML标签</option>
                                             <option value="special">去除特殊字符</option>
                                             <option value="original">保留原始文本</option>
@@ -2749,7 +2749,7 @@
                                     <div class="form-row horizontal">
                                         <label>重复数据处理</label>
                                         <select v-model="cleaningRules.duplicateHandling">
-											<option value="" selected disabled>请选择</option>
+											<option value="" selected >请选择</option>
                                             <option value="keep_first">保留第一条</option>
                                             <option value="keep_last">保留最后一条</option>
                                             <option value="remove_all">删除所有重复</option>
@@ -2780,7 +2780,7 @@
                                                 <div class="detail-item">
                                                     <label>执行频率</label>
                                                     <select v-model="cleaningRules.scheduleFrequency">
-														<option value="" selected disabled>请选择</option>
+														<option value="" selected >请选择</option>
                                                         <option value="hourly">每小时</option>
                                                         <option value="daily">每天</option>
                                                         <option value="weekly">每周</option>
@@ -2801,7 +2801,7 @@
                                                 <div class="detail-item" v-if="cleaningRules.scheduleFrequency === 'weekly'">
                                                     <label>执行星期</label>
                                                     <select v-model="cleaningRules.scheduleDay">
-														<option value="" selected disabled>请选择</option>
+														<option value="" selected >请选择</option>
                                                         <option value="1">星期一</option>
                                                         <option value="2">星期二</option>
                                                         <option value="3">星期三</option>
@@ -4175,8 +4175,8 @@
                 };
             
                 // ========== 数据仪表盘部分 ==========
-                const dashboardTimeRange = ref('today');
-                const feedbackType = ref('all');
+                const dashboardTimeRange = ref('');
+                const feedbackType = ref('');
                 
                 // 机器人统计数据
                 const robotStats = ref({
@@ -4832,6 +4832,7 @@
     </script>
 </body>
 </html>
+
 
 
 
