@@ -945,6 +945,237 @@
             align-items: center;
             gap: 12px;
         }
+
+		.robot-status-overview {
+		    display: flex;
+		    gap: 24px;
+		    height: 100%;
+		}
+		
+		.robot-left-column {
+		    flex: 1;
+		    display: flex;
+		    flex-direction: column;
+		    gap: 20px;
+		}
+		
+		.robot-status-chart {
+		    background: #fff;
+		    border-radius: 8px;
+		    padding: 20px;
+		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+		}
+		
+		.task-execution-section {
+		    background: #fff;
+		    border-radius: 8px;
+		    padding: 20px;
+		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+		    flex: 1;
+		    display: flex;
+		    flex-direction: column;
+		}
+		
+		.section-header {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    margin-bottom: 16px;
+		    padding-bottom: 12px;
+		    border-bottom: 1px solid #f0f0f0;
+		}
+		
+		.section-header h4 {
+		    margin: 0;
+		    font-size: 16px;
+		    font-weight: 600;
+		    color: #333;
+		}
+		
+		.task-list {
+		    flex: 1;
+		    display: flex;
+		    flex-direction: column;
+		    gap: 20px;
+		}
+		
+		.task-category {
+		    flex: 1;
+		}
+		
+		.category-header {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    margin-bottom: 12px;
+		}
+		
+		.category-title {
+		    font-size: 14px;
+		    font-weight: 500;
+		    color: #333;
+		}
+		
+		.category-count {
+		    background: #1890ff;
+		    color: white;
+		    font-size: 12px;
+		    padding: 2px 8px;
+		    border-radius: 10px;
+		}
+		
+		.task-items {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 12px;
+		}
+		
+		.task-item {
+		    display: flex;
+		    align-items: center;
+		    padding: 12px;
+		    background: #fafafa;
+		    border-radius: 6px;
+		    transition: all 0.3s ease;
+		}
+		
+		.task-item:hover {
+		    background: #f0f7ff;
+		    transform: translateY(-2px);
+		    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.1);
+		}
+		
+		.task-info {
+		    flex: 1;
+		    margin-right: 12px;
+		}
+		
+		.task-name {
+		    font-weight: 500;
+		    color: #333;
+		    margin-bottom: 4px;
+		    font-size: 14px;
+		}
+		
+		.task-desc {
+		    font-size: 12px;
+		    color: #666;
+		    line-height: 1.4;
+		}
+		
+		.task-progress {
+		    width: 120px;
+		    margin-right: 12px;
+		}
+		
+		.progress-text {
+		    font-size: 12px;
+		    color: #1890ff;
+		    text-align: center;
+		    margin-top: 4px;
+		}
+		
+		.task-time {
+		    display: flex;
+		    align-items: center;
+		    gap: 6px;
+		    margin-right: 12px;
+		    font-size: 12px;
+		    color: #fa8c16;
+		}
+		
+		.task-status {
+		    min-width: 60px;
+		}
+		
+		.robot-status-details {
+		    width: 320px;
+		    display: flex;
+		    flex-direction: column;
+		    gap: 20px;
+		}
+		
+		.status-detail {
+		    background: #fff;
+		    border-radius: 8px;
+		    padding: 20px;
+		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+		}
+		
+		.detail-label {
+		    font-size: 14px;
+		    font-weight: 500;
+		    color: #333;
+		    margin-bottom: 12px;
+		    padding-bottom: 8px;
+		    border-bottom: 1px solid #f0f0f0;
+		}
+		
+		.detail-list {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 8px;
+		}
+		
+		.detail-item {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    padding: 8px 0;
+		}
+		
+		.item-name {
+		    color: #666;
+		    font-size: 14px;
+		}
+		
+		.item-value {
+		    color: #1890ff;
+		    font-weight: 500;
+		    font-size: 14px;
+		}
+		
+		.recent-list {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 8px;
+		}
+		
+		.recent-item {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    padding: 8px 0;
+		    border-bottom: 1px solid #f8f8f8;
+		}
+		
+		.recent-item:last-child {
+		    border-bottom: none;
+		}
+		
+		.robot-name {
+		    color: #333;
+		    font-size: 14px;
+		}
+		
+		.robot-time {
+		    color: #999;
+		    font-size: 12px;
+		}
+		
+		.robot-location-chart {
+		    flex: 1;
+		}
+		
+		.location-image-container {
+		    margin-top: 10px;
+		}
+		
+		.location-image {
+		    width: 100%;
+		    border-radius: 6px;
+		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
         
         /* 关键指标卡片 */
         .key-metrics {
@@ -1928,6 +2159,31 @@
             font-size: 14px;
             color: var(--text-secondary);
         }
+
+		.natural-language-input {
+		    width: 100%;
+		}
+		
+		.natural-language-input .el-textarea__inner {
+		    font-family: inherit;
+		    line-height: 1.5;
+		    resize: vertical;
+		}
+		
+		.input-hint {
+		    margin-top: 8px;
+		    font-size: 12px;
+		    color: #999;
+		    background-color: #f9f9f9;
+		    padding: 8px 12px;
+		    border-radius: 4px;
+		    border-left: 3px solid #1890ff;
+		}
+		
+		.input-hint i {
+		    margin-right: 6px;
+		    color: #1890ff;
+		}
         
         /* 历史报告列表 */
         .historical-reports {
@@ -3147,84 +3403,151 @@
                     <div class="dashboard-charts">
                         <!-- 服务监控大屏（在线机器人情况） -->
                         <div class="chart-card large">
-                            <div class="chart-header">
-                                <h3>服务监控大屏 - 在线机器人情况</h3>
-                                <div class="chart-actions">
-                                    <el-button size="small" type="text">
-                                        <i class="fas fa-expand"></i>
-                                    </el-button>
-                                </div>
-                            </div>
-                            <div class="chart-body">
-                                <div class="robot-status-overview">
-                                    <div class="robot-status-chart">
-                                        <!-- 这里可以放置机器人状态图表，比如饼图或环形图 -->
-                                        <div class="chart-placeholder">
-                                            <div class="pie-chart-demo">
-                                                <div class="pie-segment" style="--percent: 75; --color: #52c41a;" title="在线: 75%">
-                                                    <span>在线</span>
-                                                </div>
-                                                <div class="pie-segment" style="--percent: 15; --color: #fa8c16;" title="忙碌: 15%">
-                                                    <span>忙碌</span>
-                                                </div>
-                                                <div class="pie-segment" style="--percent: 10; --color: #f5222d;" title="离线: 10%">
-                                                    <span>离线</span>
-                                                </div>
-                                            </div>
-                                            <div class="chart-legend">
-                                                <div class="legend-item">
-                                                    <span class="legend-color" style="background-color: #52c41a;"></span>
-                                                    <span class="legend-text">在线 ({{ robotStats.online }})</span>
-                                                </div>
-                                                <div class="legend-item">
-                                                    <span class="legend-color" style="background-color: #fa8c16;"></span>
-                                                    <span class="legend-text">忙碌 ({{ robotStats.busy }})</span>
-                                                </div>
-                                                <div class="legend-item">
-                                                    <span class="legend-color" style="background-color: #f5222d;"></span>
-                                                    <span class="legend-text">离线 ({{ robotStats.offline }})</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="robot-status-details">
-                                        <div class="status-detail">
-                                            <div class="detail-label">机器人分组</div>
-                                            <div class="detail-list">
-                                                <div class="detail-item">
-                                                    <span class="item-name">示例客服组</span>
-                                                    <span class="item-value">{{ robotStats.byGroup.customerService }}/{{ robotStats.totalByGroup.customerService }}</span>
-                                                </div>
-                                                <div class="detail-item">
-                                                    <span class="item-name">示例运维组</span>
-                                                    <span class="item-value">{{ robotStats.byGroup.operations }}/{{ robotStats.totalByGroup.operations }}</span>
-                                                </div>
-                                                <div class="detail-item">
-                                                    <span class="item-name">示例质检组</span>
-                                                    <span class="item-value">{{ robotStats.byGroup.quality }}/{{ robotStats.totalByGroup.quality }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="status-detail">
-                                            <div class="detail-label">最近上线</div>
-                                            <div class="recent-list">
-                                                <div class="recent-item" v-for="robot in recentOnlineRobots" :key="robot.id">
-                                                    <span class="robot-name">{{ robot.name }}</span>
-                                                    <span class="robot-time">{{ robot.time }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-										<!-- 新增：机器人当前位置图片 -->
-					                    <div class="status-detail robot-location-chart">
-					                        <div class="detail-label">机器人当前位置</div>
-					                        <div class="location-image-container">
-					                            <img src="map.png" alt="机器人当前位置图" class="location-image">
-					                        </div>
-					                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+			            <div class="chart-header">
+			                <h3>服务监控大屏 - 在线机器人情况</h3>
+			                <div class="chart-actions">
+			                    <el-button size="small" type="text">
+			                        <i class="fas fa-expand"></i>
+			                    </el-button>
+			                </div>
+			            </div>
+			            <div class="chart-body">
+			                <div class="robot-status-overview">
+			                    <!-- 左侧：饼图和任务执行情况 -->
+			                    <div class="robot-left-column">
+			                        <!-- 饼图部分 -->
+			                        <div class="robot-status-chart">
+			                            <div class="chart-placeholder">
+			                                <div class="pie-chart-demo">
+			                                    <div class="pie-segment" style="--percent: 75; --color: #52c41a;" title="在线: 75%">
+			                                        <span>在线</span>
+			                                    </div>
+			                                    <div class="pie-segment" style="--percent: 15; --color: #fa8c16;" title="忙碌: 15%">
+			                                        <span>忙碌</span>
+			                                    </div>
+			                                    <div class="pie-segment" style="--percent: 10; --color: #f5222d;" title="离线: 10%">
+			                                        <span>离线</span>
+			                                    </div>
+			                                </div>
+			                                <div class="chart-legend">
+			                                    <div class="legend-item">
+			                                        <span class="legend-color" style="background-color: #52c41a;"></span>
+			                                        <span class="legend-text">在线 ({{ robotStats.online }})</span>
+			                                    </div>
+			                                    <div class="legend-item">
+			                                        <span class="legend-color" style="background-color: #fa8c16;"></span>
+			                                        <span class="legend-text">忙碌 ({{ robotStats.busy }})</span>
+			                                    </div>
+			                                    <div class="legend-item">
+			                                        <span class="legend-color" style="background-color: #f5222d;"></span>
+			                                        <span class="legend-text">离线 ({{ robotStats.offline }})</span>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        
+			                        <!-- 新增：任务执行情况 -->
+			                        <div class="task-execution-section">
+			                            <div class="section-header">
+			                                <h4>任务执行情况</h4>
+			                                <el-badge :value="taskStats.pending + taskStats.executing" class="item" type="primary">
+			                                    <el-button size="small" type="text">查看全部</el-button>
+			                                </el-badge>
+			                            </div>
+			                            <div class="task-list">
+			                                <!-- 当前执行任务 -->
+			                                <div class="task-category">
+			                                    <div class="category-header">
+			                                        <span class="category-title">当前执行中</span>
+			                                        <span class="category-count">{{ taskStats.executing }}</span>
+			                                    </div>
+			                                    <div class="task-items">
+			                                        <div class="task-item" v-for="task in executingTasks" :key="task.id">
+			                                            <div class="task-info">
+			                                                <div class="task-name">{{ task.name }}</div>
+			                                                <div class="task-desc">{{ task.description }}</div>
+			                                            </div>
+			                                            <div class="task-progress">
+			                                                <el-progress 
+			                                                    :percentage="task.progress" 
+			                                                    :stroke-width="6" 
+			                                                    :color="task.progressColor"
+			                                                    :show-text="false"
+			                                                ></el-progress>
+			                                                <div class="progress-text">{{ task.progress }}%</div>
+			                                            </div>
+			                                            <div class="task-status">
+			                                                <el-tag size="small" :type="task.statusType">{{ task.statusText }}</el-tag>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                                
+			                                <!-- 待执行任务 -->
+			                                <div class="task-category">
+			                                    <div class="category-header">
+			                                        <span class="category-title">待执行任务</span>
+			                                        <span class="category-count">{{ taskStats.pending }}</span>
+			                                    </div>
+			                                    <div class="task-items">
+			                                        <div class="task-item" v-for="task in pendingTasks" :key="task.id">
+			                                            <div class="task-info">
+			                                                <div class="task-name">{{ task.name }}</div>
+			                                                <div class="task-desc">{{ task.description }}</div>
+			                                            </div>
+			                                            <div class="task-time">
+			                                                <i class="fas fa-clock"></i>
+			                                                <span class="time-text">{{ task.scheduledTime }}</span>
+			                                            </div>
+			                                            <div class="task-status">
+			                                                <el-tag size="small" type="info">等待</el-tag>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    
+			                    <!-- 右侧：机器人状态详情 -->
+			                    <div class="robot-status-details">
+			                        <div class="status-detail">
+			                            <div class="detail-label">机器人分组</div>
+			                            <div class="detail-list">
+			                                <div class="detail-item">
+			                                    <span class="item-name">示例客服组</span>
+			                                    <span class="item-value">{{ robotStats.byGroup.customerService }}/{{ robotStats.totalByGroup.customerService }}</span>
+			                                </div>
+			                                <div class="detail-item">
+			                                    <span class="item-name">示例运维组</span>
+			                                    <span class="item-value">{{ robotStats.byGroup.operations }}/{{ robotStats.totalByGroup.operations }}</span>
+			                                </div>
+			                                <div class="detail-item">
+			                                    <span class="item-name">示例质检组</span>
+			                                    <span class="item-value">{{ robotStats.byGroup.quality }}/{{ robotStats.totalByGroup.quality }}</span>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <div class="status-detail">
+			                            <div class="detail-label">最近上线</div>
+			                            <div class="recent-list">
+			                                <div class="recent-item" v-for="robot in recentOnlineRobots" :key="robot.id">
+			                                    <span class="robot-name">{{ robot.name }}</span>
+			                                    <span class="robot-time">{{ robot.time }}</span>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <!-- 新增：机器人当前位置图片 -->
+			                        <div class="status-detail robot-location-chart">
+			                            <div class="detail-label">机器人当前位置</div>
+			                            <div class="location-image-container">
+			                                <img src="map.png" alt="机器人当前位置图" class="location-image">
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
                 
                         <!-- 右侧两列小图表 -->
                         <div class="chart-column">
@@ -3784,6 +4107,24 @@
                                         <el-checkbox label="trend">趋势分析</el-checkbox>
                                     </el-checkbox-group>
                                 </div>
+
+								<!-- 新增：自然语言输入要求 -->
+				                <div class="form-row">
+				                    <label>自定义要求</label>
+				                    <div class="natural-language-input">
+				                        <el-input
+				                            v-model="naturalLanguageRequirement"
+				                            type="textarea"
+				                            :rows="3"
+				                            placeholder="请输入您的具体要求，例如：重点关注华东地区的服务质量，分析周末和工作日的差异，提供改进建议..."
+				                            maxlength="500"
+				                            show-word-limit
+				                        ></el-input>
+				                        <div class="input-hint">
+				                            <i class="fas fa-lightbulb"></i> 您可以在此输入自然语言描述您的分析需求，AI会理解并生成相应报告
+				                        </div>
+				                    </div>
+				                </div>
                                 
                                 <div class="form-row">
                                     <label>报告深度</label>
@@ -4195,6 +4536,66 @@
                         quality: 50
                     }
                 });
+
+				// 任务统计数据
+				const taskStats = ref({
+				    completed: 1245,
+				    executing: 3,    // 当前执行中的任务数
+				    pending: 5       // 待执行的任务数
+				});
+				
+				// 当前执行中的任务
+				const executingTasks = ref([
+				    {
+				        id: 1,
+				        name: '送药任务',
+				        description: '送药到A病房',
+				        progress: 65,
+				        progressColor: '#1890ff',
+				        statusText: '进行中',
+				        statusType: 'primary'
+				    },
+				    {
+				        id: 2,
+				        name: '巡检任务',
+				        description: '常规巡检',
+				        progress: 85,
+				        progressColor: '#52c41a',
+				        statusText: '进行中',
+				        statusType: 'success'
+				    },
+				    {
+				        id: 3,
+				        name: '送药任务',
+				        description: '送药到急症科',
+				        progress: 30,
+				        progressColor: '#fa8c16',
+				        statusText: '进行中',
+				        statusType: 'warning'
+				    }
+				]);
+				
+				// 待执行的任务
+				const pendingTasks = ref([
+				    {
+				        id: 4,
+				        name: '清扫任务',
+				        description: '清扫大堂',
+				        scheduledTime: '今晚 23:00'
+				    },
+				    {
+				        id: 5,
+				        name: '巡检任务',
+				        description: '巡检3号楼1楼',
+				        scheduledTime: '明早 08:00'
+				    },
+				    {
+				        id: 6,
+				        name: '设备维护',
+				        description: '设备维护',
+				        scheduledTime: '今晚 22:00'
+				    }
+				]);
                 
                 // 异常统计数据
                 const exceptionStats = ref({
@@ -4481,6 +4882,7 @@
                 const reportType = ref('quality');
                 const reportDateRange = ref([]);
                 const reportDimensions = ref(['responseTime', 'accuracy', 'satisfaction']);
+				const naturalLanguageRequirement = ref(''); // 新增：自然语言输入要求
                 const reportDepth = ref('standard');
                 const generatingReport = ref(false);
                 const activeReport = ref(null);
@@ -4832,6 +5234,7 @@
     </script>
 </body>
 </html>
+
 
 
 
