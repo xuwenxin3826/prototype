@@ -2678,7 +2678,6 @@
                             <table class="history-table">
                                 <thead>
                                     <tr>
-                                        <th>序号</th>
                                         <th>操作时间</th>
                                         <th>操作类型</th>
                                         <th>涉及机器人</th>
@@ -2688,8 +2687,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-<tr v-for="(record, index) in paginatedHistoryRecords" :key="record.id">
-    <td>{{ (historyCurrentPage - 1) * historyPageSize + index + 1 }}</td>
+<tr v-for="record in paginatedHistoryRecords" :key="record.id">
     <td>{{ record.time }}</td>
     <td>{{ historyTypeNameMap[record.type] }}</td>
     <td>{{ record.robot }}</td>
@@ -2702,7 +2700,7 @@
     </td>
 </tr>
                                     <tr v-if="filteredHistoryRecords.length === 0">
-                                        <td colspan="7" style="text-align: center; padding: 40px 0; color: #999;">
+                                        <td colspan="6" style="text-align: center; padding: 40px 0; color: #999;">
                                             <i class="fas fa-inbox" style="font-size: 32px; margin-bottom: 10px; display: block;"></i>
                                             暂无历史记录
                                         </td>
