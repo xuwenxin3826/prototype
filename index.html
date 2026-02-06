@@ -1417,6 +1417,12 @@
                             <i class="fas fa-sync-alt"></i>
                             <span class="nav-text">应用更新管理</span>
                         </a>
+                        <!-- 新增交互历史列表菜单项 -->
+                    <a href="app.html#interactionHistory" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'interactionHistory' }" @click="setActiveNav('interactionHistory')">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text">交互历史列表</span>
+                    </a>
                     </div>
                 </div>
                 
@@ -2069,3 +2075,4 @@
     </script>
 </body>
 </html>
+
