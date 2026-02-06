@@ -730,61 +730,44 @@
                             <i class="fas fa-sync-alt"></i>
                             <span class="nav-text">应用更新管理</span>
                         </a>
-                        <!-- 新增交互历史列表菜单项 -->
-                    <a href="app.html#interactionHistory" class="nav-item sub-item"
-                       :class="{ active: activeNav === 'interactionHistory' }" @click="setActiveNav('interactionHistory')">
-                        <i class="fas fa-history"></i>
-                        <span class="nav-text">交互历史列表</span>
-                    </a>
                     </div>
                 </div>
                 
                 <!-- 模式管理 -->
                 <div class="nav-item-wrapper">
-                    <div
-                         class="nav-item"
-                        :class="{ 
-                            'active-parent': expandedMenu === 'modeManagement', 
-                            'expanded': expandedMenu === 'modeManagement' 
-                          }"
-                          @click="toggleMenu('modeManagement')"
-                     >
-                     <i class="fas fa-cogs"></i>
-                     <span class="nav-text">模式管理</span>
-                     <i
-                        class="fas fa-chevron-down arrow-icon"
-                        :class="{ 'rotated': expandedMenu === 'modeManagement' }"
-                     ></i>
-                </div>
+                    <a 
+                        href="mode.html#status" 
+                        class="nav-item"
+                        :class="{ expanded: expandedMenu === 'modeManagement' }"
+                        @click.stop="toggleMenu('modeManagement')"
+                    >
+                        <i class="fas fa-cogs"></i>
+                        <span class="nav-text">模式管理</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon" 
+                            :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+                        ></i>
+                    </a>
 
-                 <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
-                    <a href="mode.html#switch" class="nav-item sub-item"
-                        :class="{ active: activeNav === 'switch' }" @click="setActiveNav('switch')">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span class="nav-text">模式切换</span>
-                    </a>
-                    <a href="mode.html#schedule" class="nav-item sub-item"
-                        :class="{ active: activeNav === 'schedule' }" @click="setActiveNav('schedule')">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span class="nav-text">模式排程</span>
-                    </a>
-                    <a href="mode.html#history" class="nav-item sub-item"
-                        :class="{ active: activeNav === 'history' }" @click="setActiveNav('history')">
-                        <i class="fas fa-history"></i>
-                       <span class="nav-text">历史记录</span>
-                    </a>
-                    <a href="mode.html#quick" class="nav-item sub-item"
-                       :class="{ active: activeNav === 'quick' }" @click="setActiveNav('quick')">
-                       <i class="fas fa-bolt"></i>
-                       <span class="nav-text">快速操作</span>
-                     </a>
-                    <a href="mode.html#edit" class="nav-item sub-item"
-                      :class="{ active: activeNav === 'edit' }" @click="setActiveNav('edit')">
-                      <i class="fas fa-edit"></i>
-                      <span class="nav-text">编辑模式</span>
-                    </a>
-              </div>
-         </div>
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
+                        <a href="mode.html#status" class="nav-item sub-item">
+                            <i class="fas fa-heartbeat"></i>
+                            <span class="nav-text">状态监控</span>
+                        </a>
+                        <a href="mode.html#switch" class="nav-item sub-item">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span class="nav-text">模式切换</span>
+                        </a>
+                        <a href="mode.html#history" class="nav-item sub-item">
+                            <i class="fas fa-history"></i>
+                            <span class="nav-text">历史记录</span>
+                        </a>
+                        <a href="mode.html#quick" class="nav-item sub-item">
+                            <i class="fas fa-bolt"></i>
+                            <span class="nav-text">快速操作</span>
+                        </a>
+                    </div>
+                </div>
 
                 <!-- 数据管理与分析 -->
                 <div class="nav-item-wrapper">
@@ -2388,27 +2371,115 @@
                 // ==================== 任务数据（已添加机器人A的多个准备中任务） ====================
                 const tasks = ref([
                     // 机器人A的执行中任务
-                    {
-                        id: 1000,
-                        name: '配送任务-药品A-执行中',
-                        templateName: '药品配送模板',
-                        type: 'process',
-                        status: 'executing',
-                        isRisk: false,
-                        isHighRisk: false,
-                        triggerType: 'scheduled',
-                        robotId: 1,
-                        robotName: '机器人A',
-                        robotStatus: 'online',
-                        robotGroupIds: [1],
-                        priority: 1,
-                        duration: 35,
-                        createdTime: '2023-10-20 07:00:00',
-                        updateTime: '2023-10-20 10:00:00',
-                        completedSteps: 3,
-                        totalSteps: 5,
-                        logs: [{ action: '任务执行中', time: '2023-10-20 10:00:00', details: '正在执行第3步', type: 'success' }]
-                    },
+                    {id: 1000,
+        name: '药品配送-急诊室急救药品',
+        templateName: '药品配送模板',
+        type: 'process',
+        status: 'executing',
+        isRisk: false,
+        isHighRisk: false,
+        triggerType: 'scheduled',
+        robotId: 1,
+        robotName: '机器人A',
+        robotStatus: 'online',
+        robotGroupIds: [1],
+        priority: 1,
+        duration: 35,
+        createdTime: '2023-10-20 09:30:00',
+        updateTime: '2023-10-20 10:15:00',
+        startTime: '2023-10-20 10:00:00',
+        completedSteps: 2,
+        totalSteps: 5,
+        // 完整的表单数据
+        formData: {
+            start_location: '中央药房',
+            pharmacy_location: '急诊药房',
+            drug_name: '肾上腺素注射液',
+            receiver_dept: '急诊科',
+            delivery_date: '2023-10-20'
+        },
+        // 完整的作业步骤（包含状态和时间）
+        steps: [
+            {
+                name: '任务接收',
+                description: '接收配送任务指令，核对药品信息：肾上腺素注射液 × 10支',
+                estimatedTime: 2,
+                status: 'completed',
+                startTime: '2023-10-20 10:00:00',
+                endTime: '2023-10-20 10:01:30'
+            },
+            {
+                name: '前往药房',
+                description: '从起始位置[中央药房]导航到药房位置[急诊药房]',
+                estimatedTime: 10,
+                status: 'completed',
+                startTime: '2023-10-20 10:02:00',
+                endTime: '2023-10-20 10:11:20'
+            },
+            {
+                name: '药品领取',
+                description: '取走药品，核对药品信息：批次号20231015，有效期2025-10',
+                estimatedTime: 5,
+                status: 'executing', // 当前执行中
+                startTime: '2023-10-20 10:12:00',
+                endTime: null
+            },
+            {
+                name: '药品配送',
+                description: '将药品送至接收科室[急诊科]护士站',
+                estimatedTime: 15,
+                status: 'pending',
+                startTime: null,
+                endTime: null
+            },
+            {
+                name: '交接确认',
+                description: '与急诊科值班护士交接药品并签收确认',
+                estimatedTime: 3,
+                status: 'pending',
+                startTime: null,
+                endTime: null
+            }
+        ],
+        logs: [
+            { 
+                action: '任务创建', 
+                time: '2023-10-20 09:30:00', 
+                details: '管理员创建了紧急药品配送任务', 
+                type: 'info' 
+            },
+            { 
+                action: '任务准备', 
+                time: '2023-10-20 09:45:00', 
+                details: '机器人A电量充足，任务进入准备队列', 
+                type: 'info' 
+            },
+            { 
+                action: '任务开始', 
+                time: '2023-10-20 10:00:00', 
+                details: '机器人A开始执行配送任务', 
+                type: 'success' 
+            },
+            { 
+                action: '步骤完成', 
+                time: '2023-10-20 10:01:30', 
+                details: '完成步骤1：任务接收', 
+                type: 'success' 
+            },
+            { 
+                action: '步骤完成', 
+                time: '2023-10-20 10:11:20', 
+                details: '完成步骤2：前往药房，实际耗时9分20秒', 
+                type: 'success' 
+            },
+            { 
+                action: '步骤开始', 
+                time: '2023-10-20 10:12:00', 
+                details: '开始步骤3：药品领取', 
+                type: 'primary' 
+            }
+        ]
+    },
                     // 机器人A的准备中任务（4个，用于测试拖拽排序）
                     {
                         id: 2001,
@@ -3948,6 +4019,4 @@
         app.mount('#app');
     </script>
 </body>
-
 </html>
-
