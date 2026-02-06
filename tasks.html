@@ -4,9 +4,9 @@
     <meta charset="UTF8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>任务管理 - 机器人后台管理平台</title>
-    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css ">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js "></script>
     <style>
         * {
             margin: 0;
@@ -593,6 +593,45 @@
             user-select: none !important;
         }
         
+/* 文件上传样式 */
+.file-upload-wrapper {
+    width: 100%;
+}
+
+.file-upload-wrapper .el-upload__tip {
+    color: #909399;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.file-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.image-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #f5f7fa;
+    color: #909399;
+    font-size: 20px;
+}
+
+/* 拖拽上传区域样式 */
+.file-upload-wrapper .el-upload-dragger {
+    width: 100%;
+    height: 120px;
+}
+
+.file-upload-wrapper .el-upload-dragger .el-icon-upload {
+    font-size: 40px;
+    color: #409eff;
+    margin: 20px 0 10px;
+}
         .queue-position {
             display: inline-flex;
             align-items: center;
@@ -616,6 +655,155 @@
             .stats-cards {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* 文件类型字段样式 */
+        .file-field-uploader .el-upload {
+            width: 100%;
+        }
+        
+        .file-preview-list {
+            margin-top: 8px;
+        }
+        
+        .file-preview-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f5f7fa;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border: 1px solid #e4e7ed;
+        }
+        
+        .file-preview-item:hover {
+            background: #ecf5ff;
+            border-color: #c6e2ff;
+        }
+        
+        .file-icon {
+            font-size: 24px;
+            margin-right: 12px;
+            color: #409eff;
+        }
+        
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .file-name {
+            font-size: 14px;
+            color: #303133;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .file-size {
+            font-size: 12px;
+            color: #909399;
+            margin-top: 2px;
+        }
+        
+        .file-actions {
+            margin-left: 12px;
+        }
+        
+        .upload-trigger-area {
+            border: 2px dashed #d9d9d9;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        
+        .upload-trigger-area:hover {
+            border-color: #409eff;
+            background: #f0f9ff;
+        }
+        
+        .upload-trigger-area i {
+            font-size: 28px;
+            color: #909399;
+            margin-bottom: 8px;
+        }
+        
+        .upload-trigger-text {
+            color: #606266;
+            font-size: 14px;
+        }
+        
+        .upload-hint {
+            color: #909399;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .image-preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #e4e7ed;
+        }
+        
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-preview-item .el-icon {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 50%;
+            padding: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .video-preview-item {
+            position: relative;
+            width: 200px;
+            height: 120px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #e4e7ed;
+            background: #000;
+        }
+        
+        .video-preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .audio-preview-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f5f7fa;
+            border-radius: 4px;
+            border: 1px solid #e4e7ed;
+        }
+        
+        .audio-preview-item i {
+            font-size: 32px;
+            color: #e6a23c;
+            margin-right: 12px;
         }
     </style>
 </head>
@@ -733,55 +921,41 @@
                     </div>
                 </div>
                 
-               				<div class="nav-item-wrapper">
-              <!-- 模式管理折叠菜单 -->
-              <a
-                  href="mode.html#quick"
-                  class="nav-item"
-                  :class="{ expanded: expandedMenu === 'modeManagement' }"
-                  @click.stop="toggleMenu('modeManagement')"
-               >
-                  <i class="fas fa-cogs"></i>
-                  <span class="nav-text">模式管理</span>
-                  <i
-                       class="fas fa-chevron-down arrow-icon"
-                       :class="{ 'rotated': expandedMenu === 'modeManagement' }"
-                   ></i>
-               </a>
-
-             <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
-                     <a href="mode3.html#quick" class="nav-item sub-item" 
-                     :class="{ active: activeModeTab === 'quick' }"
-                     @click.stop="switchModeTab('quick')">
-                       <i class="fas fa-bolt"></i>
-                       <span class="nav-text">快捷操作</span>
+                <!-- 模式管理 -->
+                <div class="nav-item-wrapper">
+                    <a 
+                        href="mode.html#status" 
+                        class="nav-item"
+                        :class="{ expanded: expandedMenu === 'modeManagement' }"
+                        @click.stop="toggleMenu('modeManagement')"
+                    >
+                        <i class="fas fa-cogs"></i>
+                        <span class="nav-text">模式管理</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon" 
+                            :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+                        ></i>
                     </a>
-                  <a href="mode3.html#switch" class="nav-item sub-item"
-                     :class="{ active: activeModeTab === 'switch' }"
-                     @click.stop="switchModeTab('switch')">
-                       <i class="fas fa-exchange-alt"></i>
-                       <span class="nav-text">模式切换</span>
-                  </a>
-                  <a href="mode3.html#schedule" class="nav-item sub-item"
-                     :class="{ active: activeModeTab === 'schedule' }"
-                      @click.stop="switchModeTab('schedule')">
-                      <i class="fas fa-calendar-alt"></i>
-                      <span class="nav-text">模式排程</span>
-                  </a>
-                  <a href="mode3.html#history" class="nav-item sub-item"
-                      :class="{ active: activeModeTab === 'history' }"
-                      @click.stop="switchModeTab('history')">
-                      <i class="fas fa-history"></i>
-                      <span class="nav-text">历史记录</span>
-                  </a>
-                   <a href="mode3.html#edit" class="nav-item sub-item"
-                     :class="{ active: activeModeTab === 'edit' }"
-                     @click.stop="switchModeTab('edit')">
-                     <i class="fas fa-edit"></i>
-                     <span class="nav-text">编辑模式</span>
-                  </a>
-             </div>
-          </div>
+
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
+                        <a href="mode.html#status" class="nav-item sub-item">
+                            <i class="fas fa-heartbeat"></i>
+                            <span class="nav-text">状态监控</span>
+                        </a>
+                        <a href="mode.html#switch" class="nav-item sub-item">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span class="nav-text">模式切换</span>
+                        </a>
+                        <a href="mode.html#history" class="nav-item sub-item">
+                            <i class="fas fa-history"></i>
+                            <span class="nav-text">历史记录</span>
+                        </a>
+                        <a href="mode.html#quick" class="nav-item sub-item">
+                            <i class="fas fa-bolt"></i>
+                            <span class="nav-text">快速操作</span>
+                        </a>
+                    </div>
+                </div>
 
                 <!-- 数据管理与分析 -->
                 <div class="nav-item-wrapper">
@@ -1639,6 +1813,10 @@
                                                 <el-option label="时间" value="time"></el-option>
                                                 <el-option label="下拉选择" value="select"></el-option>
                                                 <el-option label="位置选择" value="location"></el-option>
+                                                <el-option label="图片" value="image"></el-option>
+                                                <el-option label="音频" value="audio"></el-option>
+                                                <el-option label="视频" value="video"></el-option>
+                                                <el-option label="文件" value="file"></el-option>
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
@@ -1648,6 +1826,36 @@
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
+
+                                <!-- 文件类型字段的额外配置 -->
+                                <template v-if="['image', 'audio', 'video', 'file'].includes(field.type)">
+                                    <el-row :gutter="16">
+                                        <el-col :span="12">
+                                            <el-form-item label="最大数量" label-width="80px" size="small">
+                                                <el-input-number v-model="field.maxCount" :min="1" :max="10" style="width: 100%;"></el-input-number>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="大小限制(MB)" label-width="100px" size="small">
+                                                <el-input-number v-model="field.maxSize" :min="1" :max="100" style="width: 100%;"></el-input-number>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row :gutter="16" v-if="field.type === 'file'">
+                                        <el-col :span="24">
+                                            <el-form-item label="允许格式" label-width="80px" size="small">
+                                                <el-select v-model="field.accept" multiple placeholder="选择允许的文件格式" style="width: 100%;">
+                                                    <el-option label=".pdf" value=".pdf"></el-option>
+                                                    <el-option label=".doc/.docx" value=".doc,.docx"></el-option>
+                                                    <el-option label=".xls/.xlsx" value=".xls,.xlsx"></el-option>
+                                                    <el-option label=".ppt/.pptx" value=".ppt,.pptx"></el-option>
+                                                    <el-option label=".txt" value=".txt"></el-option>
+                                                    <el-option label=".zip/.rar" value=".zip,.rar"></el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                </template>
                             </div>
                             
                             <div v-if="templateForm.fields.length === 0" style="text-align: center; color: #999; padding: 20px;">
@@ -1815,6 +2023,121 @@
                                         </el-button>
                                     </template>
                                 </el-input>
+
+                                <!-- 图片上传字段 -->
+                                <div v-else-if="field.type === 'image'" class="file-field-uploader">
+                                    <el-upload
+                                        v-model:file-list="taskForm.formData[field.id]"
+                                        :action="uploadAction"
+                                        list-type="picture-card"
+                                        :limit="field.maxCount || 5"
+                                        :before-upload="(file) => beforeUpload(file, field, 'image')"
+                                        :on-exceed="handleExceed"
+                                        :on-preview="handlePictureCardPreview"
+                                        :on-remove="handleRemove"
+                                        accept="image/*"
+                                    >
+                                        <el-icon><Plus /></el-icon>
+                                    </el-upload>
+                                    <div class="field-hint">支持jpg、png、gif格式，最多{{ field.maxCount || 5 }}张，单张不超过{{ field.maxSize || 10 }}MB</div>
+                                </div>
+
+                                <!-- 音频上传字段 -->
+                                <div v-else-if="field.type === 'audio'" class="file-field-uploader">
+                                    <el-upload
+                                        v-model:file-list="taskForm.formData[field.id]"
+                                        :action="uploadAction"
+                                        :limit="field.maxCount || 3"
+                                        :before-upload="(file) => beforeUpload(file, field, 'audio')"
+                                        :on-exceed="handleExceed"
+                                        accept="audio/*"
+                                    >
+                                        <el-button type="primary">
+                                            <el-icon><Microphone /></el-icon>
+                                            选择音频文件
+                                        </el-button>
+                                    </el-upload>
+                                    <div v-if="taskForm.formData[field.id] && taskForm.formData[field.id].length > 0" class="file-preview-list" style="margin-top: 10px;">
+                                        <div v-for="(file, idx) in taskForm.formData[field.id]" :key="idx" class="audio-preview-item">
+                                            <i class="fas fa-music"></i>
+                                            <div class="file-info">
+                                                <div class="file-name">{{ file.name }}</div>
+                                                <div class="file-size">{{ formatFileSize(file.size) }}</div>
+                                            </div>
+                                            <div class="file-actions">
+                                                <el-button type="danger" size="small" text @click="removeFile(field.id, idx)">
+                                                    <el-icon><Delete /></el-icon>
+                                                </el-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field-hint">支持mp3、wav、ogg格式，最多{{ field.maxCount || 3 }}个，单个不超过{{ field.maxSize || 20 }}MB</div>
+                                </div>
+
+                                <!-- 视频上传字段 -->
+                                <div v-else-if="field.type === 'video'" class="file-field-uploader">
+                                    <el-upload
+                                        v-model:file-list="taskForm.formData[field.id]"
+                                        :action="uploadAction"
+                                        :limit="field.maxCount || 2"
+                                        :before-upload="(file) => beforeUpload(file, field, 'video')"
+                                        :on-exceed="handleExceed"
+                                        accept="video/*"
+                                        drag
+                                    >
+                                        <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
+                                        <div class="el-upload__text">
+                                            将视频文件拖到此处，或<em>点击上传</em>
+                                        </div>
+                                    </el-upload>
+                                    <div v-if="taskForm.formData[field.id] && taskForm.formData[field.id].length > 0" class="file-preview-list" style="margin-top: 10px;">
+                                        <div v-for="(file, idx) in taskForm.formData[field.id]" :key="idx" class="video-preview-item" style="margin-bottom: 10px;">
+                                            <video controls style="width: 100%; max-height: 200px;">
+                                                <source :src="file.url" type="video/mp4">
+                                                您的浏览器不支持视频标签
+                                            </video>
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+                                                <span style="font-size: 12px; color: #666;">{{ file.name }}</span>
+                                                <el-button type="danger" size="small" text @click="removeFile(field.id, idx)">
+                                                    <el-icon><Delete /></el-icon> 删除
+                                                </el-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field-hint">支持mp4、avi、mov格式，最多{{ field.maxCount || 2 }}个，单个不超过{{ field.maxSize || 50 }}MB</div>
+                                </div>
+
+                                <!-- 文件上传字段 -->
+                                <div v-else-if="field.type === 'file'" class="file-field-uploader">
+                                    <el-upload
+                                        v-model:file-list="taskForm.formData[field.id]"
+                                        :action="uploadAction"
+                                        :limit="field.maxCount || 5"
+                                        :before-upload="(file) => beforeUpload(file, field, 'file')"
+                                        :on-exceed="handleExceed"
+                                        :accept="field.accept ? field.accept.join(',') : ''"
+                                    >
+                                        <el-button type="primary">
+                                            <el-icon><Document /></el-icon>
+                                            选择文件
+                                        </el-button>
+                                    </el-upload>
+                                    <div v-if="taskForm.formData[field.id] && taskForm.formData[field.id].length > 0" class="file-preview-list" style="margin-top: 10px;">
+                                        <div v-for="(file, idx) in taskForm.formData[field.id]" :key="idx" class="file-preview-item">
+                                            <i :class="getFileIcon(file.name)" class="file-icon"></i>
+                                            <div class="file-info">
+                                                <div class="file-name">{{ file.name }}</div>
+                                                <div class="file-size">{{ formatFileSize(file.size) }}</div>
+                                            </div>
+                                            <div class="file-actions">
+                                                <el-button type="danger" size="small" text @click="removeFile(field.id, idx)">
+                                                    <el-icon><Delete /></el-icon>
+                                                </el-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field-hint">最多{{ field.maxCount || 5 }}个文件，单个不超过{{ field.maxSize || 20 }}MB</div>
+                                </div>
                             </el-form-item>
                         </template>
                     </template>
@@ -1970,6 +2293,11 @@
             </template>
         </el-dialog>
         
+        <!-- 图片预览对话框 -->
+        <el-dialog v-model="previewDialog.visible" width="60%">
+            <img :src="previewDialog.url" style="width: 100%; display: block;" />
+        </el-dialog>
+
         <!-- 任务详情对话框 -->
         <el-dialog 
             v-model="detailDialog.visible" 
@@ -2097,15 +2425,71 @@
                         <i class="fas fa-edit" style="color: #52c41a;"></i> 表单内容
                     </div>
                     <div class="task-detail-content">
+                        <!-- 普通字段 -->
                         <el-descriptions :column="2" border>
                             <el-descriptions-item 
-                                v-for="(value, key) in currentTask.formData" 
+                                v-for="(value, key) in normalFormData" 
                                 :key="key" 
                                 :label="getFieldLabel(key)"
                             >
                                 {{ value }}
                             </el-descriptions-item>
                         </el-descriptions>
+
+                        <!-- 文件类型字段展示 -->
+                        <template v-for="(files, key) in fileFormData" :key="key">
+                            <div style="margin-top: 16px; padding: 12px; background: #f5f7fa; border-radius: 4px; border-left: 3px solid #409eff;">
+                                <div style="font-weight: bold; margin-bottom: 8px; color: #303133;">
+                                    <i :class="getFieldIcon(getFieldType(key))" style="margin-right: 6px;"></i>
+                                    {{ getFieldLabel(key) }}
+                                </div>
+                                
+                                <!-- 图片展示 -->
+                                <div v-if="getFieldType(key) === 'image'" class="image-preview-grid">
+                                    <div v-for="(file, idx) in files" :key="idx" class="image-preview-item">
+                                        <img :src="file.url || file" @click="previewImage(file.url || file)" style="cursor: pointer;">
+                                    </div>
+                                </div>
+
+                                <!-- 视频展示 -->
+                                <div v-else-if="getFieldType(key) === 'video'">
+                                    <div v-for="(file, idx) in files" :key="idx" style="margin-bottom: 10px;">
+                                        <video controls style="width: 100%; max-height: 300px; border-radius: 4px;">
+                                            <source :src="file.url || file" type="video/mp4">
+                                            您的浏览器不支持视频标签
+                                        </video>
+                                        <div style="font-size: 12px; color: #666; margin-top: 4px;">{{ file.name || '视频文件 ' + (idx + 1) }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- 音频展示 -->
+                                <div v-else-if="getFieldType(key) === 'audio'">
+                                    <div v-for="(file, idx) in files" :key="idx" style="margin-bottom: 8px;">
+                                        <audio controls style="width: 100%;">
+                                            <source :src="file.url || file" type="audio/mpeg">
+                                            您的浏览器不支持音频标签
+                                        </audio>
+                                        <div style="font-size: 12px; color: #666; margin-top: 4px;">{{ file.name || '音频文件 ' + (idx + 1) }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- 文件展示 -->
+                                <div v-else-if="getFieldType(key) === 'file'">
+                                    <div v-for="(file, idx) in files" :key="idx" class="file-preview-item" style="background: white;">
+                                        <i :class="getFileIcon(file.name || file)" class="file-icon"></i>
+                                        <div class="file-info">
+                                            <div class="file-name">{{ file.name || file }}</div>
+                                            <div class="file-size" v-if="file.size">{{ formatFileSize(file.size) }}</div>
+                                        </div>
+                                        <div class="file-actions">
+                                            <el-button type="primary" size="small" text @click="downloadFile(file)">
+                                                <el-icon><Download /></el-icon> 下载
+                                            </el-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
                 
@@ -2252,12 +2636,14 @@
         
     </div>
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js "></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js "></script>
+    <script src="https://unpkg.com/@element-plus/icons-vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js "></script>
     <script>
         const { createApp, ref, reactive, computed, onMounted, watch, nextTick } = Vue;
         const { ElMessage, ElMessageBox } = ElementPlus;
+        const { Plus, Microphone, UploadFilled, Document, Delete, Download } = ElementPlusIconsVue;
 
         const app = createApp({
             setup() {
@@ -2335,7 +2721,9 @@
                             { id: 'pharmacy_location', label: '药房位置', type: 'location', required: true },
                             { id: 'drug_name', label: '药品名称', type: 'text', required: true },
                             { id: 'receiver_dept', label: '接收科室', type: 'select', required: true },
-                            { id: 'delivery_date', label: '配送日期', type: 'date', required: false }
+                            { id: 'delivery_date', label: '配送日期', type: 'date', required: false },
+                            { id: 'drug_photo', label: '药品照片', type: 'image', required: false, maxCount: 3, maxSize: 5 },
+                            { id: 'delivery_video', label: '配送视频', type: 'video', required: false, maxCount: 1, maxSize: 50 }
                         ],
                         steps: [
                             { name: '任务接收', description: '接收配送任务指令', estimatedTime: 2 },
@@ -2353,7 +2741,9 @@
                         fields: [
                             { id: 'bank_branch', label: '支行名称', type: 'text', required: true },
                             { id: 'inspection_items', label: '巡检项目', type: 'select', required: true },
-                            { id: 'inspection_time', label: '巡检时间', type: 'time', required: true }
+                            { id: 'inspection_time', label: '巡检时间', type: 'time', required: true },
+                            { id: 'inspection_photos', label: '巡检照片', type: 'image', required: true, maxCount: 10, maxSize: 10 },
+                            { id: 'inspection_report', label: '巡检报告', type: 'file', required: false, maxCount: 3, maxSize: 20, accept: ['.pdf', '.doc', '.docx'] }
                         ],
                         steps: [
                             { name: '任务启动', description: '启动巡检任务，检查设备状态', estimatedTime: 2 },
@@ -2371,7 +2761,8 @@
                         fields: [
                             { id: 'device_name', label: '设备名称', type: 'text', required: true },
                             { id: 'device_location', label: '设备位置', type: 'location', required: true },
-                            { id: 'maintenance_type', label: '维护类型', type: 'select', required: true }
+                            { id: 'maintenance_type', label: '维护类型', type: 'select', required: true },
+                            { id: 'maintenance_audio', label: '语音备注', type: 'audio', required: false, maxCount: 5, maxSize: 10 }
                         ],
                         steps: [
                             { name: '准备工作', description: '准备维护工具和设备', estimatedTime: 5 },
@@ -2410,7 +2801,14 @@
             pharmacy_location: '急诊药房',
             drug_name: '肾上腺素注射液',
             receiver_dept: '急诊科',
-            delivery_date: '2023-10-20'
+            delivery_date: '2023-10-20',
+            drug_photo: [
+                { name: 'drug_front.jpg', url: 'https://picsum.photos/200/200?random=1', size: 1024000 },
+                { name: 'drug_back.jpg', url: 'https://picsum.photos/200/200?random=2', size: 1024000 }
+            ],
+            delivery_video: [
+                { name: 'delivery_process.mp4', url: 'https://www.w3schools.com/html/mov_bbb.mp4', size: 15360000 }
+            ]
         },
         // 完整的作业步骤（包含状态和时间）
         steps: [
@@ -2514,6 +2912,7 @@
                         updateTime: '2023-10-20 08:00:00',
                         completedSteps: 0,
                         totalSteps: 5,
+                        formData: {},
                         logs: [{ action: '任务创建', time: '2023-10-20 08:00:00', details: '进入准备队列', type: 'info' }]
                     },
                     {
@@ -2535,6 +2934,7 @@
                         updateTime: '2023-10-20 08:30:00',
                         completedSteps: 0,
                         totalSteps: 5,
+                        formData: {},
                         logs: [{ action: '任务创建', time: '2023-10-20 08:30:00', details: '进入准备队列', type: 'info' }]
                     },
                     {
@@ -2556,6 +2956,7 @@
                         updateTime: '2023-10-20 09:00:00',
                         completedSteps: 0,
                         totalSteps: 5,
+                        formData: {},
                         logs: [{ action: '任务创建', time: '2023-10-20 09:00:00', details: '进入准备队列', type: 'info' }]
                     },
                     {
@@ -2577,6 +2978,7 @@
                         updateTime: '2023-10-20 09:30:00',
                         completedSteps: 0,
                         totalSteps: 3,
+                        formData: {},
                         logs: [{ action: '紧急任务创建', time: '2023-10-20 09:30:00', details: '急救药品，优先处理', type: 'warning' }]
                     },
                     // 其他机器人的任务
@@ -2599,6 +3001,7 @@
                         updateTime: '2023-10-20 08:15:00',
                         completedSteps: 0,
                         totalSteps: 4,
+                        formData: {},
                         logs: [{ action: '任务创建', time: '2023-10-20 08:15:00', details: '进入准备队列', type: 'info' }]
                     },
                     // 高风险任务
@@ -2622,6 +3025,7 @@
                         updateTime: '2023-10-20 10:00:00',
                         completedSteps: 3,
                         totalSteps: 5,
+                        formData: {},
                         logs: [{ action: '异常检测', time: '2023-10-20 10:00:00', details: '检测到机器人E离线', type: 'danger' }]
                     },
                     // 风险任务
@@ -2645,6 +3049,7 @@
                         updateTime: '2023-10-20 09:30:00',
                         completedSteps: 0,
                         totalSteps: 4,
+                        formData: {},
                         logs: [{ action: '电量警告', time: '2023-10-20 09:30:00', details: '电量低于50%', type: 'warning' }]
                     },
                     // 已暂停任务
@@ -2668,6 +3073,14 @@
                         updateTime: '2023-10-20 09:45:00',
                         completedSteps: 2,
                         totalSteps: 4,
+                        formData: {
+                            device_name: 'CT扫描仪',
+                            device_location: '放射科',
+                            maintenance_type: '定期检查',
+                            maintenance_audio: [
+                                { name: 'voice_note_001.mp3', url: '#', size: 2048000 }
+                            ]
+                        },
                         logs: [
                             { action: '任务创建', time: '2023-10-20 07:30:00', details: '进入准备队列', type: 'info' },
                             { action: '任务开始', time: '2023-10-20 08:00:00', details: '机器人A开始执行', type: 'success' },
@@ -2780,7 +3193,15 @@
                 };
                 
                 const addField = () => {
-                    templateForm.fields.push({ id: '', label: '', type: 'text', required: false });
+                    templateForm.fields.push({ 
+                        id: '', 
+                        label: '', 
+                        type: 'text', 
+                        required: false,
+                        maxCount: 1,
+                        maxSize: 10,
+                        accept: []
+                    });
                 };
                 
                 const removeField = (index) => {
@@ -2824,7 +3245,11 @@
                 
                 const viewTemplate = (template) => {
                     const fieldsHtml = template.fields.map(f => 
-                        `<div style="margin-bottom: 8px;"><strong>${f.label}</strong> (${f.id}) - ${f.type}${f.required ? ' <span style="color: red;">*</span>' : ''}</div>`
+                        `<div style="margin-bottom: 8px;">
+                            <strong>${f.label}</strong> (${f.id}) - ${getFieldTypeText(f.type)}
+                            ${f.required ? ' <span style="color: red;">*</span>' : ''}
+                            ${['image','audio','video','file'].includes(f.type) ? `<br><small style="color:#666;">最大数量:${f.maxCount||1}, 大小限制:${f.maxSize||10}MB</small>` : ''}
+                        </div>`
                     ).join('');
                     
                     const stepsHtml = template.steps.map((s, i) => 
@@ -2863,6 +3288,22 @@
                         dangerouslyUseHTMLString: true,
                         width: '600px'
                     });
+                };
+
+                const getFieldTypeText = (type) => {
+                    const map = {
+                        'text': '文本',
+                        'number': '数字',
+                        'date': '日期',
+                        'time': '时间',
+                        'select': '下拉选择',
+                        'location': '位置选择',
+                        'image': '图片',
+                        'audio': '音频',
+                        'video': '视频',
+                        'file': '文件'
+                    };
+                    return map[type] || type;
                 };
                 
                 const deleteTemplate = (id) => {
@@ -2965,6 +3406,121 @@
                     robotId: [{ required: true, message: '请选择机器人', trigger: 'change' }]
                 };
                 
+                // 上传相关配置
+                const uploadAction = ref('https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15'); // 模拟上传地址
+                
+                const previewDialog = reactive({
+                    visible: false,
+                    url: ''
+                });
+
+                const handlePictureCardPreview = (file) => {
+                    previewDialog.url = file.url;
+                    previewDialog.visible = true;
+                };
+
+                const handleRemove = (file, fileList) => {
+                    console.log(file, fileList);
+                };
+
+                const beforeUpload = (file, field, type) => {
+                    const maxSize = (field.maxSize || 10) * 1024 * 1024; // MB转bytes
+                    if (file.size > maxSize) {
+                        ElMessage.error(`文件大小不能超过${field.maxSize || 10}MB`);
+                        return false;
+                    }
+                    
+                    // 类型检查
+                    const typeMap = {
+                        'image': ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+                        'audio': ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp3'],
+                        'video': ['video/mp4', 'video/avi', 'video/mov', 'video/quicktime'],
+                        'file': []
+                    };
+                    
+                    if (type === 'file' && field.accept && field.accept.length > 0) {
+                        const ext = '.' + file.name.split('.').pop().toLowerCase();
+                        const accepted = field.accept.join(',').split(',').map(s => s.trim().toLowerCase());
+                        if (!accepted.some(acc => ext === acc)) {
+                            ElMessage.error(`只允许上传 ${field.accept.join('、')} 格式的文件`);
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                };
+
+                const handleExceed = () => {
+                    ElMessage.warning('超出最大上传数量限制');
+                };
+
+                const removeFile = (fieldId, index) => {
+                    if (!taskForm.formData[fieldId]) return;
+                    taskForm.formData[fieldId].splice(index, 1);
+                };
+
+                const formatFileSize = (bytes) => {
+                    if (bytes === 0) return '0 B';
+                    const k = 1024;
+                    const sizes = ['B', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                };
+
+                const getFileIcon = (filename) => {
+                    if (!filename) return 'fas fa-file';
+                    const ext = filename.split('.').pop().toLowerCase();
+                    const iconMap = {
+                        'pdf': 'fas fa-file-pdf',
+                        'doc': 'fas fa-file-word',
+                        'docx': 'fas fa-file-word',
+                        'xls': 'fas fa-file-excel',
+                        'xlsx': 'fas fa-file-excel',
+                        'ppt': 'fas fa-file-powerpoint',
+                        'pptx': 'fas fa-file-powerpoint',
+                        'txt': 'fas fa-file-alt',
+                        'zip': 'fas fa-file-archive',
+                        'rar': 'fas fa-file-archive',
+                        'jpg': 'fas fa-file-image',
+                        'jpeg': 'fas fa-file-image',
+                        'png': 'fas fa-file-image',
+                        'gif': 'fas fa-file-image',
+                        'mp3': 'fas fa-file-audio',
+                        'wav': 'fas fa-file-audio',
+                        'mp4': 'fas fa-file-video',
+                        'avi': 'fas fa-file-video',
+                        'mov': 'fas fa-file-video'
+                    };
+                    return iconMap[ext] || 'fas fa-file';
+                };
+
+                const getFieldIcon = (type) => {
+                    const map = {
+                        'image': 'fas fa-image',
+                        'audio': 'fas fa-music',
+                        'video': 'fas fa-video',
+                        'file': 'fas fa-file'
+                    };
+                    return map[type] || 'fas fa-file';
+                };
+
+                const getFieldType = (fieldId) => {
+                    if (!currentTask.value) return 'text';
+                    const template = templates.value.find(t => t.id === currentTask.value.templateId);
+                    if (!template) return 'text';
+                    const field = template.fields.find(f => f.id === fieldId);
+                    return field ? field.type : 'text';
+                };
+
+                const downloadFile = (file) => {
+                    ElMessage.success(`开始下载: ${file.name || file}`);
+                };
+
+                const previewImage = (url) => {
+                    previewDialog.url = url;
+                    previewDialog.visible = true;
+                };
+                
                 const showTaskDialog = (type, task = null) => {
                     taskDialog.mode = task ? 'edit' : 'create';
                     taskDialog.title = task ? '修改任务' : (type === 'process' ? '创建完整流程任务' : '创建简单动作任务');
@@ -3013,7 +3569,12 @@
                     if (template) {
                         const formData = {};
                         template.fields.forEach(field => {
-                            formData[field.id] = '';
+                            // 文件类型初始化为数组
+                            if (['image', 'audio', 'video', 'file'].includes(field.type)) {
+                                formData[field.id] = [];
+                            } else {
+                                formData[field.id] = '';
+                            }
                         });
                         taskForm.formData = formData;
                     }
@@ -3023,7 +3584,9 @@
                     if (!description || !taskForm.templateId) return description;
                     let result = description;
                     Object.entries(taskForm.formData).forEach(([key, value]) => {
-                        result = result.replace(new RegExp(`{{${key}}}`, 'g'), value || `[${key}]`);
+                        if (typeof value === 'string') {
+                            result = result.replace(new RegExp(`{{${key}}}`, 'g'), value || `[${key}]`);
+                        }
                     });
                     return result;
                 };
@@ -3092,6 +3655,21 @@
                                 if (taskForm.triggerType === 'battery') triggerValue = taskForm.triggerValue || 80;
                                 if (taskForm.triggerType === 'idle') triggerValue = taskForm.triggerValue || 30;
                                 
+                                // 处理表单数据，确保文件类型正确存储
+                                const processedFormData = {};
+                                Object.entries(taskForm.formData).forEach(([key, value]) => {
+                                    if (Array.isArray(value)) {
+                                        // 文件类型
+                                        processedFormData[key] = value.map(f => ({
+                                            name: f.name,
+                                            url: f.url || f.response?.url || URL.createObjectURL(f.raw),
+                                            size: f.size
+                                        }));
+                                    } else {
+                                        processedFormData[key] = value;
+                                    }
+                                });
+                                
                                 const newTask = {
                                     id: newId,
                                     name: taskForm.name,
@@ -3112,7 +3690,7 @@
                                     robotName: taskForm.isGroupTask ? null : robots.value.find(r => r.id === taskForm.robotId)?.name,
                                     robotStatus: taskForm.isGroupTask ? null : 'online',
                                     robotGroupIds: taskForm.isGroupTask ? [taskForm.robotGroupId] : (template ? template.robotGroupIds : [3]),
-                                    formData: { ...taskForm.formData },
+                                    formData: processedFormData,
                                     steps: template ? JSON.parse(JSON.stringify(template.steps)).map(s => ({
                                         ...s,
                                         status: 'pending',
@@ -3147,7 +3725,20 @@
                                     task.cronExpression = taskForm.triggerType === 'scheduled' ? taskForm.cronExpression : null;
                                     task.robotId = taskForm.isGroupTask ? null : taskForm.robotId;
                                     task.robotName = taskForm.isGroupTask ? null : robots.value.find(r => r.id === taskForm.robotId)?.name;
-                                    task.formData = { ...taskForm.formData };
+                                    // 合并表单数据
+                                    const processedFormData = {};
+                                    Object.entries(taskForm.formData).forEach(([key, value]) => {
+                                        if (Array.isArray(value)) {
+                                            processedFormData[key] = value.map(f => ({
+                                                name: f.name,
+                                                url: f.url || f.response?.url,
+                                                size: f.size
+                                            }));
+                                        } else {
+                                            processedFormData[key] = value;
+                                        }
+                                    });
+                                    task.formData = processedFormData;
                                     task.updateTime = now;
                                     task.startTime = getStartTimeText(taskForm);
                                     task.logs.push({
@@ -3911,6 +4502,37 @@
                 // ==================== 详情对话框 ====================
                 const detailDialog = reactive({ visible: false });
                 const currentTask = ref(null);
+
+                // 分离普通字段和文件字段
+                const normalFormData = computed(() => {
+                    if (!currentTask.value || !currentTask.value.formData) return {};
+                    const result = {};
+                    const template = templates.value.find(t => t.id === currentTask.value.templateId);
+                    if (!template) return currentTask.value.formData;
+                    
+                    Object.entries(currentTask.value.formData).forEach(([key, value]) => {
+                        const field = template.fields.find(f => f.id === key);
+                        if (field && !['image', 'audio', 'video', 'file'].includes(field.type)) {
+                            result[key] = value;
+                        }
+                    });
+                    return result;
+                });
+
+                const fileFormData = computed(() => {
+                    if (!currentTask.value || !currentTask.value.formData) return {};
+                    const result = {};
+                    const template = templates.value.find(t => t.id === currentTask.value.templateId);
+                    if (!template) return {};
+                    
+                    Object.entries(currentTask.value.formData).forEach(([key, value]) => {
+                        const field = template.fields.find(f => f.id === key);
+                        if (field && ['image', 'audio', 'video', 'file'].includes(field.type)) {
+                            result[key] = Array.isArray(value) ? value : (value ? [value] : []);
+                        }
+                    });
+                    return result;
+                });
                 
                 const viewTaskDetail = (task) => {
                     currentTask.value = task;
@@ -3954,6 +4576,7 @@
                     saveTemplate,
                     viewTemplate,
                     deleteTemplate,
+                    getFieldTypeText,
                     
                     // 任务管理
                     taskFilter,
@@ -3978,6 +4601,21 @@
                     getFieldLabel,
                     editTask,
                     deleteTask,
+
+                    // 文件上传相关
+                    uploadAction,
+                    previewDialog,
+                    handlePictureCardPreview,
+                    handleRemove,
+                    beforeUpload,
+                    handleExceed,
+                    removeFile,
+                    formatFileSize,
+                    getFileIcon,
+                    getFieldIcon,
+                    getFieldType,
+                    downloadFile,
+                    previewImage,
                     
                     // 计划管理 - 修复后
                     schedulingFilter,
@@ -4024,14 +4662,21 @@
                     // 详情
                     detailDialog,
                     currentTask,
-                    viewTaskDetail
+                    viewTaskDetail,
+                    normalFormData,
+                    fileFormData
                 };
             }
         });
 
         app.use(ElementPlus);
+        app.component('Plus', Plus);
+        app.component('Microphone', Microphone);
+        app.component('UploadFilled', UploadFilled);
+        app.component('Document', Document);
+        app.component('Delete', Delete);
+        app.component('Download', Download);
         app.mount('#app');
     </script>
 </body>
-
 </html>
