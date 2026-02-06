@@ -308,6 +308,72 @@
             color: #8c8c8c;
         }
 
+        /* 评分标签样式 */
+        .rating-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .rating-good {
+            background-color: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+        
+        .rating-medium {
+            background-color: #fffbe6;
+            color: #faad14;
+            border: 1px solid #ffe58f;
+        }
+        
+        .rating-bad {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+            border: 1px solid #ffa39e;
+        }
+
+        /* 交互类型标签样式 */
+        .interaction-type-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .type-delivery {
+            background-color: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+        }
+        
+        .type-cleaning {
+            background-color: #f0fff4;
+            color: #36cfc9;
+            border: 1px solid #87e8de;
+        }
+        
+        .type-inspection {
+            background-color: #fff7e6;
+            color: #fa8c16;
+            border: 1px solid #ffd591;
+        }
+        
+        .type-maintenance {
+            background-color: #f9f0ff;
+            color: #722ed1;
+            border: 1px solid #d3adf7;
+        }
+        
+        .type-security {
+            background-color: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+
         /* 响应式设计 */
         @media (max-width: 992px) {
             .sidebar {
@@ -466,6 +532,77 @@
             background-color: #e6f7ff;
             color: #1890ff;
         }
+
+        /* 交互历史样式 */
+        .interaction-content {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .interaction-content.expanded {
+            white-space: normal;
+            overflow: visible;
+        }
+        .expand-btn {
+            color: #1890ff;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .evaluation-text {
+            font-style: italic;
+            color: #666;
+            max-width: 250px;
+        }
+        .user-info-cell {
+            display: flex;
+            align-items: center;
+        }
+        .user-avatar-small {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #1890ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .statistics-card {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .statistics-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .statistics-item {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            margin-bottom: 8px;
+        }
+        .statistics-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+        }
+        .statistics-label {
+            font-size: 12px;
+            color: #999;
+        }
+        .chart-container {
+            height: 200px;
+            margin-top: 16px;
+        }
     </style>
 </head>
 <body>
@@ -557,55 +694,49 @@
                         <i class="fas fa-sync-alt"></i>
                         <span class="nav-text">应用更新管理</span>
                     </a>
+                    <!-- 新增交互历史列表菜单项 -->
+                    <a href="app.html#interactionHistory" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'interactionHistory' }" @click="setActiveNav('interactionHistory')">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text">交互历史列表</span>
+                    </a>
                 </div>
             </div>
 
-                <!-- 模式管理折叠菜单 -->
+                <!-- 模式管理折叠菜单（修复a标签嵌套问题） -->
                 <div class="nav-item-wrapper">
-                    <div
-                         class="nav-item"
-                        :class="{ 
-                            'active-parent': expandedMenu === 'modeManagement', 
-                            'expanded': expandedMenu === 'modeManagement' 
-                          }"
-                          @click="toggleMenu('modeManagement')"
-                     >
-                     <i class="fas fa-cogs"></i>
-                     <span class="nav-text">模式管理</span>
-                     <i
-                        class="fas fa-chevron-down arrow-icon"
-                        :class="{ 'rotated': expandedMenu === 'modeManagement' }"
-                     ></i>
-                </div>
+                    <div 
+                       class="nav-item"
+                       :class="{ 'active-parent': expandedMenu === 'modeManagement', 'expanded': expandedMenu === 'modeManagement' }"
+                       @click="toggleMenu('modeManagement')"
+                    >
+                       <i class="fas fa-cogs"></i>
+                       <span class="nav-text">模式管理</span>
+                       <i 
+                         class="fas fa-chevron-down arrow-icon" 
+                         :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+                       ></i>
+                     </div>
 
-                 <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
-                    <a href="mode.html#switch" class="nav-item sub-item"
-                        :class="{ active: activeNav === 'switch' }" @click="setActiveNav('switch')">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span class="nav-text">模式切换</span>
-                    </a>
-                    <a href="mode.html#schedule" class="nav-item sub-item"
-                        :class="{ active: activeNav === 'schedule' }" @click="setActiveNav('schedule')">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span class="nav-text">模式排程</span>
-                    </a>
-                    <a href="mode.html#history" class="nav-item sub-item"
-                        :class="{ active: activeNav === 'history' }" @click="setActiveNav('history')">
-                        <i class="fas fa-history"></i>
-                       <span class="nav-text">历史记录</span>
-                    </a>
-                    <a href="mode.html#quick" class="nav-item sub-item"
-                       :class="{ active: activeNav === 'quick' }" @click="setActiveNav('quick')">
-                       <i class="fas fa-bolt"></i>
-                       <span class="nav-text">快速操作</span>
-                     </a>
-                    <a href="mode.html#edit" class="nav-item sub-item"
-                      :class="{ active: activeNav === 'edit' }" @click="setActiveNav('edit')">
-                      <i class="fas fa-edit"></i>
-                      <span class="nav-text">编辑模式</span>
-                    </a>
-              </div>
-       </div>
+                     <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
+                       <a href="mode.html#status" class="nav-item sub-item" :class="{ active: activeNav === 'modeStatus' }" @click="setActiveNav('modeStatus')">
+                         <i class="fas fa-heartbeat"></i>
+                         <span class="nav-text">状态监控</span>
+                       </a>
+                       <a href="mode.html#switch" class="nav-item sub-item" :class="{ active: activeNav === 'modeSwitch' }" @click="setActiveNav('modeSwitch')">
+                         <i class="fas fa-exchange-alt"></i>
+                         <span class="nav-text">模式切换</span>
+                       </a>
+                       <a href="mode.html#history" class="nav-item sub-item" :class="{ active: activeNav === 'modeHistory' }" @click="setActiveNav('modeHistory')">
+                         <i class="fas fa-history"></i>
+                         <span class="nav-text">历史记录</span>
+                       </a>
+                       <a href="mode.html#quick" class="nav-item sub-item" :class="{ active: activeNav === 'modeQuick' }" @click="setActiveNav('modeQuick')">
+                         <i class="fas fa-bolt"></i>
+                         <span class="nav-text">快速操作</span>
+                       </a>
+                   </div>
+               </div>
                
                 <!-- 数据管理与分析 -->
                 <div class="nav-item-wrapper">
@@ -683,6 +814,14 @@
                         @click="switchModule('appUpdate')"
                     >
                         应用更新管理
+                    </div>
+                    <!-- 新增交互历史列表标签 -->
+                    <div 
+                        class="module-tab" 
+                        :class="{ active: activeModule === 'interactionHistory' }"
+                        @click="switchModule('interactionHistory')"
+                    >
+                        交互历史列表
                     </div>
                 </div>
                 
@@ -980,6 +1119,231 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 交互历史列表模块 -->
+                <div v-if="activeModule === 'interactionHistory'">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">用户交互历史记录</div>
+                            <el-button type="primary" @click="exportHistory">
+                                <i class="fas fa-download"></i> 导出记录
+                            </el-button>
+                        </div>
+                        
+                        <!-- 统计卡片 -->
+                        <div class="statistics-card">
+                            <div class="statistics-row">
+                                <div class="statistics-item">
+                                    <div class="statistics-value">{{ interactionStatistics.total }}</div>
+                                    <div class="statistics-label">总交互次数</div>
+                                </div>
+                                <div class="statistics-item">
+                                    <div class="statistics-value">{{ interactionStatistics.goodCount }}</div>
+                                    <div class="statistics-label">好评数</div>
+                                </div>
+                                <div class="statistics-item">
+                                    <div class="statistics-value">{{ interactionStatistics.mediumCount }}</div>
+                                    <div class="statistics-label">中评数</div>
+                                </div>
+                                <div class="statistics-item">
+                                    <div class="statistics-value">{{ interactionStatistics.badCount }}</div>
+                                    <div class="statistics-label">差评数</div>
+                                </div>
+                                <div class="statistics-item">
+                                    <div class="statistics-value">{{ interactionStatistics.byType.delivery || 0 }}</div>
+                                    <div class="statistics-label">配送任务</div>
+                                </div>
+                                <div class="statistics-item">
+                                    <div class="statistics-value">{{ interactionStatistics.byType.cleaning || 0 }}</div>
+                                    <div class="statistics-label">清洁任务</div>
+                                </div>
+                                <div class="statistics-item">
+                                    <div class="statistics-value">{{ interactionStatistics.byType.inspection || 0 }}</div>
+                                    <div class="statistics-label">巡检任务</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 筛选栏 -->
+                        <div class="filter-bar">
+                            <div class="filter-item">
+                                <span class="filter-label">时间范围：</span>
+                                <el-date-picker
+                                    v-model="historyFilter.dateRange"
+                                    type="daterange"
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    value-format="YYYY-MM-DD"
+                                    style="width: 280px"
+                                    @change="handleHistoryFilterChange"
+                                ></el-date-picker>
+                            </div>
+                            
+                            <div class="filter-item">
+                                <span class="filter-label">评分：</span>
+                                <el-select 
+                                    v-model="historyFilter.rating" 
+                                    placeholder="全部评分" 
+                                    clearable 
+                                    style="width: 120px"
+                                    @change="handleHistoryFilterChange"
+                                >
+                                    <el-option label="好评" value="good"></el-option>
+                                    <el-option label="中评" value="medium"></el-option>
+                                    <el-option label="差评" value="bad"></el-option>
+                                </el-select>
+                            </div>
+                            
+                            <!-- 交互类型筛选 -->
+                            <div class="filter-item">
+                                <span class="filter-label">交互类型：</span>
+                                <el-select 
+                                    v-model="historyFilter.interactionType" 
+                                    placeholder="全部类型" 
+                                    clearable 
+                                    style="width: 180px"
+                                    @change="handleHistoryFilterChange"
+                                >
+                                    <el-option label="配送任务" value="delivery"></el-option>
+                                    <el-option label="清洁任务" value="cleaning"></el-option>
+                                    <el-option label="巡检任务" value="inspection"></el-option>
+                                    <el-option label="维护任务" value="maintenance"></el-option>
+                                    <el-option label="安防任务" value="security"></el-option>
+                                </el-select>
+                            </div>
+                            
+                            <div class="filter-item">
+                                <span class="filter-label">搜索：</span>
+                                <el-input 
+                                    v-model="historyFilter.keyword" 
+                                    placeholder="用户ID/交互内容" 
+                                    style="width: 200px"
+                                    clearable
+                                    @input="handleHistoryFilterChange"
+                                ></el-input>
+                            </div>
+                            
+                            <div class="filter-item" style="margin-left: auto;">
+                                <el-button @click="resetHistoryFilter" type="default">
+                                    <i class="fas fa-undo" style="margin-right: 6px;"></i>重置筛选
+                                </el-button>
+                                <span style="margin-left: 12px; color: #999; font-size: 14px;">
+                                    共 {{ filteredInteractions.length }} 条记录
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <el-table 
+                                :data="displayedInteractions" 
+                                style="width: 100%" 
+                                v-loading="historyLoading"
+                                @sort-change="handleSortChange"
+                            >
+                                <el-table-column prop="id" label="记录ID" width="100" sortable="custom"></el-table-column>
+                                <el-table-column label="用户信息" width="180">
+                                    <template #default="scope">
+                                        <div class="user-info-cell">
+                                            <div class="user-avatar-small">{{ scope.row.userName.charAt(0) }}</div>
+                                            <div>
+                                                <div style="font-weight: 500;">{{ scope.row.userName }}</div>
+                                                <div style="font-size: 12px; color: #999;">ID: {{ scope.row.userId }}</div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="交互类型" width="120">
+                                    <template #default="scope">
+                                        <span :class="[
+                                            scope.row.interactionType === 'delivery' ? 'interaction-type-tag type-delivery' :
+                                            scope.row.interactionType === 'cleaning' ? 'interaction-type-tag type-cleaning' :
+                                            scope.row.interactionType === 'inspection' ? 'interaction-type-tag type-inspection' :
+                                            scope.row.interactionType === 'maintenance' ? 'interaction-type-tag type-maintenance' :
+                                            'interaction-type-tag type-security'
+                                        ]">
+                                            {{ 
+                                                scope.row.interactionType === 'delivery' ? '配送' : 
+                                                scope.row.interactionType === 'cleaning' ? '清洁' :
+                                                scope.row.interactionType === 'inspection' ? '巡检' :
+                                                scope.row.interactionType === 'maintenance' ? '维护' : '安防'
+                                            }}
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="交互内容" min-width="250">
+                                    <template #default="scope">
+                                        <div>
+                                            <div class="interaction-content" :class="{ expanded: scope.row.expanded }">
+                                                {{ scope.row.content }}
+                                            </div>
+                                            <span 
+                                                class="expand-btn" 
+                                                @click="toggleContentExpand(scope.row)"
+                                            >
+                                                {{ scope.row.expanded ? '收起' : '展开' }}
+                                            </span>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="评分" width="100">
+                                    <template #default="scope">
+                                        <span :class="[
+                                            scope.row.rating === 'good' ? 'rating-tag rating-good' :
+                                            scope.row.rating === 'medium' ? 'rating-tag rating-medium' :
+                                            'rating-tag rating-bad'
+                                        ]">
+                                            {{ 
+                                                scope.row.rating === 'good' ? '好' : 
+                                                scope.row.rating === 'medium' ? '中' : '差' 
+                                            }}
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="评价内容" width="200">
+                                    <template #default="scope">
+                                        <div class="evaluation-text" :title="scope.row.evaluation">
+                                            {{ scope.row.evaluation || '暂无评价' }}
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="timestamp" label="时间" width="180" sortable="custom">
+                                    <template #default="scope">
+                                        <div>
+                                            <div>{{ scope.row.date }}</div>
+                                            <div style="font-size: 12px; color: #999;">{{ scope.row.time }}</div>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="操作" width="120" fixed="right">
+                                    <template #default="scope">
+                                        <el-button size="small" @click="viewInteractionDetail(scope.row)">详情</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            
+                            <!-- 分页 -->
+                            <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                                <el-pagination
+                                    v-model:current-page="historyPagination.currentPage"
+                                    v-model:page-size="historyPagination.pageSize"
+                                    :page-sizes="[10, 20, 50, 100]"
+                                    :total="filteredInteractions.length"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    @size-change="handleHistoryPageSizeChange"
+                                    @current-change="handleHistoryPageChange"
+                                ></el-pagination>
+                            </div>
+                            
+                            <!-- 空状态提示 -->
+                            <div v-if="filteredInteractions.length === 0" class="empty-state">
+                                <i class="fas fa-history"></i>
+                                <p>暂无交互历史记录</p>
+                                <el-button type="primary" @click="resetHistoryFilter">查看全部记录</el-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1051,12 +1415,207 @@
                         { name: '机器人02', sn: 'SN001002', status: 'processing' },
                         { name: '机器人03', sn: 'SN001003', status: 'success' },
                         { name: '机器人04', sn: 'SN001004', status: 'failed' }
-                    ]
+                    ],
+                    // 交互历史相关数据
+                    historyFilter: {
+                        dateRange: [],
+                        rating: '',
+                        interactionType: '',
+                        keyword: ''
+                    },
+                    historyLoading: false,
+                    historyPagination: {
+                        currentPage: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    sortField: 'timestamp',
+                    sortOrder: 'descending',
+                    // 交互历史数据（更新为业务场景）
+                    interactions: [
+                        { 
+                            id: 'INT001', 
+                            userId: 'USER001', 
+                            userName: '张三', 
+                            interactionType: 'delivery',
+                            content: '请将文件从A栋送至B栋305室，收件人：王经理',
+                            rating: 'good',
+                            evaluation: '配送准时，物品完好，服务态度好',
+                            timestamp: '2024-03-15 09:30:15',
+                            date: '2024-03-15',
+                            time: '09:30:15',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT002', 
+                            userId: 'USER002', 
+                            userName: '李四', 
+                            interactionType: 'cleaning',
+                            content: '请求打扫会议室A，需要重点清洁白板和地面，下午2点前完成',
+                            rating: 'medium',
+                            evaluation: '清洁基本完成，但角落有遗漏，白板没擦干净',
+                            timestamp: '2024-03-15 14:20:30',
+                            date: '2024-03-15',
+                            time: '14:20:30',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT003', 
+                            userId: 'USER003', 
+                            userName: '王五', 
+                            interactionType: 'inspection',
+                            content: '巡检一楼所有消防设备状态，检查灭火器有效期和压力',
+                            rating: 'good',
+                            evaluation: '巡检全面，报告详细，发现2个灭火器需要更换',
+                            timestamp: '2024-03-14 18:45:12',
+                            date: '2024-03-14',
+                            time: '18:45:12',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT004', 
+                            userId: 'USER004', 
+                            userName: '赵六', 
+                            interactionType: 'delivery',
+                            content: '配送午餐到研发部三楼，共15份套餐',
+                            rating: 'bad',
+                            evaluation: '送错楼层，晚了20分钟，饭菜都凉了',
+                            timestamp: '2024-03-14 11:10:45',
+                            date: '2024-03-14',
+                            time: '11:10:45',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT005', 
+                            userId: 'USER005', 
+                            userName: '孙七', 
+                            interactionType: 'inspection',
+                            content: '检查数据中心服务器温度和湿度，记录异常情况',
+                            rating: 'good',
+                            evaluation: '数据准确，及时发现温度异常并报警',
+                            timestamp: '2024-03-13 16:30:20',
+                            date: '2024-03-13',
+                            time: '16:30:20',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT006', 
+                            userId: 'USER001', 
+                            userName: '张三', 
+                            interactionType: 'cleaning',
+                            content: '办公区日常清洁，包括地面清扫和垃圾清理',
+                            rating: 'good',
+                            evaluation: '清洁彻底，办公环境明显改善',
+                            timestamp: '2024-03-13 10:15:33',
+                            date: '2024-03-13',
+                            time: '10:15:33',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT007', 
+                            userId: 'USER006', 
+                            userName: '周八', 
+                            interactionType: 'maintenance',
+                            content: '机器人01号充电桩故障，需要紧急维修',
+                            rating: 'medium',
+                            evaluation: '维修及时，但配件需要等2天到货',
+                            timestamp: '2024-03-12 12:05:18',
+                            date: '2024-03-12',
+                            time: '12:05:18',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT008', 
+                            userId: 'USER002', 
+                            userName: '李四', 
+                            interactionType: 'security',
+                            content: '夜间园区巡逻，重点监控停车场和仓库区域',
+                            rating: 'good',
+                            evaluation: '巡逻到位，发现并处理一起可疑情况',
+                            timestamp: '2024-03-12 15:40:55',
+                            date: '2024-03-12',
+                            time: '15:40:55',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT009', 
+                            userId: 'USER007', 
+                            userName: '吴九', 
+                            interactionType: 'delivery',
+                            content: '紧急配送医疗物资到医务室，包含绷带和消毒液',
+                            rating: 'good',
+                            evaluation: '响应迅速，5分钟内送达，非常及时',
+                            timestamp: '2024-03-11 08:45:22',
+                            date: '2024-03-11',
+                            time: '08:45:22',
+                            expanded: false
+                        },
+                        { 
+                            id: 'INT010', 
+                            userId: 'USER008', 
+                            userName: '郑十', 
+                            interactionType: 'inspection',
+                            content: '月度设备全面巡检，检查所有机器人运行状态',
+                            rating: 'good',
+                            evaluation: '检查全面，生成详细的设备健康报告',
+                            timestamp: '2024-03-10 14:30:10',
+                            date: '2024-03-10',
+                            time: '14:30:10',
+                            expanded: false
+                        }
+                    ],
+                    filteredInteractions: [],
+                    displayedInteractions: []
+                });
+
+                // 计算交互统计信息
+                const interactionStatistics = Vue.computed(() => {
+                    const stats = {
+                        total: state.interactions.length,
+                        goodCount: 0,
+                        mediumCount: 0,
+                        badCount: 0,
+                        averageRating: 0,
+                        byType: {
+                            delivery: 0,
+                            cleaning: 0,
+                            inspection: 0,
+                            maintenance: 0,
+                            security: 0
+                        }
+                    };
+                    
+                    state.interactions.forEach(interaction => {
+                        if (interaction.rating === 'good') stats.goodCount++;
+                        else if (interaction.rating === 'medium') stats.mediumCount++;
+                        else if (interaction.rating === 'bad') stats.badCount++;
+                        
+                        // 按类型统计
+                        if (stats.byType[interaction.interactionType] !== undefined) {
+                            stats.byType[interaction.interactionType]++;
+                        }
+                    });
+                    
+                    // 计算平均评分（好=3分，中=2分，差=1分）
+                    const totalScore = stats.goodCount * 3 + stats.mediumCount * 2 + stats.badCount * 1;
+                    stats.averageRating = stats.total > 0 ? totalScore / stats.total : 0;
+                    
+                    return stats;
                 });
 
                 // 初始化筛选列表
                 const initFilter = () => {
                     state.filteredApps = [...state.apps];
+                    state.filteredInteractions = [...state.interactions];
+                    updateDisplayedInteractions();
+                };
+
+                // 更新显示的交互记录（分页）
+                const updateDisplayedInteractions = () => {
+                    const start = (state.historyPagination.currentPage - 1) * state.historyPagination.pageSize;
+                    const end = start + state.historyPagination.pageSize;
+                    state.displayedInteractions = state.filteredInteractions.slice(start, end);
+                    state.historyPagination.total = state.filteredInteractions.length;
                 };
 
                 // 切换菜单展开/折叠
@@ -1068,7 +1627,7 @@
                 const setActiveNav = (navKey) => {
                     state.activeNav = navKey;
                     // 同步切换模块（仅交互应用管理下）
-                    if (['appLibrary', 'appConfig', 'appUpdate'].includes(navKey)) {
+                    if (['appLibrary', 'appConfig', 'appUpdate', 'interactionHistory'].includes(navKey)) {
                         state.activeModule = navKey;
                     }
                 };
@@ -1220,6 +1779,133 @@
                     ElMessage.info('批量更新功能待实现');
                 };
 
+                // 交互历史相关方法
+                const handleHistoryFilterChange = () => {
+                    state.historyLoading = true;
+                    // 模拟异步筛选
+                    setTimeout(() => {
+                        let result = [...state.interactions];
+                        
+                        // 按时间范围筛选
+                        if (state.historyFilter.dateRange && state.historyFilter.dateRange.length === 2) {
+                            const [startDate, endDate] = state.historyFilter.dateRange;
+                            result = result.filter(item => {
+                                const itemDate = item.date;
+                                return itemDate >= startDate && itemDate <= endDate;
+                            });
+                        }
+                        
+                        // 按评分筛选
+                        if (state.historyFilter.rating) {
+                            result = result.filter(item => item.rating === state.historyFilter.rating);
+                        }
+                        
+                        // 按交互类型筛选
+                        if (state.historyFilter.interactionType) {
+                            result = result.filter(item => item.interactionType === state.historyFilter.interactionType);
+                        }
+                        
+                        // 按关键词筛选
+                        if (state.historyFilter.keyword) {
+                            const keyword = state.historyFilter.keyword.toLowerCase();
+                            result = result.filter(item => 
+                                item.userId.toLowerCase().includes(keyword) || 
+                                item.userName.toLowerCase().includes(keyword) ||
+                                item.content.toLowerCase().includes(keyword) ||
+                                item.evaluation.toLowerCase().includes(keyword)
+                            );
+                        }
+                        
+                        // 排序
+                        if (state.sortField) {
+                            result.sort((a, b) => {
+                                const aValue = a[state.sortField];
+                                const bValue = b[state.sortField];
+                                
+                                if (state.sortField === 'timestamp') {
+                                    return state.sortOrder === 'ascending' 
+                                        ? new Date(aValue) - new Date(bValue)
+                                        : new Date(bValue) - new Date(aValue);
+                                } else if (state.sortField === 'id') {
+                                    return state.sortOrder === 'ascending' 
+                                        ? aValue.localeCompare(bValue)
+                                        : bValue.localeCompare(aValue);
+                                }
+                                return 0;
+                            });
+                        }
+                        
+                        state.filteredInteractions = result;
+                        state.historyPagination.currentPage = 1;
+                        updateDisplayedInteractions();
+                        state.historyLoading = false;
+                    }, 300);
+                };
+
+                // 重置历史筛选条件
+                const resetHistoryFilter = () => {
+                    state.historyFilter = {
+                        dateRange: [],
+                        rating: '',
+                        interactionType: '',
+                        keyword: ''
+                    };
+                    state.sortField = 'timestamp';
+                    state.sortOrder = 'descending';
+                    handleHistoryFilterChange();
+                };
+
+                // 处理排序
+                const handleSortChange = ({ column, prop, order }) => {
+                    state.sortField = prop;
+                    state.sortOrder = order;
+                    handleHistoryFilterChange();
+                };
+
+                // 切换内容展开状态
+                const toggleContentExpand = (row) => {
+                    row.expanded = !row.expanded;
+                };
+
+                // 查看交互详情
+                const viewInteractionDetail = (row) => {
+                    ElMessageBox.alert(`
+                        <div style="text-align: left;">
+                            <p><strong>记录ID：</strong>${row.id}</p>
+                            <p><strong>用户：</strong>${row.userName} (${row.userId})</p>
+                            <p><strong>交互类型：</strong>${
+                                row.interactionType === 'delivery' ? '配送任务' : 
+                                row.interactionType === 'cleaning' ? '清洁任务' :
+                                row.interactionType === 'inspection' ? '巡检任务' :
+                                row.interactionType === 'maintenance' ? '维护任务' : '安防任务'
+                            }</p>
+                            <p><strong>交互内容：</strong>${row.content}</p>
+                            <p><strong>评分：</strong>${row.rating === 'good' ? '好' : row.rating === 'medium' ? '中' : '差'}</p>
+                            <p><strong>评价：</strong>${row.evaluation || '无'}</p>
+                            <p><strong>时间：</strong>${row.timestamp}</p>
+                        </div>
+                    `, '交互详情', {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: '关闭'
+                    });
+                };
+
+                // 导出历史记录
+                const exportHistory = () => {
+                    ElMessage.success('导出功能正在开发中，当前显示' + state.filteredInteractions.length + '条记录');
+                };
+
+                // 分页相关方法
+                const handleHistoryPageSizeChange = (newSize) => {
+                    state.historyPagination.pageSize = newSize;
+                    updateDisplayedInteractions();
+                };
+
+                const handleHistoryPageChange = (newPage) => {
+                    state.historyPagination.currentPage = newPage;
+                    updateDisplayedInteractions();
+                };
+
                 // 计算属性（判断任务管理是否激活）
                 const isTaskManagementActive = Vue.computed(() => {
                     return ['templates', 'tasks', 'scheduling', 'monitoring'].includes(state.activeNav);
@@ -1235,7 +1921,7 @@
                     initFilter();
                     // 从URL锚点初始化激活状态
                     const hash = window.location.hash.slice(1);
-                    if (hash && ['appLibrary', 'appConfig', 'appUpdate'].includes(hash)) {
+                    if (hash && ['appLibrary', 'appConfig', 'appUpdate', 'interactionHistory'].includes(hash)) {
                         state.activeNav = hash;
                         state.activeModule = hash;
                     }
@@ -1243,6 +1929,7 @@
 
                 return {
                     ...Vue.toRefs(state),
+                    interactionStatistics,
                     toggleMenu,
                     setActiveNav,
                     switchModule,
@@ -1256,6 +1943,14 @@
                     previewUpdate,
                     confirmUpdate,
                     batchUpdate,
+                    handleHistoryFilterChange,
+                    resetHistoryFilter,
+                    handleSortChange,
+                    toggleContentExpand,
+                    viewInteractionDetail,
+                    exportHistory,
+                    handleHistoryPageSizeChange,
+                    handleHistoryPageChange,
                     isTaskManagementActive,
                     isDataAnalysisActive
                 };
@@ -1264,6 +1959,3 @@
     </script>
 </body>
 </html>
-
-
-
