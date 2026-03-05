@@ -1,1 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库 · 机器人后台管理平台</title>
+    <!-- 引入 Element Plus 及相关样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1890ff;
+            --primary-light: #e6f7ff;
+            --success-color: #52c41a;
+            --warning-color: #faad14;
+            --error-color: #f5222d;
+            --info-color: #1890ff;
+            --bg-color: #f0f2f5;
+            --sidebar-bg: #001529;
+            --header-bg: #fff;
+            --card-bg: #fff;
+            --text-primary: #000000e0;
+            --text-secondary: #000000a6;
+            --border-color: #f0f0f0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 256px;
+            background-color: var(--sidebar-bg);
+            color: rgba(255, 255, 255, 0.85);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .nav-item i {
+            font-size: 16px;
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* 父菜单高亮（当子菜单被选中时） */
+        .nav-item.active-parent {
+            background-color: rgba(24, 144, 255, 0.2);
+            color: white;
+            border-right: 3px solid var(--primary-color);
+        }
+        
+        /* 箭头图标 */
+        .arrow-icon {
+            margin-left: auto;
+            font-size: 12px;
+            transition: transform 0.3s;
+            opacity: 0.7;
+        }
+        
+        .arrow-icon.rotated {
+            transform: rotate(180deg);
+        }
+        
+        /* 子菜单容器 */
+        .sub-nav-menu {
+            background-color: rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        /* 子菜单项 */
+        .nav-item.sub-item {
+            padding: 10px 24px 10px 48px;
+            font-size: 13px;
+            border-left: 2px solid transparent;
+        }
+        
+        .nav-item.sub-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-item.sub-item.active {
+            background-color: rgba(24, 144, 255, 0.25);
+            color: #fff;
+            border-left-color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            height: 64px;
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            background-color: var(--bg-color);
+        }
+        
+        /* 卡片公用 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+        /* 状态机标签 */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-pending { background: #fff7e6; color: #d46b00; }
+        .status-processing { background: #e6f7ff; color: #096dd9; }
+        .status-ready { background: #f6ffed; color: #389e0d; }
+        .status-failed { background: #fff1f0; color: #cf1322; }
+        
+        /* 文档行操作 */
+        .action-icons {
+            display: flex;
+            gap: 12px;
+            color: #8c8c8c;
+        }
+        .action-icons i {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .action-icons i:hover {
+            color: var(--primary-color);
+        }
+        
+        /* 预览mini框 */
+        .preview-mini {
+            background-color: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 13px;
+            color: #595959;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: 'Monaco', 'Menlo', monospace;
+            margin: 8px 0;
+        }
+        
+        /* 切片列表 */
+        .chunk-list {
+            margin-top: 16px;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+        }
+        .chunk-item {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fff;
+        }
+        .chunk-item:last-child { border-bottom: none; }
+        .chunk-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-bottom: 8px;
+        }
+        .chunk-content {
+            font-size: 14px;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        /* 右侧库面板 */
+        .doc-select-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            margin: 16px 0;
+        }
+        .doc-select-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .engine-config {
+            background: #fafafa;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .param-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .debug-search {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+        .similarity-marker {
+            background: #e8e8e8;
+            height: 4px;
+            border-radius: 4px;
+            width: 100%;
+            margin: 8px 0;
+            position: relative;
+        }
+        .similarity-fill {
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        /* 双列布局 */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+        }
+        .doc-detail-panel {
+            border-left: 1px solid var(--border-color);
+            padding-left: 24px;
+        }
+        .flex { display: flex; align-items: center; gap: 8px; }
+        .mt-16 { margin-top: 16px; }
+        .mb-8 { margin-bottom: 8px; }
+        
+        /* 表格工具栏 */
+        .table-toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .filter-area {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; }
+            .logo-text, .nav-text, .arrow-icon { display: none; }
+            .nav-item { justify-content: center; padding: 16px 0; }
+            .nav-item i { margin-right: 0; font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="dashboard-container">
+        <!-- 侧边栏 (带子菜单) -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span class="logo-text">机器人后台</span>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <!-- 首页 -->
+                <a href="#" class="nav-item" :class="{ active: mainNav === 'home' }" @click="mainNav = 'home'">
+                    <i class="fas fa-home"></i><span class="nav-text">首页</span>
+                </a>
+                
+                <!-- 知识库管理主菜单 (带展开子菜单) -->
+                <div class="nav-item-wrapper">
+                    <div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
+                        <i class="fas fa-database"></i>
+                        <span class="nav-text">知识库管理</span>
+                        <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
+                    </div>
+                    <div class="sub-nav-menu" v-show="kbMenuExpanded">
+                        <a href="#" class="nav-item sub-item" :class="{ active: activeSubNav === 'doc' }" @click="switchKbTab('doc')">
+                            <i class="fas fa-file-alt"></i><span class="nav-text">文档管理</span>
+                        </a>
+                        <a href="#" class="nav-item sub-item" :class="{ active: activeSubNav === 'kb' }" @click="switchKbTab('kb')">
+                            <i class="fas fa-layer-group"></i><span class="nav-text">知识库管理</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 其他菜单（简洁示意） -->
+                <a href="#" class="nav-item">
+                    <i class="fas fa-tasks"></i><span class="nav-text">任务管理</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-robot"></i><span class="nav-text">机器人</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-line"></i><span class="nav-text">数据分析</span>
+                </a>
+            </div>
+        </div>
 
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <span class="header-title">📚 知识库管理 / {{ currentSubNavTitle }}</span>
+                </div>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <span>管理员</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内容区：根据子菜单显示不同页面 -->
+            <div class="content-wrapper">
+                <!-- 文档管理页面 (工厂前线) -->
+                <div v-if="activeSubNav === 'doc'">
+                    <div class="two-column">
+                        <!-- 左侧文档列表 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-upload"></i> 文档采集与处理流</span>
+                                <el-button type="primary" size="small" @click="simulateUpload">
+                                    <i class="fas fa-cloud-upload-alt"></i> 上传文档
+                                </el-button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-toolbar">
+                                    <div class="filter-area">
+                                        <el-input placeholder="搜索文档" v-model="docSearch" prefix-icon="el-icon-search" size="small" style="width:200px"></el-input>
+                                        <el-select v-model="statusFilter" placeholder="状态过滤" size="small" clearable>
+                                            <el-option label="待处理" value="pending"></el-option>
+                                            <el-option label="处理中" value="processing"></el-option>
+                                            <el-option label="已就绪" value="ready"></el-option>
+                                            <el-option label="解析失败" value="failed"></el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
+                                <el-table :data="filteredDocs" style="width:100%" @row-click="handleSelectDoc">
+                                    <el-table-column label="文档名称" prop="name" width="160">
+                                        <template #default="{ row }">
+                                            <div class="flex">
+                                                <i :class="row.icon" style="color:#1890ff"></i> {{ row.name }}
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="处理状态" width="100">
+                                        <template #default="{ row }">
+                                            <span class="status-badge" :class="'status-'+row.status">{{ row.statusText }}</span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="大小" prop="size" width="80"></el-table-column>
+                                    <el-table-column label="上传时间" prop="uploadTime" width="100"></el-table-column>
+                                    <el-table-column label="操作" width="120">
+                                        <template #default="{ row }">
+                                            <div class="action-icons">
+                                                <i class="fas fa-eye" @click.stop="previewDoc(row)" title="预览"></i>
+                                                <i class="fas fa-cut" @click.stop="showChunks(row)" title="查看切片"></i>
+                                                <i class="fas fa-tasks" @click.stop="trackStatus(row)" title="追踪状态"></i>
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                        
+                        <!-- 右侧详情/预览/切片 -->
+                        <div class="doc-detail-panel">
+                            <div class="card" v-if="selectedDoc">
+                                <div class="card-header">
+                                    <span class="card-title"><i class="fas fa-info-circle"></i> 文档详情：{{ selectedDoc.name }}</span>
+                                </div>
+                                <div class="card-body">
+                                    <!-- 状态机追踪可视化 -->
+                                    <div class="flex" style="justify-content:space-between; margin-bottom:16px;">
+                                        <span>处理流状态机</span>
+                                        <span class="status-badge" :class="'status-'+selectedDoc.status">{{ selectedDoc.statusText }}</span>
+                                    </div>
+                                    <el-steps :active="stepIndex(selectedDoc)" finish-status="success" simple style="margin-bottom:20px">
+                                        <el-step title="上传" icon="el-icon-upload"></el-step>
+                                        <el-step title="提取文字" icon="el-icon-document"></el-step>
+                                        <el-step title="切分段落" icon="el-icon-s-operation"></el-step>
+                                        <el-step title="向量化" icon="el-icon-data-line"></el-step>
+                                    </el-steps>
+
+                                    <!-- 预览区域 -->
+                                    <div v-if="previewVisible">
+                                        <div class="card-title mb-8"><i class="fas fa-file-pdf"></i> 原始内容预览</div>
+                                        <div class="preview-mini">{{ selectedDoc.previewText }}</div>
+                                    </div>
+
+                                    <!-- 切片查看区域 -->
+                                    <div v-if="chunksVisible && selectedDoc.chunks && selectedDoc.chunks.length">
+                                        <div class="card-title mb-8 flex"><i class="fas fa-puzzle-piece"></i> 切片列表 ({{ selectedDoc.chunks.length }})</div>
+                                        <div class="chunk-list">
+                                            <div class="chunk-item" v-for="(chunk, idx) in selectedDoc.chunks" :key="idx">
+                                                <div class="chunk-meta">
+                                                    <span>序号 #{{ idx+1 }}</span>
+                                                    <span>字符 {{ chunk.length }}</span>
+                                                    <span>相似度阈值 0.75</span>
+                                                </div>
+                                                <div class="chunk-content">{{ chunk.content }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex gap-4 mt-16">
+                                        <el-button type="primary" plain size="small" @click="previewVisible = !previewVisible">
+                                            {{ previewVisible ? '隐藏预览' : '显示预览' }}
+                                        </el-button>
+                                        <el-button type="success" plain size="small" @click="chunksVisible = !chunksVisible">
+                                            {{ chunksVisible ? '隐藏切片' : '查看切片' }}
+                                        </el-button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card" v-else>
+                                <div class="card-body" style="color:#8c8c8c; text-align:center; padding:48px;">
+                                    <i class="fas fa-file" style="font-size:36px; margin-bottom:12px;"></i>
+                                    <p>请从左侧选择一个文档查看详情、预览或切片</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 知识库管理页面 (调度中心) -->
+                <div v-if="activeSubNav === 'kb'">
+                    <div class="two-column">
+                        <!-- 左侧库空间列表 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-cubes"></i> 库空间管理</span>
+                                <el-button type="primary" size="small" @click="createKbDialog = true">
+                                    <i class="fas fa-plus"></i> 新建知识库
+                                </el-button>
+                            </div>
+                            <div class="card-body">
+                                <el-table :data="knowledgeBases" style="width:100%" @row-click="selectKb">
+                                    <el-table-column label="名称" prop="name" width="150">
+                                        <template #default="{row}">
+                                            <i class="fas fa-database" style="color:#52c41a; margin-right:6px;"></i>{{ row.name }}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="文档数" prop="docCount" width="70"></el-table-column>
+                                    <el-table-column label="Embedding模型" prop="model" width="120"></el-table-column>
+                                    <el-table-column label="相似度阈值" prop="threshold" width="100"></el-table-column>
+                                    <el-table-column label="操作" width="100">
+                                        <template #default="{row}">
+                                            <i class="fas fa-sliders-h" style="margin-right:8px; cursor:pointer;" @click.stop="openEngineConfig(row)" title="引擎配置"></i>
+                                            <i class="fas fa-trash" style="color:#f5222d; cursor:pointer;" @click.stop="deleteKb(row)"></i>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+
+                        <!-- 右侧：文档关联 + 检索测试 -->
+                        <div class="doc-detail-panel">
+                            <div class="card" v-if="currentKb">
+                                <div class="card-header">
+                                    <span class="card-title"><i class="fas fa-link"></i> 库: {{ currentKb.name }} · 文档关联</span>
+                                    <el-button type="success" size="small" @click="prepareDocSelector; showDocSelector = true">+ 关联文档</el-button>
+                                </div>
+                                <div class="card-body">
+                                    <!-- 已关联文档列表 -->
+                                    <el-tag v-for="doc in currentKb.documents" :key="doc.id" closable @close="removeDocFromKb(doc)" style="margin:4px;">
+                                        {{ doc.name }}
+                                    </el-tag>
+                                    <div v-if="!currentKb.documents.length" class="preview-mini" style="color:#aaa;">暂无关联文档，请点击上方按钮勾选</div>
+                                    
+                                    <!-- 向量引擎配置摘要 -->
+                                    <div class="engine-config">
+                                        <div class="flex" style="justify-content:space-between;">
+                                            <span><i class="fas fa-microchip"></i> 向量引擎配置</span>
+                                            <el-button type="text" @click="openEngineConfig(currentKb)">编辑</el-button>
+                                        </div>
+                                        <div class="param-row">
+                                            <span>Embedding: <b>{{ currentKb.model }}</b></span>
+                                            <span>相似度阈值: <b>{{ currentKb.threshold }}</b></span>
+                                            <span>Top K: <b>{{ currentKb.topK || 5 }}</b></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 检索测试 (Debug) -->
+                                    <div class="debug-search">
+                                        <div class="card-title mb-8"><i class="fas fa-search"></i> 检索测试 (Debug)</div>
+                                        <el-input v-model="testQuery" placeholder="输入问题，测试知识库召回段落" size="small">
+                                            <template #append>
+                                                <el-button @click="searchTest">检索</el-button>
+                                            </template>
+                                        </el-input>
+                                        <div v-if="testResults.length" style="margin-top:16px;">
+                                            <div v-for="(res, idx) in testResults" :key="idx" class="chunk-item" style="padding:12px;">
+                                                <div class="flex" style="justify-content:space-between;">
+                                                    <span>相关段落 · 相似度 {{ res.similarity }}</span>
+                                                    <span class="similarity-marker" style="width:60px;"><span class="similarity-fill" :style="{width: res.similarity*100+'%'}"></span></span>
+                                                </div>
+                                                <div class="chunk-content" style="font-size:13px;">{{ res.snippet }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card" v-else>
+                                <div class="card-body" style="color:#8c8c8c; text-align:center; padding:48px;">
+                                    <i class="fas fa-cube" style="font-size:36px;"></i>
+                                    <p>请选择一个知识库进行管理</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 各种对话框 -->
+        <el-dialog v-model="showDocSelector" title="将文档关联到知识库" width="500px">
+            <div class="doc-select-list">
+                <div class="doc-select-item" v-for="doc in allDocuments" :key="doc.id">
+                    <el-checkbox v-model="doc.checked">{{ doc.name }}</el-checkbox>
+                    <span style="margin-left:auto;" class="status-badge" :class="'status-'+doc.status">{{ doc.statusText }}</span>
+                </div>
+            </div>
+            <template #footer>
+                <el-button @click="showDocSelector = false">取消</el-button>
+                <el-button type="primary" @click="confirmAttachDocs">确认关联</el-button>
+            </template>
+        </el-dialog>
+
+        <el-dialog v-model="engineConfigVisible" title="向量引擎配置" width="450px">
+            <el-form label-width="130px">
+                <el-form-item label="Embedding模型">
+                    <el-select v-model="editingKb.model" size="small">
+                        <el-option label="text-embedding-ada-002" value="ada-002"></el-option>
+                        <el-option label="bge-large-zh" value="bge"></el-option>
+                        <el-option label="m3e-base" value="m3e"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="相似度阈值">
+                    <el-slider v-model="editingKb.thresholdNum" :min="0" :max="1" :step="0.01" style="width:200px;"></el-slider>
+                    <span style="margin-left:12px;">{{ editingKb.thresholdNum }}</span>
+                </el-form-item>
+                <el-form-item label="Top K">
+                    <el-input-number v-model="editingKb.topK" :min="1" :max="20" size="small"></el-input-number>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="engineConfigVisible = false">取消</el-button>
+                <el-button type="primary" @click="saveEngineConfig">保存</el-button>
+            </template>
+        </el-dialog>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script>
+        const { createApp, ref, computed } = Vue;
+        const app = createApp({
+            setup() {
+                // 子菜单控制
+                const kbMenuExpanded = ref(true); // 默认展开方便查看
+                const activeSubNav = ref('doc');   // 'doc' 或 'kb'
+                
+                const toggleKbSubmenu = () => {
+                    kbMenuExpanded.value = !kbMenuExpanded.value;
+                };
+                const switchKbTab = (tab) => {
+                    activeSubNav.value = tab;
+                    kbMenuExpanded.value = true; // 保持展开状态
+                };
+                const currentSubNavTitle = computed(() => {
+                    return activeSubNav.value === 'doc' ? '文档管理' : '知识库管理';
+                });
+                
+                // ---------- 文档管理数据 ----------
+                const docSearch = ref('');
+                const statusFilter = ref('');
+                const allDocuments = ref([
+                    { id:1, name:'操作手册_v3.pdf', icon:'fas fa-file-pdf', status:'ready', statusText:'已就绪', size:'2.3MB', uploadTime:'2025-02-10', previewText:'这是操作手册的预览内容：第一章 安全须知……机器人安全操作规范……', chunks:[ {content:'安全须知：操作前必须检查电源……', length:120}, {content:'日常维护：每周清洁传感器……', length:95} ], checked: false },
+                    { id:2, name:'故障代码表.xlsx', icon:'fas fa-file-excel', status:'pending', statusText:'待处理', size:'568KB', uploadTime:'2025-02-18', previewText:'故障代码 E001: 电机过载\nE002: 通信超时' , chunks:[], checked: false },
+                    { id:3, name:'维修指南-2025.docx', icon:'fas fa-file-word', status:'processing', statusText:'处理中', size:'1.1MB', uploadTime:'2025-02-20', previewText:'第二章 机械臂维修流程……需要专用工具……', chunks:[], checked: false },
+                    { id:4, name:'电路图备份.dxf', icon:'fas fa-draw-polygon', status:'failed', statusText:'解析失败', size:'4.5MB', uploadTime:'2025-02-19', previewText:'二进制内容无法预览', chunks:[], checked: false },
+                ]);
+
+                const filteredDocs = computed(() => {
+                    let list = allDocuments.value;
+                    if (docSearch.value) list = list.filter(d => d.name.includes(docSearch.value));
+                    if (statusFilter.value) list = list.filter(d => d.status === statusFilter.value);
+                    return list;
+                });
+
+                const selectedDoc = ref(null);
+                const previewVisible = ref(false);
+                const chunksVisible = ref(false);
+                function handleSelectDoc(row) { selectedDoc.value = row; previewVisible.value = false; chunksVisible.value = false; }
+                function previewDoc(row) { selectedDoc.value = row; previewVisible.value = true; chunksVisible.value = false; }
+                function showChunks(row) { selectedDoc.value = row; chunksVisible.value = true; previewVisible.value = false; }
+                function trackStatus(row) { selectedDoc.value = row; previewVisible.value = false; chunksVisible.value = false; }
+                function stepIndex(doc) {
+                    if (!doc) return 0;
+                    if (doc.status === 'pending') return 1;
+                    if (doc.status === 'processing') return 2;
+                    if (doc.status === 'ready') return 4;
+                    if (doc.status === 'failed') return 2;
+                    return 0;
+                }
+                function simulateUpload() {
+                    ElMessage.success('模拟上传：新文档已加入待处理列表');
+                }
+
+                // ---------- 知识库管理数据 ----------
+                const knowledgeBases = ref([
+                    { id:1, name:'通用维修库', docCount:3, model:'ada-002', threshold:'0.78', topK:5, documents: [{id:1,name:'操作手册_v3.pdf'},{id:3,name:'维修指南-2025.docx'}], thresholdNum:0.78 },
+                    { id:2, name:'内部规章库', docCount:1, model:'bge-large-zh', threshold:'0.82', topK:3, documents:[{id:2,name:'故障代码表.xlsx'}], thresholdNum:0.82 },
+                ]);
+                const currentKb = ref(knowledgeBases.value[0]);
+
+                function selectKb(row) { currentKb.value = row; }
+
+                // 文档关联
+                const showDocSelector = ref(false);
+                function prepareDocSelector() {
+                    const linkedIds = currentKb.value.documents.map(d => d.id);
+                    allDocuments.value.forEach(d => d.checked = linkedIds.includes(d.id));
+                }
+                function confirmAttachDocs() {
+                    const selected = allDocuments.value.filter(d => d.checked);
+                    currentKb.value.documents = selected.map(({id,name})=>({id,name}));
+                    currentKb.value.docCount = selected.length;
+                    showDocSelector.value = false;
+                    ElMessage.success('文档关联已更新');
+                }
+                function removeDocFromKb(doc) {
+                    currentKb.value.documents = currentKb.value.documents.filter(d => d.id !== doc.id);
+                    currentKb.value.docCount = currentKb.value.documents.length;
+                }
+
+                // 引擎配置
+                const engineConfigVisible = ref(false);
+                const editingKb = ref({ ...currentKb.value });
+                function openEngineConfig(kb) {
+                    editingKb.value = { ...kb, thresholdNum: parseFloat(kb.threshold) || 0.75, topK: kb.topK || 5 };
+                    engineConfigVisible.value = true;
+                }
+                function saveEngineConfig() {
+                    if (currentKb.value) {
+                        currentKb.value.model = editingKb.value.model;
+                        currentKb.value.threshold = editingKb.value.thresholdNum.toFixed(2);
+                        currentKb.value.topK = editingKb.value.topK;
+                        currentKb.value.thresholdNum = editingKb.value.thresholdNum;
+                    }
+                    engineConfigVisible.value = false;
+                    ElMessage.success('引擎配置已更新');
+                }
+                function deleteKb(kb) {
+                    ElMessage.warning('演示模式下不可删除');
+                }
+                function createKbDialog() {
+                    ElMessage.info('新建知识库(演示)');
+                }
+
+                // 检索测试
+                const testQuery = ref('');
+                const testResults = ref([]);
+                function searchTest() {
+                    if (!testQuery.value.trim()) { ElMessage.warning('请输入问题'); return; }
+                    testResults.value = [
+                        { similarity:0.92, snippet:'机械臂维修时需切断电源，使用绝缘工具...' },
+                        { similarity:0.78, snippet:'故障代码E001:电机过载，检查负载是否超重...' }
+                    ];
+                }
+
+                return {
+                    kbMenuExpanded, activeSubNav, toggleKbSubmenu, switchKbTab, currentSubNavTitle,
+                    docSearch, statusFilter, allDocuments, filteredDocs,
+                    selectedDoc, previewVisible, chunksVisible, handleSelectDoc, previewDoc, showChunks, trackStatus,
+                    stepIndex, simulateUpload,
+                    knowledgeBases, currentKb, selectKb,
+                    showDocSelector, prepareDocSelector, confirmAttachDocs, removeDocFromKb,
+                    engineConfigVisible, editingKb, openEngineConfig, saveEngineConfig, deleteKb, createKbDialog,
+                    testQuery, testResults, searchTest,
+                };
+            }
+        });
+        app.use(ElementPlus);
+        app.mount('#app');
+    </script>
+</body>
+</html>
