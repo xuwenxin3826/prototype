@@ -648,6 +648,26 @@
                 <i class="fas fa-robot"></i>
                 <span class="nav-text">机器人管理</span>
             </a>
+
+			<!-- 知识库管理主菜单 (带展开子菜单) -->
+				<div class="nav-item-wrapper">
+					<div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleMenu('knowledgeMange')">
+						<i class="fas fa-database"></i>
+							<span class="nav-text">知识库管理</span>
+						<i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
+					</div>
+				<div class="sub-nav-menu" v-show="kbMenuExpanded">
+					<a href="knowledge.html#doc" class="nav-item sub-item" :class="{ active: activeSubNav === 'doc' }" @click="switchKbTab('doc')">
+						<i class="fas fa-file-alt"></i>
+						<span class="nav-text">文档管理</span>
+					</a>
+					<a href="knowledge.html#kb" class="nav-item sub-item" :class="{ active: activeSubNav === 'kb' }" @click="switchKbTab('kb')">
+						<i class="fas fa-layer-group"></i>
+						<span class="nav-text">知识库管理</span>
+					</a>
+				</div>
+			</div>
+			
             <!-- 交互应用管理 - 当前页面高亮 -->
             <div class="nav-item-wrapper">
                 <div
@@ -2039,4 +2059,5 @@
 </script>
 </body>
 </html>
+
 
