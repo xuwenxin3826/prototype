@@ -409,7 +409,7 @@
                 </div>
             </div>
             <div class="nav-menu">
-                <a href="index.html" class="nav-item">
+                <a href="index.html" class="nav-item" :class="{ active: activeNav === 'home' }" @click="setActiveNav('home')">
     			    <i class="fas fa-home"></i>
     			    <span class="nav-text">首页</span>
 		        </a>
@@ -456,14 +456,14 @@
                     <span class="nav-text">机器人管理</span>
                 </a>
                 
-                <!-- 知识库管理主菜单 (带展开子菜单) -->
+                <!-- 知识库管理主菜单 (带展开子菜单) 使用独立的kbMenuExpanded变量 -->
                 <div class="nav-item-wrapper">
                     <div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
                         <i class="fas fa-database"></i>
                         <span class="nav-text">知识库管理</span>
-                        <i class="fas fa-chevron-down arrow-icon" :class="{ 'rotated': expandedMenu === 'kbMenuExpanded' }"></i>
+                        <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
                     </div>
-                    <div class="sub-nav-menu" v-show="expandedMenu === 'kbMenuExpanded'>
+                    <div class="sub-nav-menu" v-show="kbMenuExpanded">
                         <a href="knowledge.html#doc" class="nav-item sub-item" :class="{ active: activeSubNav === 'doc' }" @click="switchKbTab('doc')">
                             <i class="fas fa-file-alt"></i><span class="nav-text">文档管理</span>
                         </a>
@@ -504,12 +504,11 @@
                             <i class="fas fa-sync-alt"></i>
                             <span class="nav-text">应用更新管理</span>
                         </a>
-                        <!-- 新增交互历史列表菜单项 -->
-                    <a href="app.html#interactionHistory" class="nav-item sub-item"
-                       :class="{ active: activeNav === 'interactionHistory' }" @click="setActiveNav('interactionHistory')">
-                        <i class="fas fa-history"></i>
-                        <span class="nav-text">交互历史列表</span>
-                    </a>
+                        <a href="app.html#interactionHistory" class="nav-item sub-item"
+                           :class="{ active: activeNav === 'interactionHistory' }" @click="setActiveNav('interactionHistory')">
+                            <i class="fas fa-history"></i>
+                            <span class="nav-text">交互历史列表</span>
+                        </a>
                     </div>
                 </div>
                 
@@ -583,22 +582,22 @@
                     
                     <!-- 子菜单 - 指向 data.html -->
                     <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
-                        <a href="data.html#tools" class="nav-item sub-item">
+                        <a href="data.html#tools" class="nav-item sub-item" @click="setActiveNav('data-tools')">
                             <i class="fas fa-database"></i>
                             <span class="nav-text">数据管理工具</span>
                         </a>
                         
-                        <a href="data.html" class="nav-item sub-item">
+                        <a href="data.html" class="nav-item sub-item" @click="setActiveNav('data-dashboard')">
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="nav-text">数据仪表盘</span>
                         </a>
                         
-                        <a href="data.html#metrics" class="nav-item sub-item">
+                        <a href="data.html#metrics" class="nav-item sub-item" @click="setActiveNav('metrics-analysis')">
                             <i class="fas fa-chart-bar"></i>
                             <span class="nav-text">指标分析</span>
                         </a>
                         
-                        <a href="data.html#ai" class="nav-item sub-item">
+                        <a href="data.html#ai" class="nav-item sub-item" @click="setActiveNav('ai-analysis')">
                             <i class="fas fa-brain"></i>
                             <span class="nav-text">AI分析</span>
                         </a>
@@ -611,7 +610,7 @@
         <div class="main-content">
             <div class="header">
                 <div class="header-left">
-                    <span class="header-title">📚 知识库管理 / {{ currentSubNavTitle }}</span>
+                    <span class="header-title"> 知识库管理 / {{ currentSubNavTitle }}</span>
                 </div>
                 <div class="header-actions">
                     <div class="user-info">
@@ -868,7 +867,32 @@
         const { createApp, ref, computed } = Vue;
         const app = createApp({
             setup() {
-                // 子菜单控制
+                // 侧边栏通用展开状态
+                const expandedMenu = ref(''); // 用于任务管理、交互应用管理、模式管理、数据分析等
+                const activeNav = ref('home'); // 当前选中的导航项（用于高亮）
+                
+                // 任务管理是否激活的计算属性
+                const isTaskManagementActive = computed(() => {
+                    return ['templates', 'tasks', 'scheduling', 'monitoring'].includes(activeNav.value);
+                });
+                
+                // 切换通用菜单展开/收起
+                const toggleMenu = (menuName) => {
+                    if (expandedMenu.value === menuName) {
+                        expandedMenu.value = '';
+                    } else {
+                        expandedMenu.value = menuName;
+                    }
+                };
+                
+                // 设置激活导航
+                const setActiveNav = (navName) => {
+                    activeNav.value = navName;
+                    // 可选：更新hash
+                    // window.location.hash = navName;
+                };
+                
+                // 知识库子菜单独立控制
                 const kbMenuExpanded = ref(true); // 默认展开方便查看
                 const activeSubNav = ref('doc');   // 'doc' 或 'kb'
                 
@@ -878,10 +902,17 @@
                 const switchKbTab = (tab) => {
                     activeSubNav.value = tab;
                     kbMenuExpanded.value = true; // 保持展开状态
+                    // 更新导航标题
                 };
                 const currentSubNavTitle = computed(() => {
                     return activeSubNav.value === 'doc' ? '文档管理' : '知识库管理';
                 });
+                
+                // 模式管理子菜单激活项
+                const activeModeTab = ref('quick');
+                const setActiveModeTab = (tab) => {
+                    activeModeTab.value = tab;
+                };
                 
                 // ---------- 文档管理数据 ----------
                 const docSearch = ref('');
@@ -982,7 +1013,18 @@
                 }
 
                 return {
-                    kbMenuExpanded, activeSubNav, toggleKbSubmenu, switchKbTab, currentSubNavTitle,
+                    expandedMenu,
+                    activeNav,
+                    isTaskManagementActive,
+                    toggleMenu,
+                    setActiveNav,
+                    kbMenuExpanded,
+                    activeSubNav,
+                    toggleKbSubmenu,
+                    switchKbTab,
+                    currentSubNavTitle,
+                    activeModeTab,
+                    setActiveModeTab,
                     docSearch, statusFilter, allDocuments, filteredDocs,
                     selectedDoc, previewVisible, chunksVisible, handleSelectDoc, previewDoc, showChunks, trackStatus,
                     stepIndex, simulateUpload,
