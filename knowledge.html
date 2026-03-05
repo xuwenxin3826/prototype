@@ -409,9 +409,51 @@
                 </div>
             </div>
             <div class="nav-menu">
-                <!-- 首页 -->
-                <a href="#" class="nav-item" :class="{ active: mainNav === 'home' }" @click="mainNav = 'home'">
-                    <i class="fas fa-home"></i><span class="nav-text">首页</span>
+                <a href="index.html" class="nav-item">
+    			    <i class="fas fa-home"></i>
+    			    <span class="nav-text">首页</span>
+		        </a>
+                <!-- 任务管理折叠菜单 -->
+                <div class="nav-item-wrapper">
+                    <div 
+                        class="nav-item" 
+                        :class="{ 
+                            'active-parent': isTaskManagementActive,
+                            'expanded': expandedMenu === 'taskManagement'
+                        }"
+                        @click="toggleMenu('taskManagement')"
+                    >
+                        <i class="fas fa-tasks"></i>
+                        <span class="nav-text">任务管理</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon" 
+                            :class="{ 'rotated': expandedMenu === 'taskManagement' }"
+                        ></i>
+                    </div>
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
+                        <a href="tasks.html#templates" class="nav-item sub-item" :class="{ active: activeNav === 'templates' }" @click="setActiveNav('templates')">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span class="nav-text">模板管理</span>
+                        </a>
+                        <a href="tasks.html#tasks" class="nav-item sub-item" :class="{ active: activeNav === 'tasks' }" @click="setActiveNav('tasks')">
+                            <i class="fas fa-list-ul"></i>
+                            <span class="nav-text">任务列表</span>
+                        </a>
+                        <a href="tasks.html#scheduling" class="nav-item sub-item" :class="{ active: activeNav === 'scheduling' }" @click="setActiveNav('scheduling')">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="nav-text">计划管理</span>
+                        </a>
+                        <a href="tasks.html#abnormal" class="nav-item sub-item" :class="{ active: activeNav === 'monitoring' }" @click="setActiveNav('monitoring')">
+                            <i class="fas fa-eye"></i>
+                            <span class="nav-text">异常处理</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 机器人管理 -->
+                <a href="robots.html" class="nav-item" :class="{ active: activeNav === 'robots' }" @click="setActiveNav('robots')">
+                    <i class="fas fa-robot"></i>
+                    <span class="nav-text">机器人管理</span>
                 </a>
                 
                 <!-- 知识库管理主菜单 (带展开子菜单) -->
@@ -431,16 +473,137 @@
                     </div>
                 </div>
                 
-                <!-- 其他菜单（简洁示意） -->
-                <a href="#" class="nav-item">
-                    <i class="fas fa-tasks"></i><span class="nav-text">任务管理</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-robot"></i><span class="nav-text">机器人</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-chart-line"></i><span class="nav-text">数据分析</span>
-                </a>
+                <!-- 交互应用管理 -->
+                <div class="nav-item-wrapper">
+                    <div
+                        class="nav-item"
+                        :class="{ 'active-parent': expandedMenu === 'appManagement', 'expanded': expandedMenu === 'appManagement' }"
+                        @click="toggleMenu('appManagement')"
+                    >
+                        <i class="fas fa-cogs"></i>
+                        <span class="nav-text">交互应用管理</span>
+                        <i
+                            class="fas fa-chevron-down arrow-icon"
+                            :class="{ 'rotated': expandedMenu === 'appManagement' }"
+                        ></i>
+                    </div>
+
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'appManagement'">
+                        <a href="app.html#appLibrary" class="nav-item sub-item"
+                           :class="{ active: activeNav === 'appLibrary' }" @click="setActiveNav('appLibrary')">
+                            <i class="fas fa-th"></i>
+                            <span class="nav-text">应用库管理</span>
+                        </a>
+                        <a href="app.html#appConfig" class="nav-item sub-item"
+                           :class="{ active: activeNav === 'appConfig' }" @click="setActiveNav('appConfig')">
+                            <i class="fas fa-sliders-h"></i>
+                            <span class="nav-text">应用配置管理</span>
+                        </a>
+                        <a href="app.html#appUpdate" class="nav-item sub-item"
+                           :class="{ active: activeNav === 'appUpdate' }" @click="setActiveNav('appUpdate')">
+                            <i class="fas fa-sync-alt"></i>
+                            <span class="nav-text">应用更新管理</span>
+                        </a>
+                        <!-- 新增交互历史列表菜单项 -->
+                    <a href="app.html#interactionHistory" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'interactionHistory' }" @click="setActiveNav('interactionHistory')">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text">交互历史列表</span>
+                    </a>
+                    </div>
+                </div>
+                
+				<div class="nav-item-wrapper">
+              <!-- 模式管理折叠菜单 -->
+              <a
+                  href="mode.html#quick"
+                  class="nav-item"
+                  :class="{ expanded: expandedMenu === 'modeManagement' }"
+                  @click.stop="toggleMenu('modeManagement')"
+               >
+                  <i class="fas fa-cogs"></i>
+                  <span class="nav-text">模式管理</span>
+                  <i
+                       class="fas fa-chevron-down arrow-icon"
+                       :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+                   ></i>
+               </a>
+
+             <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
+                     <a href="mode3.html#quick" class="nav-item sub-item" 
+                     :class="{ active: activeModeTab === 'quick' }"
+                     @click.stop="('quick')">
+                       <i class="fas fa-bolt"></i>
+                       <span class="nav-text">快捷操作</span>
+                    </a>
+                  <a href="mode3.html#switch" class="nav-item sub-item"
+                     :class="{ active: activeModeTab === 'switch' }"
+                     @click.stop="('switch')">
+                       <i class="fas fa-exchange-alt"></i>
+                       <span class="nav-text">模式切换</span>
+                  </a>
+                  <a href="mode3.html#schedule" class="nav-item sub-item"
+                     :class="{ active: activeModeTab === 'schedule' }"
+                      @click.stop="('schedule')">
+                      <i class="fas fa-calendar-alt"></i>
+                      <span class="nav-text">模式排程</span>
+                  </a>
+                  <a href="mode3.html#history" class="nav-item sub-item"
+                      :class="{ active: activeModeTab === 'history' }"
+                      @click.stop="('history')">
+                      <i class="fas fa-history"></i>
+                      <span class="nav-text">历史记录</span>
+                  </a>
+                   <a href="mode3.html#edit" class="nav-item sub-item"
+                     :class="{ active: activeModeTab === 'edit' }"
+                     @click.stop="('edit')">
+                     <i class="fas fa-edit"></i>
+                     <span class="nav-text">编辑模式</span>
+                  </a>
+             </div>
+          </div>
+                
+                <!-- 数据管理与分析 - 包含子菜单 -->
+                <div class="nav-item-wrapper">
+                    <div 
+                        class="nav-item" 
+                        :class="{ 
+                            active: ['data-management', 'data-dashboard', 'metrics-analysis', 'ai-analysis'].includes(activeNav),
+                            expanded: expandedMenu === 'dataAnalysis'
+                        }"
+                        @click="toggleMenu('dataAnalysis')"
+                    >
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-text">数据管理与分析</span>
+                        <i 
+                            class="fas fa-chevron-down arrow-icon" 
+                            :class="{ 'rotated': expandedMenu === 'dataAnalysis' }"
+                        ></i>
+                    </div>
+                    
+                    <!-- 子菜单 - 指向 data.html -->
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
+                        <a href="data.html#tools" class="nav-item sub-item">
+                            <i class="fas fa-database"></i>
+                            <span class="nav-text">数据管理工具</span>
+                        </a>
+                        
+                        <a href="data.html" class="nav-item sub-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="nav-text">数据仪表盘</span>
+                        </a>
+                        
+                        <a href="data.html#metrics" class="nav-item sub-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="nav-text">指标分析</span>
+                        </a>
+                        
+                        <a href="data.html#ai" class="nav-item sub-item">
+                            <i class="fas fa-brain"></i>
+                            <span class="nav-text">AI分析</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
