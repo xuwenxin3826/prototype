@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语义库管理 - 机器人后台管理平台</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        :root {
+            --primary-color: #1890ff;
+            --primary-light: #e6f7ff;
+            --success-color: #52c41a;
+            --warning-color: #faad14;
+            --error-color: #f5222d;
+            --info-color: #1890ff;
+            --bg-color: #f0f2f5;
+            --sidebar-bg: #001529;
+            --header-bg: #fff;
+            --card-bg: #fff;
+            --text-primary: #000000e0;
+            --text-secondary: #000000a6;
+            --border-color: #f0f0f0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 256px;
+            background-color: var(--sidebar-bg);
+            color: rgba(255, 255, 255, 0.85);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .nav-menu {
+            padding: 16px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item-wrapper {
+            margin-bottom: 4px;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            font-size: 12px;
+            transition: transform 0.3s;
+            opacity: 0.7;
+        }
+
+        .arrow-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .sub-nav-menu {
+            background-color: rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-item.sub-item {
+            padding: 10px 24px 10px 48px;
+            font-size: 13px;
+            border-left: 2px solid transparent;
+            margin-left: 0;
+        }
+
+        .nav-item.sub-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-item.sub-item.active {
+            background-color: rgba(24, 144, 255, 0.25);
+            color: #fff;
+            border-left-color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-item.sub-item i {
+            font-size: 14px;
+            width: 18px;
+            margin-right: 8px;
+        }
+
+        /* 主内容区样式 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            height: 64px;
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* 上传区域 */
+        .upload-area {
+            border: 2px dashed #d9d9d9;
+            border-radius: 6px;
+            padding: 40px;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f0f9ff;
+        }
+        .upload-area i {
+            font-size: 48px;
+            color: #909399;
+            margin-bottom: 12px;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+            }
+            .logo-text, .nav-text, .arrow-icon {
+                display: none;
+            }
+            .nav-item {
+                justify-content: center;
+                padding: 16px 0;
+            }
+            .nav-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            .sub-nav-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="dashboard-container">
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <span class="logo-text">机器人后台管理平台</span>
+            </div>
+        </div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span class="nav-text">首页</span></a>
+            <div class="nav-item-wrapper"><a href="tasks.html" class="nav-item"><i class="fas fa-tasks"></i><span class="nav-text">任务管理</span></a></div>
+            <a href="robots.html" class="nav-item"><i class="fas fa-robot"></i><span class="nav-text">机器人管理</span></a>
+
+            <!-- 知识库管理 -->
+            <div class="nav-item-wrapper">
+                <div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleMenu('knowledgeMange')">
+                    <i class="fas fa-database"></i><span class="nav-text">知识库管理</span>
+                    <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
+                </div>
+                <div class="sub-nav-menu" v-show="kbMenuExpanded">
+                    <a href="knowledge.html#doc" class="nav-item sub-item" :class="{ active: activeSubNav === 'doc' }" @click="switchKbTab('doc')"><i class="fas fa-file-alt"></i><span class="nav-text">文档管理</span></a>
+                    <a href="knowledge.html#kb" class="nav-item sub-item" :class="{ active: activeSubNav === 'kb' }" @click="switchKbTab('kb')"><i class="fas fa-layer-group"></i><span class="nav-text">知识库管理</span></a>
+                </div>
+            </div>
+
+            <!-- 语义库管理 (当前页面高亮) -->
+            <div class="nav-item-wrapper">
+                <div class="nav-item active" :class="{ expanded: semanticMenuExpanded }" @click="toggleMenu('semanticManagement')">
+                    <i class="fas fa-brain"></i><span class="nav-text">语义库管理</span>
+                    <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: semanticMenuExpanded }"></i>
+                </div>
+                <div class="sub-nav-menu" v-show="semanticMenuExpanded">
+                    <a href="#semanticList" class="nav-item sub-item" :class="{ active: activeSemanticNav === 'semanticList' }" @click="switchSemanticTab('semanticList')"><i class="fas fa-list-ul"></i><span class="nav-text">语义库列表</span></a>
+                    <a href="#semanticModel" class="nav-item sub-item" :class="{ active: activeSemanticNav === 'semanticModel' }" @click="switchSemanticTab('semanticModel')"><i class="fas fa-cog"></i><span class="nav-text">语义模型管理</span></a>
+                </div>
+            </div>
+
+            <div class="nav-item-wrapper"><a href="app.html" class="nav-item"><i class="fas fa-cogs"></i><span class="nav-text">交互应用管理</span></a></div>
+            <div class="nav-item-wrapper"><a href="mode.html" class="nav-item"><i class="fas fa-cogs"></i><span class="nav-text">模式管理</span></a></div>
+            <div class="nav-item-wrapper"><a href="data.html" class="nav-item"><i class="fas fa-chart-line"></i><span class="nav-text">数据管理与分析</span></a></div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <div class="header">
+            <div class="header-left"><span class="header-title">语义库管理</span></div>
+            <div class="header-actions">
+                <div class="user-info"><div class="user-avatar">A</div><span>管理员</span></div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- ========== 语义库列表页 ========== -->
+            <div v-if="activeSemanticNav === 'semanticList'">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-book" style="margin-right:8px;"></i>语义库列表</div>
+                        <div>
+                            <el-button type="primary" @click="showAddLibraryDialog">
+                                <i class="fas fa-plus"></i> 新增语义库
+                            </el-button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <el-table :data="libraryList" style="width:100%" border>
+                            <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                            <el-table-column prop="name" label="语义库名称" width="200"></el-table-column>
+                            <el-table-column prop="description" label="描述" min-width="200"></el-table-column>
+                            <el-table-column prop="version" label="版本" width="100"></el-table-column>
+                            <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+                            <el-table-column label="操作" width="350" fixed="right">
+                                <template #default="scope">
+                                    <el-button size="small" @click="viewLibraryDetail(scope.row)">详情</el-button>
+                                    <el-button size="small" @click="editLibrary(scope.row)">编辑</el-button>
+                                    <el-button size="small" type="danger" @click="deleteLibrary(scope.row)">删除</el-button>
+                                    <el-button size="small" type="success" @click="publishLibrary(scope.row)">发布</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+
+                <!-- 当前语义库详情配置卡片 (选中后显示) -->
+                <div v-if="currentLibrary" class="card" style="margin-top:20px;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-cog" style="margin-right:8px;"></i>配置：{{ currentLibrary.name }}
+                        </div>
+                        <div>
+                            <el-button @click="exportLibrary">导出</el-button>
+                            <el-button type="primary" @click="showImportDialog">导入</el-button>
+                            <el-button type="success" @click="trainLibrary">训练</el-button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <el-tabs v-model="activeLibraryTab">
+                            <!-- 实体管理 -->
+                            <el-tab-pane label="实体管理" name="entity">
+                                <el-button type="primary" size="small" @click="showEntityDialog('add')" style="margin-bottom:16px;">
+                                    <i class="fas fa-plus"></i> 新增实体
+                                </el-button>
+                                <el-table :data="entityList" border style="width:100%">
+                                    <el-table-column prop="name" label="实体名称" width="200"></el-table-column>
+                                    <el-table-column prop="values" label="实体值(逗号分隔)" min-width="300"></el-table-column>
+                                    <el-table-column label="操作" width="200">
+                                        <template #default="scope">
+                                            <el-button size="small" @click="showEntityDialog('edit', scope.row)">编辑</el-button>
+                                            <el-button size="small" type="danger" @click="deleteEntity(scope.row)">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-tab-pane>
+                            <!-- 同义词管理 -->
+                            <el-tab-pane label="同义词管理" name="synonym">
+                                <el-button type="primary" size="small" @click="showSynonymDialog('add')" style="margin-bottom:16px;">
+                                    <i class="fas fa-plus"></i> 新增同义词组
+                                </el-button>
+                                <el-table :data="synonymGroups" border style="width:100%">
+                                    <el-table-column prop="groupName" label="词组名称" width="200"></el-table-column>
+                                    <el-table-column prop="words" label="同义词(逗号分隔)" min-width="300"></el-table-column>
+                                    <el-table-column label="操作" width="200">
+                                        <template #default="scope">
+                                            <el-button size="small" @click="showSynonymDialog('edit', scope.row)">编辑</el-button>
+                                            <el-button size="small" type="danger" @click="deleteSynonym(scope.row)">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-tab-pane>
+                            <!-- 问答对管理 -->
+                            <el-tab-pane label="问答对" name="qa">
+                                <el-button type="primary" size="small" @click="showQaDialog('add')" style="margin-bottom:16px;">
+                                    <i class="fas fa-plus"></i> 新增问答
+                                </el-button>
+                                <el-table :data="qaPairs" border style="width:100%">
+                                    <el-table-column prop="standardQuestion" label="标准问题" width="250"></el-table-column>
+                                    <el-table-column prop="synonyms" label="同义问题(逗号分隔)" min-width="250"></el-table-column>
+                                    <el-table-column prop="answer" label="标准答案" min-width="250"></el-table-column>
+                                    <el-table-column label="操作" width="200">
+                                        <template #default="scope">
+                                            <el-button size="small" @click="showQaDialog('edit', scope.row)">编辑</el-button>
+                                            <el-button size="small" type="danger" @click="deleteQa(scope.row)">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-tab-pane>
+                            <!-- 意图管理 -->
+                            <el-tab-pane label="意图管理" name="intent">
+                                <el-button type="primary" size="small" @click="showIntentDialog('add')" style="margin-bottom:16px;">
+                                    <i class="fas fa-plus"></i> 新增意图
+                                </el-button>
+                                <el-table :data="intentList" border style="width:100%">
+                                    <el-table-column prop="name" label="意图名称" width="200"></el-table-column>
+                                    <el-table-column prop="utterances" label="示例语句(逗号分隔)" min-width="350"></el-table-column>
+                                    <el-table-column label="操作" width="200">
+                                        <template #default="scope">
+                                            <el-button size="small" @click="showIntentDialog('edit', scope.row)">编辑</el-button>
+                                            <el-button size="small" type="danger" @click="deleteIntent(scope.row)">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 语义模型管理页 ========== -->
+            <div v-else-if="activeSemanticNav === 'semanticModel'">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-cog" style="margin-right:8px;"></i>语义模型管理</div>
+                        <div>
+                            <el-button type="primary" @click="showAddModelDialog">
+                                <i class="fas fa-plus"></i> 新增模型
+                            </el-button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <el-table :data="modelList" style="width:100%" border>
+                            <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                            <el-table-column prop="name" label="模型名称" width="180"></el-table-column>
+                            <el-table-column prop="version" label="版本" width="100"></el-table-column>
+                            <el-table-column prop="description" label="描述" min-width="200"></el-table-column>
+                            <el-table-column label="状态" width="100">
+                                <template #default="scope">
+                                    <el-tag :type="scope.row.status === 'online' ? 'success' : 'info'">
+                                        {{ scope.row.status === 'online' ? '已上线' : '训练中' }}
+                                    </el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
+                            <el-table-column label="操作" width="420" fixed="right">
+                                <template #default="scope">
+                                    <!-- 详情按钮打开抽屉 -->
+                                    <el-button size="small" @click="openModelDetailDrawer(scope.row)">详情</el-button>
+                                    <el-button size="small" @click="editModel(scope.row)">编辑</el-button>
+                                    <el-button size="small" type="success" @click="trainModel(scope.row)" :loading="scope.row.training">训练</el-button>
+                                    <el-button
+                                            v-if="scope.row.status === 'online'"
+                                            size="small"
+                                            type="warning"
+                                            @click="offlineModel(scope.row)"
+                                    >下线</el-button>
+                                    <el-button
+                                            v-else
+                                            size="small"
+                                            type="primary"
+                                            @click="deployModel(scope.row)"
+                                    >部署</el-button>
+                                    <el-button size="small" type="danger" @click="deleteModel(scope.row)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+
+                <!-- 模型测试卡片 -->
+                <div class="card" style="margin-top:20px;">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-flask" style="margin-right:8px;"></i>模型测试</div>
+                    </div>
+                    <div class="card-body">
+                        <el-row :gutter="20">
+                            <el-col :span="12">
+                                <el-select v-model="testModelId" placeholder="选择模型" style="width:100%; margin-bottom:16px;">
+                                    <el-option v-for="m in modelList" :key="m.id" :label="m.name" :value="m.id"></el-option>
+                                </el-select>
+                                <el-input v-model="testInput" type="textarea" :rows="4" placeholder="输入测试文本"></el-input>
+                                <el-button type="primary" style="margin-top:16px;" @click="runTest">运行测试</el-button>
+                            </el-col>
+                            <el-col :span="12">
+                                <div style="background:#f5f7fa; padding:16px; border-radius:4px;">
+                                    <h4>测试结果</h4>
+                                    <p v-if="testResult">意图：{{ testResult.intent }}<br>置信度：{{ testResult.confidence }}<br>实体：{{ testResult.entities }}</p>
+                                    <p v-else style="color:#999;">暂无测试结果</p>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 全局对话框 ========== -->
+
+    <!-- 语义库新增/编辑对话框 -->
+    <el-dialog v-model="libraryDialog.visible" :title="libraryDialog.title" width="600px">
+        <el-form :model="libraryDialog.form" label-width="120px">
+            <el-form-item label="语义库名称" required>
+                <el-input v-model="libraryDialog.form.name" placeholder="请输入语义库名称"></el-input>
+            </el-form-item>
+            <el-form-item label="描述">
+                <el-input v-model="libraryDialog.form.description" type="textarea" :rows="3" placeholder="请输入描述"></el-input>
+            </el-form-item>
+            <el-form-item label="初始版本">
+                <el-input v-model="libraryDialog.form.version" placeholder="如 v1.0.0"></el-input>
+            </el-form-item>
+            <el-form-item label="导入文件">
+                <el-upload
+                        class="upload-demo"
+                        drag
+                        action="#"
+                        :auto-upload="false"
+                        :show-file-list="true"
+                        :on-change="handleFileChange"
+                        :limit="1">
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    <template #tip>
+                        <div class="el-upload__tip">支持.json、.zip格式</div>
+                    </template>
+                </el-upload>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="libraryDialog.visible = false">取消</el-button>
+            <el-button type="primary" @click="saveLibrary">保存</el-button>
+        </template>
+    </el-dialog>
+
+    <!-- 实体新增/编辑对话框 -->
+    <el-dialog v-model="entityDialog.visible" :title="entityDialog.title" width="500px">
+        <el-form :model="entityDialog.form" label-width="120px">
+            <el-form-item label="实体名称" required>
+                <el-input v-model="entityDialog.form.name" placeholder="如：科室"></el-input>
+            </el-form-item>
+            <el-form-item label="实体值" required>
+                <el-input v-model="entityDialog.form.values" type="textarea" placeholder="多个值用逗号分隔，如：内科,外科,儿科"></el-input>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="entityDialog.visible = false">取消</el-button>
+            <el-button type="primary" @click="saveEntity">保存</el-button>
+        </template>
+    </el-dialog>
+
+    <!-- 同义词组对话框 -->
+    <el-dialog v-model="synonymDialog.visible" :title="synonymDialog.title" width="500px">
+        <el-form :model="synonymDialog.form" label-width="120px">
+            <el-form-item label="词组名称" required>
+                <el-input v-model="synonymDialog.form.groupName" placeholder="如：手机"></el-input>
+            </el-form-item>
+            <el-form-item label="同义词" required>
+                <el-input v-model="synonymDialog.form.words" type="textarea" placeholder="多个词用逗号分隔，如：手机,电话,移动电话"></el-input>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="synonymDialog.visible = false">取消</el-button>
+            <el-button type="primary" @click="saveSynonym">保存</el-button>
+        </template>
+    </el-dialog>
+
+    <!-- 问答对对话框 -->
+    <el-dialog v-model="qaDialog.visible" :title="qaDialog.title" width="600px">
+        <el-form :model="qaDialog.form" label-width="120px">
+            <el-form-item label="标准问题" required>
+                <el-input v-model="qaDialog.form.standardQuestion" placeholder="如：头疼怎么办"></el-input>
+            </el-form-item>
+            <el-form-item label="同义问题">
+                <el-input v-model="qaDialog.form.synonyms" type="textarea" placeholder="多个用逗号分隔，如：头疼怎么治,头疼如何缓解"></el-input>
+            </el-form-item>
+            <el-form-item label="标准答案" required>
+                <el-input v-model="qaDialog.form.answer" type="textarea" :rows="3" placeholder="请输入答案"></el-input>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="qaDialog.visible = false">取消</el-button>
+            <el-button type="primary" @click="saveQa">保存</el-button>
+        </template>
+    </el-dialog>
+
+    <!-- 意图对话框 -->
+    <el-dialog v-model="intentDialog.visible" :title="intentDialog.title" width="500px">
+        <el-form :model="intentDialog.form" label-width="120px">
+            <el-form-item label="意图名称" required>
+                <el-input v-model="intentDialog.form.name" placeholder="如：查天气"></el-input>
+            </el-form-item>
+            <el-form-item label="示例语句" required>
+                <el-input v-model="intentDialog.form.utterances" type="textarea" placeholder="多个用逗号分隔，如：今天天气怎么样,明天会下雨吗"></el-input>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="intentDialog.visible = false">取消</el-button>
+            <el-button type="primary" @click="saveIntent">保存</el-button>
+        </template>
+    </el-dialog>
+
+    <!-- 模型新增/编辑对话框 -->
+    <el-dialog v-model="modelDialog.visible" :title="modelDialog.title" width="550px">
+        <el-form :model="modelDialog.form" label-width="120px">
+            <el-form-item label="模型名称" required>
+                <el-input v-model="modelDialog.form.name" placeholder="请输入模型名称"></el-input>
+            </el-form-item>
+            <el-form-item label="版本" required>
+                <el-input v-model="modelDialog.form.version" placeholder="如 v1.0.0"></el-input>
+            </el-form-item>
+            <el-form-item label="描述">
+                <el-input v-model="modelDialog.form.description" type="textarea" :rows="2" placeholder="描述"></el-input>
+            </el-form-item>
+            <el-form-item label="关联语义库">
+                <el-select v-model="modelDialog.form.libraryId" placeholder="请选择">
+                    <el-option v-for="lib in libraryList" :key="lib.id" :label="lib.name" :value="lib.id"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="训练配置">
+                <el-select v-model="modelDialog.form.config" placeholder="选择训练配置">
+                    <el-option label="快速训练" value="fast"></el-option>
+                    <el-option label="高质量训练" value="high"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="modelDialog.visible = false">取消</el-button>
+            <el-button type="primary" @click="saveModel">保存</el-button>
+        </template>
+    </el-dialog>
+
+    <!-- 新增：模型详情抽屉 -->
+    <el-drawer v-model="modelDetailDrawerVisible" title="模型详情" size="50%" direction="rtl">
+        <div v-if="currentDetailModel" style="padding:0 20px;">
+            <el-descriptions :column="1" border>
+                <el-descriptions-item label="模型ID">{{ currentDetailModel.id }}</el-descriptions-item>
+                <el-descriptions-item label="模型名称">{{ currentDetailModel.name }}</el-descriptions-item>
+                <el-descriptions-item label="版本">{{ currentDetailModel.version }}</el-descriptions-item>
+                <el-descriptions-item label="描述">{{ currentDetailModel.description || '无' }}</el-descriptions-item>
+                <el-descriptions-item label="关联语义库">
+                    {{ getLibraryNameById(currentDetailModel.libraryId) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="训练配置">{{ currentDetailModel.config || 'fast' }}</el-descriptions-item>
+                <el-descriptions-item label="状态">
+                    <el-tag :type="currentDetailModel.status === 'online' ? 'success' : 'info'">
+                        {{ currentDetailModel.status === 'online' ? '已上线' : '训练中' }}
+                    </el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item label="更新时间">{{ currentDetailModel.updateTime }}</el-descriptions-item>
+            </el-descriptions>
+        </div>
+        <template #footer>
+            <el-button @click="modelDetailDrawerVisible = false">关闭</el-button>
+        </template>
+    </el-drawer>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.8/index.full.min.js"></script>
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.8/index.min.css" />
+<script>
+    const { createApp, ref, reactive, computed } = Vue;
+    const { ElMessage, ElMessageBox } = ElementPlus;
+
+    const app = createApp({
+        setup() {
+            // ==================== 侧边栏控制 ====================
+            const expandedMenu = ref('');
+            const kbMenuExpanded = ref(false);
+            const semanticMenuExpanded = ref(true);
+            const activeSubNav = ref('');
+            const activeSemanticNav = ref('semanticList'); // 'semanticList' 或 'semanticModel'
+
+            const toggleMenu = (menu) => {
+                if (menu === 'knowledgeMange') {
+                    kbMenuExpanded.value = !kbMenuExpanded.value;
+                    if (!kbMenuExpanded.value) activeSubNav.value = '';
+                } else if (menu === 'semanticManagement') {
+                    semanticMenuExpanded.value = !semanticMenuExpanded.value;
+                } else {
+                    expandedMenu.value = expandedMenu.value === menu ? '' : menu;
+                }
+            };
+            const switchKbTab = (tab) => { activeSubNav.value = tab; };
+            const switchSemanticTab = (tab) => { activeSemanticNav.value = tab; };
+
+            // ==================== 语义库数据 ====================
+            const libraryList = ref([
+                { id: 1, name: '医疗问答库', description: '医疗领域问答数据', version: 'v1.0', createTime: '2024-01-15' },
+                { id: 2, name: '设备故障库', description: '机器人故障诊断', version: 'v2.1', createTime: '2024-02-20' },
+            ]);
+            const currentLibrary = ref(null); // 当前选中的语义库
+
+            // 语义库详情内部数据
+            const entityList = ref([
+                { id: 1, name: '科室', values: '内科,外科,儿科,急诊科' },
+                { id: 2, name: '药品', values: '阿司匹林,布洛芬,头孢' },
+            ]);
+            const synonymGroups = ref([
+                { id: 1, groupName: '手机', words: '手机,电话,移动电话,智能手机' },
+                { id: 2, groupName: '电脑', words: '电脑,计算机,PC' },
+            ]);
+            const qaPairs = ref([
+                { id: 1, standardQuestion: '头疼怎么办', synonyms: '头疼怎么治,头疼如何缓解', answer: '建议多休息，若持续疼痛请就医。' },
+                { id: 2, standardQuestion: '如何预约挂号', synonyms: '怎么预约挂号,挂号流程', answer: '可在微信公众号或APP预约。' },
+            ]);
+            const intentList = ref([
+                { id: 1, name: '查天气', utterances: '今天天气怎么样,明天会下雨吗' },
+                { id: 2, name: '订闹钟', utterances: '定个闹钟,提醒我明天8点开会' },
+            ]);
+
+            // 当前详情标签
+            const activeLibraryTab = ref('entity');
+
+            // 语义库对话框
+            const libraryDialog = reactive({
+                visible: false,
+                title: '',
+                mode: 'add',
+                form: { id: null, name: '', description: '', version: '' }
+            });
+            const showAddLibraryDialog = () => {
+                libraryDialog.title = '新增语义库';
+                libraryDialog.mode = 'add';
+                libraryDialog.form = { id: null, name: '', description: '', version: '' };
+                libraryDialog.visible = true;
+            };
+            const editLibrary = (row) => {
+                libraryDialog.title = '编辑语义库';
+                libraryDialog.mode = 'edit';
+                libraryDialog.form = { id: row.id, name: row.name, description: row.description, version: row.version };
+                libraryDialog.visible = true;
+            };
+            const saveLibrary = () => {
+                if (!libraryDialog.form.name.trim()) {
+                    ElMessage.warning('请输入语义库名称');
+                    return;
+                }
+                const now = new Date().toISOString().slice(0,10);
+                if (libraryDialog.mode === 'add') {
+                    const newId = Math.max(...libraryList.value.map(i => i.id), 0) + 1;
+                    libraryList.value.push({
+                        id: newId,
+                        name: libraryDialog.form.name,
+                        description: libraryDialog.form.description,
+                        version: libraryDialog.form.version || 'v1.0',
+                        createTime: now
+                    });
+                    ElMessage.success('新增成功');
+                } else {
+                    const idx = libraryList.value.findIndex(i => i.id === libraryDialog.form.id);
+                    if (idx !== -1) {
+                        libraryList.value[idx].name = libraryDialog.form.name;
+                        libraryList.value[idx].description = libraryDialog.form.description;
+                        libraryList.value[idx].version = libraryDialog.form.version;
+                        ElMessage.success('修改成功');
+                    }
+                }
+                libraryDialog.visible = false;
+            };
+            const deleteLibrary = (row) => {
+                ElMessageBox.confirm(`确定删除语义库“${row.name}”吗？`, '提示', { type: 'warning' })
+                    .then(() => {
+                        libraryList.value = libraryList.value.filter(i => i.id !== row.id);
+                        if (currentLibrary.value?.id === row.id) currentLibrary.value = null;
+                        ElMessage.success('删除成功');
+                    }).catch(() => {});
+            };
+            const viewLibraryDetail = (row) => {
+                currentLibrary.value = row;
+                ElMessage.info(`加载语义库 ${row.name} 的详情`);
+            };
+            const publishLibrary = (row) => {
+                ElMessage.success(`语义库 ${row.name} 发布成功`);
+            };
+            const exportLibrary = () => {
+                ElMessage.success('导出任务已创建，请稍后下载');
+            };
+            const showImportDialog = () => {
+                ElMessage.info('请在上传区域选择文件');
+            };
+            const trainLibrary = () => {
+                ElMessage.success('训练任务已提交，请稍后查看模型');
+            };
+            const handleFileChange = (file) => {
+                ElMessage.success(`文件 ${file.name} 已选择，可保存时上传`);
+            };
+
+            // 实体对话框
+            const entityDialog = reactive({
+                visible: false,
+                title: '',
+                mode: 'add',
+                form: { id: null, name: '', values: '' }
+            });
+            const showEntityDialog = (mode, row = null) => {
+                entityDialog.mode = mode;
+                entityDialog.title = mode === 'add' ? '新增实体' : '编辑实体';
+                if (mode === 'add') {
+                    entityDialog.form = { id: null, name: '', values: '' };
+                } else {
+                    entityDialog.form = { id: row.id, name: row.name, values: row.values };
+                }
+                entityDialog.visible = true;
+            };
+            const saveEntity = () => {
+                if (!entityDialog.form.name.trim() || !entityDialog.form.values.trim()) {
+                    ElMessage.warning('请填写完整信息');
+                    return;
+                }
+                if (entityDialog.mode === 'add') {
+                    const newId = Math.max(...entityList.value.map(i => i.id), 0) + 1;
+                    entityList.value.push({ id: newId, name: entityDialog.form.name, values: entityDialog.form.values });
+                    ElMessage.success('实体新增成功');
+                } else {
+                    const idx = entityList.value.findIndex(i => i.id === entityDialog.form.id);
+                    if (idx !== -1) {
+                        entityList.value[idx].name = entityDialog.form.name;
+                        entityList.value[idx].values = entityDialog.form.values;
+                        ElMessage.success('实体修改成功');
+                    }
+                }
+                entityDialog.visible = false;
+            };
+            const deleteEntity = (row) => {
+                ElMessageBox.confirm('确定删除该实体吗？', '提示', { type: 'warning' })
+                    .then(() => {
+                        entityList.value = entityList.value.filter(i => i.id !== row.id);
+                        ElMessage.success('删除成功');
+                    }).catch(() => {});
+            };
+
+            // 同义词对话框
+            const synonymDialog = reactive({
+                visible: false,
+                title: '',
+                mode: 'add',
+                form: { id: null, groupName: '', words: '' }
+            });
+            const showSynonymDialog = (mode, row = null) => {
+                synonymDialog.mode = mode;
+                synonymDialog.title = mode === 'add' ? '新增同义词组' : '编辑同义词组';
+                if (mode === 'add') {
+                    synonymDialog.form = { id: null, groupName: '', words: '' };
+                } else {
+                    synonymDialog.form = { id: row.id, groupName: row.groupName, words: row.words };
+                }
+                synonymDialog.visible = true;
+            };
+            const saveSynonym = () => {
+                if (!synonymDialog.form.groupName.trim() || !synonymDialog.form.words.trim()) {
+                    ElMessage.warning('请填写完整信息');
+                    return;
+                }
+                if (synonymDialog.mode === 'add') {
+                    const newId = Math.max(...synonymGroups.value.map(i => i.id), 0) + 1;
+                    synonymGroups.value.push({ id: newId, groupName: synonymDialog.form.groupName, words: synonymDialog.form.words });
+                    ElMessage.success('同义词组新增成功');
+                } else {
+                    const idx = synonymGroups.value.findIndex(i => i.id === synonymDialog.form.id);
+                    if (idx !== -1) {
+                        synonymGroups.value[idx].groupName = synonymDialog.form.groupName;
+                        synonymGroups.value[idx].words = synonymDialog.form.words;
+                        ElMessage.success('同义词组修改成功');
+                    }
+                }
+                synonymDialog.visible = false;
+            };
+            const deleteSynonym = (row) => {
+                ElMessageBox.confirm('确定删除该同义词组吗？', '提示', { type: 'warning' })
+                    .then(() => {
+                        synonymGroups.value = synonymGroups.value.filter(i => i.id !== row.id);
+                        ElMessage.success('删除成功');
+                    }).catch(() => {});
+            };
+
+            // 问答对对话框
+            const qaDialog = reactive({
+                visible: false,
+                title: '',
+                mode: 'add',
+                form: { id: null, standardQuestion: '', synonyms: '', answer: '' }
+            });
+            const showQaDialog = (mode, row = null) => {
+                qaDialog.mode = mode;
+                qaDialog.title = mode === 'add' ? '新增问答' : '编辑问答';
+                if (mode === 'add') {
+                    qaDialog.form = { id: null, standardQuestion: '', synonyms: '', answer: '' };
+                } else {
+                    qaDialog.form = { id: row.id, standardQuestion: row.standardQuestion, synonyms: row.synonyms, answer: row.answer };
+                }
+                qaDialog.visible = true;
+            };
+            const saveQa = () => {
+                if (!qaDialog.form.standardQuestion.trim() || !qaDialog.form.answer.trim()) {
+                    ElMessage.warning('请填写标准问题和答案');
+                    return;
+                }
+                if (qaDialog.mode === 'add') {
+                    const newId = Math.max(...qaPairs.value.map(i => i.id), 0) + 1;
+                    qaPairs.value.push({
+                        id: newId,
+                        standardQuestion: qaDialog.form.standardQuestion,
+                        synonyms: qaDialog.form.synonyms || '',
+                        answer: qaDialog.form.answer
+                    });
+                    ElMessage.success('问答新增成功');
+                } else {
+                    const idx = qaPairs.value.findIndex(i => i.id === qaDialog.form.id);
+                    if (idx !== -1) {
+                        qaPairs.value[idx].standardQuestion = qaDialog.form.standardQuestion;
+                        qaPairs.value[idx].synonyms = qaDialog.form.synonyms;
+                        qaPairs.value[idx].answer = qaDialog.form.answer;
+                        ElMessage.success('问答修改成功');
+                    }
+                }
+                qaDialog.visible = false;
+            };
+            const deleteQa = (row) => {
+                ElMessageBox.confirm('确定删除该问答吗？', '提示', { type: 'warning' })
+                    .then(() => {
+                        qaPairs.value = qaPairs.value.filter(i => i.id !== row.id);
+                        ElMessage.success('删除成功');
+                    }).catch(() => {});
+            };
+
+            // 意图对话框
+            const intentDialog = reactive({
+                visible: false,
+                title: '',
+                mode: 'add',
+                form: { id: null, name: '', utterances: '' }
+            });
+            const showIntentDialog = (mode, row = null) => {
+                intentDialog.mode = mode;
+                intentDialog.title = mode === 'add' ? '新增意图' : '编辑意图';
+                if (mode === 'add') {
+                    intentDialog.form = { id: null, name: '', utterances: '' };
+                } else {
+                    intentDialog.form = { id: row.id, name: row.name, utterances: row.utterances };
+                }
+                intentDialog.visible = true;
+            };
+            const saveIntent = () => {
+                if (!intentDialog.form.name.trim() || !intentDialog.form.utterances.trim()) {
+                    ElMessage.warning('请填写完整信息');
+                    return;
+                }
+                if (intentDialog.mode === 'add') {
+                    const newId = Math.max(...intentList.value.map(i => i.id), 0) + 1;
+                    intentList.value.push({ id: newId, name: intentDialog.form.name, utterances: intentDialog.form.utterances });
+                    ElMessage.success('意图新增成功');
+                } else {
+                    const idx = intentList.value.findIndex(i => i.id === intentDialog.form.id);
+                    if (idx !== -1) {
+                        intentList.value[idx].name = intentDialog.form.name;
+                        intentList.value[idx].utterances = intentDialog.form.utterances;
+                        ElMessage.success('意图修改成功');
+                    }
+                }
+                intentDialog.visible = false;
+            };
+            const deleteIntent = (row) => {
+                ElMessageBox.confirm('确定删除该意图吗？', '提示', { type: 'warning' })
+                    .then(() => {
+                        intentList.value = intentList.value.filter(i => i.id !== row.id);
+                        ElMessage.success('删除成功');
+                    }).catch(() => {});
+            };
+
+            // ==================== 模型管理 ====================
+            // 为模型对象添加 config 字段，便于详情展示
+            const modelList = ref([
+                { id: 1, name: '意图分类模型', version: 'v2.1', description: '基于BERT', status: 'online', updateTime: '2024-03-01', libraryId: 1, training: false, config: 'fast' },
+                { id: 2, name: '实体识别模型', version: 'v1.5', description: 'LSTM-CRF', status: 'training', updateTime: '2024-03-18', libraryId: 2, training: false, config: 'high' },
+            ]);
+
+            const modelDialog = reactive({
+                visible: false,
+                title: '',
+                mode: 'add',
+                form: { id: null, name: '', version: '', description: '', libraryId: null, config: 'fast' }
+            });
+            const showAddModelDialog = () => {
+                modelDialog.title = '新增模型';
+                modelDialog.mode = 'add';
+                modelDialog.form = { id: null, name: '', version: '', description: '', libraryId: null, config: 'fast' };
+                modelDialog.visible = true;
+            };
+            const editModel = (row) => {
+                modelDialog.title = '编辑模型';
+                modelDialog.mode = 'edit';
+                modelDialog.form = {
+                    id: row.id,
+                    name: row.name,
+                    version: row.version,
+                    description: row.description,
+                    libraryId: row.libraryId,
+                    config: row.config || 'fast'
+                };
+                modelDialog.visible = true;
+            };
+            const saveModel = () => {
+                if (!modelDialog.form.name.trim()) {
+                    ElMessage.warning('请输入模型名称');
+                    return;
+                }
+                const now = new Date().toISOString().slice(0,10);
+                if (modelDialog.mode === 'add') {
+                    const newId = Math.max(...modelList.value.map(i => i.id), 0) + 1;
+                    modelList.value.push({
+                        id: newId,
+                        name: modelDialog.form.name,
+                        version: modelDialog.form.version,
+                        description: modelDialog.form.description,
+                        libraryId: modelDialog.form.libraryId,
+                        status: 'training',
+                        updateTime: now,
+                        training: false,
+                        config: modelDialog.form.config  // 保存 config
+                    });
+                    ElMessage.success('模型新增成功');
+                } else {
+                    const idx = modelList.value.findIndex(i => i.id === modelDialog.form.id);
+                    if (idx !== -1) {
+                        modelList.value[idx].name = modelDialog.form.name;
+                        modelList.value[idx].version = modelDialog.form.version;
+                        modelList.value[idx].description = modelDialog.form.description;
+                        modelList.value[idx].libraryId = modelDialog.form.libraryId;
+                        modelList.value[idx].updateTime = now;
+                        modelList.value[idx].config = modelDialog.form.config; // 更新 config
+                        ElMessage.success('模型修改成功');
+                    }
+                }
+                modelDialog.visible = false;
+            };
+            const deleteModel = (row) => {
+                ElMessageBox.confirm('确定删除该模型吗？', '提示', { type: 'warning' })
+                    .then(() => {
+                        modelList.value = modelList.value.filter(i => i.id !== row.id);
+                        ElMessage.success('删除成功');
+                    }).catch(() => {});
+            };
+
+            // 模型详情抽屉相关
+            const modelDetailDrawerVisible = ref(false);
+            const currentDetailModel = ref(null);
+            const openModelDetailDrawer = (row) => {
+                currentDetailModel.value = row;
+                modelDetailDrawerVisible.value = true;
+            };
+
+            // 辅助函数：根据 libraryId 获取语义库名称
+            const getLibraryNameById = (id) => {
+                const lib = libraryList.value.find(l => l.id === id);
+                return lib ? lib.name : '未关联';
+            };
+
+            // 原有的 viewModelDetail 不再使用，替换为 openModelDetailDrawer
+            // 为了保持兼容，可以将其指向新函数，但此处直接删除原函数，使用新函数
+
+            const trainModel = (row) => {
+                row.training = true;
+                setTimeout(() => {
+                    row.training = false;
+                    row.status = 'online';
+                    ElMessage.success(`模型 ${row.name} 训练完成并上线`);
+                }, 2000);
+                ElMessage.info(`开始训练模型 ${row.name}`);
+            };
+            const offlineModel = (row) => {
+                row.status = 'training';
+                ElMessage.success(`模型 ${row.name} 已下线`);
+            };
+            const deployModel = (row) => {
+                row.status = 'online';
+                ElMessage.success(`模型 ${row.name} 部署成功`);
+            };
+
+            // 模型测试
+            const testModelId = ref(null);
+            const testInput = ref('');
+            const testResult = ref(null);
+            const runTest = () => {
+                if (!testModelId.value) {
+                    ElMessage.warning('请选择模型');
+                    return;
+                }
+                if (!testInput.value.trim()) {
+                    ElMessage.warning('请输入测试文本');
+                    return;
+                }
+                // 模拟测试结果
+                testResult.value = {
+                    intent: '查天气',
+                    confidence: '0.92',
+                    entities: '{ "地点": "北京" }'
+                };
+                ElMessage.success('测试完成');
+            };
+
+            return {
+                // 侧边栏
+                expandedMenu, kbMenuExpanded, semanticMenuExpanded,
+                activeSubNav, activeSemanticNav,
+                toggleMenu, switchKbTab, switchSemanticTab,
+
+                // 语义库列表
+                libraryList, currentLibrary,
+                libraryDialog, showAddLibraryDialog, editLibrary, saveLibrary, deleteLibrary,
+                viewLibraryDetail, publishLibrary,
+                exportLibrary, showImportDialog, trainLibrary, handleFileChange,
+
+                // 详情标签
+                activeLibraryTab,
+                entityList, synonymGroups, qaPairs, intentList,
+
+                // 实体
+                entityDialog, showEntityDialog, saveEntity, deleteEntity,
+                // 同义词
+                synonymDialog, showSynonymDialog, saveSynonym, deleteSynonym,
+                // 问答
+                qaDialog, showQaDialog, saveQa, deleteQa,
+                // 意图
+                intentDialog, showIntentDialog, saveIntent, deleteIntent,
+
+                // 模型管理
+                modelList,
+                modelDialog, showAddModelDialog, editModel, saveModel, deleteModel,
+                // 替换原来的 viewModelDetail 为 openModelDetailDrawer
+                openModelDetailDrawer, trainModel, offlineModel, deployModel,
+                // 抽屉相关
+                modelDetailDrawerVisible, currentDetailModel, getLibraryNameById,
+
+                // 测试
+                testModelId, testInput, testResult, runTest
+            };
+        }
+    });
+
+    app.use(ElementPlus);
+    app.mount('#app');
+</script>
+</body>
+</html>

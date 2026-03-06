@@ -2809,6 +2809,33 @@
 						</a>
 					</div>
 				</div>
+
+                <!-- 语义库管理 -->
+                <div class="nav-item-wrapper">
+                    <div
+                            class="nav-item"
+                            :class="{ 'active-parent': expandedMenu === 'semanticManagement', 'expanded': expandedMenu === 'semanticManagement' }"
+                            @click="toggleMenu('semanticManagement')"
+                    >
+                        <i class="fas fa-cogs"></i>
+                        <span class="nav-text">语义库管理</span>
+                        <i
+                                class="fas fa-chevron-down arrow-icon"
+                                :class="{ 'rotated': expandedMenu === 'semanticManagement' }"
+                        ></i>
+                    </div>
+                    <!-- 语义库管理 -->
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'semanticManagement'">
+                        <a href="semantic.html#list" class="nav-item sub-item">
+                            <i class="fas fa-th"></i>
+                            <span class="nav-text">语义库列表</span>
+                        </a>
+                        <a href="semantic.html#list" class="nav-item sub-item">
+                            <i class="fas fa-sliders-h"></i>
+                            <span class="nav-text">语义模型管理</span>
+                        </a>
+                    </div>
+                </div>
 				
                 <!-- 交互应用管理 -->
                 <div class="nav-item-wrapper">
