@@ -396,11 +396,6 @@
                         <div class="card-title">
                             <i class="fas fa-cog" style="margin-right:8px;"></i>配置：{{ currentLibrary.name }}
                         </div>
-                        <div>
-                            <el-button @click="exportLibrary">导出</el-button>
-                            <el-button type="primary" @click="showImportDialog">导入</el-button>
-                            <el-button type="success" @click="trainLibrary">训练</el-button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <el-tabs v-model="activeLibraryTab">
