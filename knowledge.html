@@ -931,6 +931,7 @@
                     activeSubNav.value = tab;
                     kbMenuExpanded.value = true; // 保持展开状态
                     // 更新导航标题
+					window.location.hash = tab;
                 };
                 const currentSubNavTitle = computed(() => {
                     return activeSubNav.value === 'doc' ? '文档管理' : '知识库管理';
@@ -1042,20 +1043,18 @@
 
 				// 在 onMounted 中根据当前路径设置 activeNav
                 onMounted(() => {
-                    const path = window.location.pathname;
-                    // 判断当前页面是否是首页
-                    if (path.endsWith('index.html') || path === '/' || path.endsWith('/')) {
-                        activeNav.value = 'home';
-                    } else {
-                        activeNav.value = ''; // 其他页面首页不激活
-                    }
-
-                    // 根据 hash 初始化 activeSubNav
-                    const hash = window.location.hash.replace('#', '');
-                    if (hash === 'doc' || hash === 'kb') {
-                        activeSubNav.value = hash;
-                    }
-                });
+		            const path = window.location.pathname;
+		            if (path.endsWith('index.html') || path === '/' || path.endsWith('/')) {
+		                activeNav.value = 'home';
+		            } else {
+		                activeNav.value = '';
+		            }
+		
+		            const hash = window.location.hash.replace('#', '');
+		            if (hash === 'doc' || hash === 'kb') {
+		                activeSubNav.value = hash;
+		            }
+		        });
 				
                 return {
                     expandedMenu,
