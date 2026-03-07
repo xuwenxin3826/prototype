@@ -2040,8 +2040,8 @@
                 });
 
 				// 知识库菜单状态
-				const kbMenuExpanded = ref(true);
-				const activeSubNav = ref('doc');
+				const kbMenuExpanded = ref(false);
+				const activeSubNav = ref('');
 				
 				const toggleKbSubmenu = () => {
 				    kbMenuExpanded.value = !kbMenuExpanded.value;
@@ -2140,6 +2140,7 @@
     </script>
 </body>
 </html>
+
 
 
 
