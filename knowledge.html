@@ -892,12 +892,12 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.8/index.full.min.js"></script>
 <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.8/index.min.css" />
     <script>
-        const { createApp, ref, computed } = Vue;
+        const { createApp, ref, computed, onMounted  } = Vue;
         const app = createApp({
             setup() {
                 // 侧边栏通用展开状态
                 const expandedMenu = ref(''); // 用于任务管理、交互应用管理、模式管理、数据分析等
-                const activeNav = ref('home'); // 当前选中的导航项（用于高亮）
+                const activeNav = ref(''); // 当前选中的导航项（用于高亮）
                 
                 // 任务管理是否激活的计算属性
                 const isTaskManagementActive = computed(() => {
@@ -1040,6 +1040,23 @@
                     ];
                 }
 
+				// 在 onMounted 中根据当前路径设置 activeNav
+                onMounted(() => {
+                    const path = window.location.pathname;
+                    // 判断当前页面是否是首页
+                    if (path.endsWith('index.html') || path === '/' || path.endsWith('/')) {
+                        activeNav.value = 'home';
+                    } else {
+                        activeNav.value = ''; // 其他页面首页不激活
+                    }
+
+                    // 根据 hash 初始化 activeSubNav
+                    const hash = window.location.hash.replace('#', '');
+                    if (hash === 'doc' || hash === 'kb') {
+                        activeSubNav.value = hash;
+                    }
+                });
+				
                 return {
                     expandedMenu,
                     activeNav,
