@@ -651,17 +651,17 @@
 
 			<!-- 知识库管理主菜单 (带展开子菜单) -->
 				<div class="nav-item-wrapper">
-					<div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleMenu('knowledgeMange')">
+					<div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
 						<i class="fas fa-database"></i>
 							<span class="nav-text">知识库管理</span>
 						<i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
 					</div>
 				<div class="sub-nav-menu" v-show="kbMenuExpanded">
-					<a href="knowledge.html#doc" class="nav-item sub-item" :class="{ active: activeSubNav === 'doc' }" @click="switchKbTab('doc')">
+					<a href="knowledge.html#doc" class="nav-item sub-item" >
 						<i class="fas fa-file-alt"></i>
 						<span class="nav-text">文档管理</span>
 					</a>
-					<a href="knowledge.html#kb" class="nav-item sub-item" :class="{ active: activeSubNav === 'kb' }" @click="switchKbTab('kb')">
+					<a href="knowledge.html#kb" class="nav-item sub-item" >
 						<i class="fas fa-layer-group"></i>
 						<span class="nav-text">知识库管理</span>
 					</a>
@@ -2022,6 +2022,13 @@
                 });
             };
 
+			// 知识库菜单状态
+				const kbMenuExpanded = ref(false);
+				
+				const toggleKbSubmenu = () => {
+				    kbMenuExpanded.value = !kbMenuExpanded.value;
+				};
+
             // 组件挂载时初始化
             onMounted(() => {
                 updateLastUpdateTime();
@@ -2079,12 +2086,15 @@
                 refreshHistoryData,
                 onHistoryDialogClose,
                 getTaskTypeTag,
-                getStatusClass
+                getStatusClass,
+				kbMenuExpanded,
+				toggleKbSubmenu
             };
         }
     }).use(ElementPlus).mount('#app');
 </script>
 </body>
 </html>
+
 
 
