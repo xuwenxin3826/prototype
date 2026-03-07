@@ -1388,7 +1388,7 @@
 
 				<!-- 知识库管理主菜单 (带展开子菜单) -->
 					<div class="nav-item-wrapper">
-						<div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleMenu('knowledgeMange')">
+						<div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
 							<i class="fas fa-database"></i>
 								<span class="nav-text">知识库管理</span>
 							<i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
@@ -2038,6 +2038,18 @@
                 const isTaskManagementActive = computed(() => {
                     return ['templates', 'tasks', 'scheduling', 'monitoring'].includes(activeNav.value);
                 });
+
+				// 知识库菜单状态
+				const kbMenuExpanded = ref(true);
+				const activeSubNav = ref('doc');
+				
+				const toggleKbSubmenu = () => {
+				    kbMenuExpanded.value = !kbMenuExpanded.value;
+				};
+				
+				const switchKbTab = (tab) => {
+				    activeSubNav.value = tab;
+				};
                 
                 // 切换菜单展开/收起
                 const toggleMenu = (menuName) => {
@@ -2114,7 +2126,11 @@
                     toggleMenu,
                     setActiveNav,
                     refreshDashboard,
-                    refreshData
+                    refreshData,
+					kbMenuExpanded,
+				    activeSubNav,
+				    toggleKbSubmenu,
+				    switchKbTab
                 };
             }
         });
@@ -2124,6 +2140,7 @@
     </script>
 </body>
 </html>
+
 
 
 
