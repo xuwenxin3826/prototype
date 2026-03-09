@@ -649,51 +649,49 @@
                 <span class="nav-text">机器人管理</span>
             </a>
 
-			<!-- 知识库管理主菜单 (带展开子菜单) -->
-				<div class="nav-item-wrapper">
-					<div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
-						<i class="fas fa-database"></i>
-							<span class="nav-text">知识库管理</span>
-						<i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
-					</div>
-				<div class="sub-nav-menu" v-show="kbMenuExpanded">
-					<a href="knowledge.html#doc" class="nav-item sub-item" >
-						<i class="fas fa-file-alt"></i>
-						<span class="nav-text">文档管理</span>
-					</a>
-					<a href="knowledge.html#kb" class="nav-item sub-item" >
-						<i class="fas fa-layer-group"></i>
-						<span class="nav-text">知识库管理</span>
-					</a>
-				</div>
-			</div>
+		<!-- 知识库管理主菜单 (带展开子菜单) 使用独立的kbMenuExpanded变量 -->
+                <div class="nav-item-wrapper">
+                    <div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
+                        <i class="fas fa-database"></i>
+                        <span class="nav-text">知识库管理</span>
+                        <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
+                    </div>
+                    <div class="sub-nav-menu" v-show="kbMenuExpanded">
+                        <a href="knowledge.html#doc" class="nav-item sub-item" :class="{ active: activeSubNav === 'doc' }" @click="switchKbTab('doc')">
+                            <i class="fas fa-file-alt"></i><span class="nav-text">文档管理</span>
+                        </a>
+                        <a href="knowledge.html#kb" class="nav-item sub-item" :class="{ active: activeSubNav === 'kb' }" @click="switchKbTab('kb')">
+                            <i class="fas fa-layer-group"></i><span class="nav-text">知识库管理</span>
+                        </a>
+                    </div>
+                </div>
 
-            <!-- 语义库管理 -->
-            <div class="nav-item-wrapper">
-                <div
-                        class="nav-item"
-                        :class="{ 'active-parent': expandedMenu === 'semanticManagement', 'expanded': expandedMenu === 'semanticManagement' }"
-                        @click="toggleMenu('semanticManagement')"
-                >
-                    <i class="fas fa-cogs"></i>
-                    <span class="nav-text">语义库管理</span>
-                    <i
-                            class="fas fa-chevron-down arrow-icon"
-                            :class="{ 'rotated': expandedMenu === 'semanticManagement' }"
-                    ></i>
-                </div>
                 <!-- 语义库管理 -->
-                <div class="sub-nav-menu" v-show="expandedMenu === 'semanticManagement'">
-                    <a href="semantic.html#list" class="nav-item sub-item">
-                        <i class="fas fa-th"></i>
-                        <span class="nav-text">语义库列表</span>
-                    </a>
-                    <a href="semantic.html#list" class="nav-item sub-item">
-                        <i class="fas fa-sliders-h"></i>
-                        <span class="nav-text">语义模型管理</span>
-                    </a>
+                <div class="nav-item-wrapper">
+                    <div
+                            class="nav-item"
+                            :class="{ 'active-parent': expandedMenu === 'semanticManagement', 'expanded': expandedMenu === 'semanticManagement' }"
+                            @click="toggleMenu('semanticManagement')"
+                    >
+                        <i class="fas fa-cogs"></i>
+                        <span class="nav-text">语义库管理</span>
+                        <i
+                                class="fas fa-chevron-down arrow-icon"
+                                :class="{ 'rotated': expandedMenu === 'semanticManagement' }"
+                        ></i>
+                    </div>
+                    <!-- 语义库管理 -->
+                    <div class="sub-nav-menu" v-show="expandedMenu === 'semanticManagement'">
+                        <a href="semantic.html#list" class="nav-item sub-item">
+                            <i class="fas fa-th"></i>
+                            <span class="nav-text">语义库列表</span>
+                        </a>
+                        <a href="semantic.html#list" class="nav-item sub-item">
+                            <i class="fas fa-sliders-h"></i>
+                            <span class="nav-text">语义模型管理</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
 			
             <!-- 交互应用管理 - 当前页面高亮 -->
             <div class="nav-item-wrapper">
@@ -1253,11 +1251,11 @@
                                                     </el-tag>
                                                 </td>
                                                 <td>
-                                                        <span :class="getStatusClass(task.status)">
-                                                            {{ task.status === 'success' ? '成功' :
-                                                               task.status === 'failed' ? '失败' :
-                                                               task.status === 'partial' ? '部分完成' : '进行中' }}
-                                                        </span>
+                                <span :class="getStatusClass(task.status)">
+                                    {{ task.status === 'success' ? '成功' :
+                                       task.status === 'failed' ? '失败' :
+                                       task.status === 'partial' ? '部分完成' : '进行中' }}
+                                </span>
                                                 </td>
                                                 <td>{{ task.duration }}</td>
                                             </tr>
@@ -1319,6 +1317,61 @@
                                     </div>
                                 </div>
                             </el-tab-pane>
+
+                            <!-- 新增的功能页签 -->
+                            <el-tab-pane label="系统功能中心" name="systemFunction">
+                                <div class="history-section">
+                                    <div class="history-title">
+                                        <i class="fas fa-cogs"></i>
+                                        功能中心
+                                    </div>
+                                    <div class="history-card" style="padding: 20px;">
+                                        <div class="function-list">
+                                            <!-- 智能交互助手 -->
+                                            <div class="function-item">
+                                                <div class="function-icon">
+                                                    <i class="fas fa-robot"></i>
+                                                </div>
+                                                <div class="function-info">
+                                                    <h3>智能交互助手</h3>
+                                                    <p>提供语音交互、智能问答、任务指令解析等功能</p>
+                                                </div>
+                                                <el-button type="primary" size="mini" class="function-btn">
+                                                    <i class="fas fa-external-link-alt"></i> 打开
+                                                </el-button>
+                                            </div>
+
+                                            <!-- 设备控制中心 -->
+                                            <div class="function-item">
+                                                <div class="function-icon">
+                                                    <i class="fas fa-sliders-h"></i>
+                                                </div>
+                                                <div class="function-info">
+                                                    <h3>设备控制中心</h3>
+                                                    <p>集中管理设备启停、参数配置、模式切换等操作</p>
+                                                </div>
+                                                <el-button type="primary" size="mini" class="function-btn">
+                                                    <i class="fas fa-external-link-alt"></i> 打开
+                                                </el-button>
+                                            </div>
+
+                                            <!-- 系统监控面板 -->
+                                            <div class="function-item">
+                                                <div class="function-icon">
+                                                    <i class="fas fa-chart-line"></i>
+                                                </div>
+                                                <div class="function-info">
+                                                    <h3>系统监控面板</h3>
+                                                    <p>实时监控系统性能、资源占用、异常告警等信息</p>
+                                                </div>
+                                                <el-button type="primary" size="mini" class="function-btn">
+                                                    <i class="fas fa-external-link-alt"></i> 打开
+                                                </el-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </el-tab-pane>
                         </el-tabs>
                     </div>
 
@@ -1342,8 +1395,10 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+<!-- 极速 CDN 源（替换原有 BootCDN 链接） -->
+<link href="https://cdn.jsdelivr.net/npm/element-plus@2.6.3/dist/index.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.prod.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/element-plus@2.6.3/dist/index.full.js"></script>
 <script>
     const { createApp, ref, reactive, computed, onMounted, onUnmounted } = Vue;
     const { ElMessage, ElMessageBox } = ElementPlus;
@@ -2022,13 +2077,6 @@
                 });
             };
 
-			// 知识库菜单状态
-				const kbMenuExpanded = ref(false);
-				
-				const toggleKbSubmenu = () => {
-				    kbMenuExpanded.value = !kbMenuExpanded.value;
-				};
-
             // 组件挂载时初始化
             onMounted(() => {
                 updateLastUpdateTime();
@@ -2086,15 +2134,11 @@
                 refreshHistoryData,
                 onHistoryDialogClose,
                 getTaskTypeTag,
-                getStatusClass,
-				kbMenuExpanded,
-				toggleKbSubmenu
+                getStatusClass
             };
         }
     }).use(ElementPlus).mount('#app');
 </script>
 </body>
 </html>
-
-
 
