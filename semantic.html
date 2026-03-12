@@ -303,6 +303,63 @@
                 display: none !important;
             }
         }
+
+        /* 自定义字段样式 */
+        .custom-field-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .custom-field-row .el-input,
+        .custom-field-row .el-input-number,
+        .custom-field-row .el-date-editor,
+        .custom-field-row .el-time-picker,
+        .custom-field-row .file-input-wrapper {
+            flex: 1 1 180px;
+            min-width: 150px;
+        }
+        .custom-field-row .key-input {
+            width: 140px;
+            flex: 0 0 140px;
+        }
+        .custom-field-row .type-select {
+            width: 110px;
+            flex: 0 0 110px;
+        }
+        .custom-field-row .value-component {
+            flex: 1 1 200px;
+            min-width: 160px;
+        }
+        .custom-field-row .delete-btn {
+            flex-shrink: 0;
+        }
+        .custom-fields-container {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        .drawer-custom-item {
+            padding: 4px 0;
+            border-bottom: 1px dashed #f0f0f0;
+            display: flex;
+        }
+        .drawer-custom-key {
+            font-weight: 500;
+            width: 120px;
+            color: #606266;
+        }
+        .drawer-custom-value {
+            color: #303133;
+            flex: 1;
+        }
+        .file-input-wrapper {
+            display: flex;
+            gap: 4px;
+        }
+        .file-input-wrapper .el-input {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -322,7 +379,7 @@
 
             <!-- 知识库管理 -->
             <div class="nav-item-wrapper">
-                <div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }"@click="toggleKbSubmenu">
+                <div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
                     <i class="fas fa-database"></i><span class="nav-text">知识库管理</span>
                     <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
                 </div>
@@ -651,8 +708,8 @@
         </template>
     </el-dialog>
 
-    <!-- 模型新增/编辑对话框 -->
-    <el-dialog v-model="modelDialog.visible" :title="modelDialog.title" width="550px">
+    <!-- 模型新增/编辑对话框 (增强：类型下拉框、动态输入) -->
+    <el-dialog v-model="modelDialog.visible" :title="modelDialog.title" width="700px">
         <el-form :model="modelDialog.form" label-width="120px">
             <el-form-item label="模型名称" required>
                 <el-input v-model="modelDialog.form.name" placeholder="请输入模型名称"></el-input>
@@ -674,6 +731,47 @@
                     <el-option label="高质量训练" value="high"></el-option>
                 </el-select>
             </el-form-item>
+
+            <!-- 自定义属性字段区域 (带类型) -->
+            <el-form-item label="自定义属性">
+                <div class="custom-fields-container">
+                    <div v-for="(field, index) in modelDialog.form.customFields" :key="index" class="custom-field-row">
+                        <!-- 属性名 -->
+                        <el-input v-model="field.key" placeholder="属性名" class="key-input" size="small"></el-input>
+                        <!-- 类型下拉框 -->
+                        <el-select v-model="field.type" placeholder="类型" class="type-select" size="small">
+                            <el-option label="文本" value="text"></el-option>
+                            <el-option label="数字" value="number"></el-option>
+                            <el-option label="日期" value="date"></el-option>
+                            <el-option label="时间" value="time"></el-option>
+                            <el-option label="文件" value="file"></el-option>
+                        </el-select>
+                        <!-- 动态值输入组件 -->
+                        <div class="value-component">
+                            <!-- 文本 -->
+                            <el-input v-if="field.type === 'text'" v-model="field.value" placeholder="文本值" size="small"></el-input>
+                            <!-- 数字 -->
+                            <el-input-number v-else-if="field.type === 'number'" v-model="field.value" :min="0" :step="1" size="small"></el-input-number>
+                            <!-- 日期 -->
+                            <el-date-picker v-else-if="field.type === 'date'" v-model="field.value" type="date" value-format="YYYY-MM-DD" placeholder="选择日期" size="small" style="width:100%;"></el-date-picker>
+                            <!-- 时间 -->
+                            <el-time-picker v-else-if="field.type === 'time'" v-model="field.value" value-format="HH:mm:ss" placeholder="选择时间" size="small" style="width:100%;"></el-time-picker>
+                            <!-- 文件：输入框 + 选择文件按钮 -->
+                            <div v-else-if="field.type === 'file'" class="file-input-wrapper">
+                                <el-input v-model="field.value" placeholder="文件路径" readonly size="small"></el-input>
+                                <el-button @click="triggerFileSelect(index)" size="small" icon="el-icon-upload">选择</el-button>
+                            </div>
+                        </div>
+                        <!-- 删除按钮 -->
+                        <el-button type="danger" @click="removeCustomField(index)" circle plain size="small" class="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </el-button>
+                    </div>
+                    <el-button type="primary" link @click="addCustomField">
+                        <i class="fas fa-plus" style="margin-right:4px;"></i>添加自定义字段
+                    </el-button>
+                </div>
+            </el-form-item>
         </el-form>
         <template #footer>
             <el-button @click="modelDialog.visible = false">取消</el-button>
@@ -681,7 +779,7 @@
         </template>
     </el-dialog>
 
-    <!-- 新增：模型详情抽屉 -->
+    <!-- 模型详情抽屉 (增加自定义属性类型展示) -->
     <el-drawer v-model="modelDetailDrawerVisible" title="模型详情" size="50%" direction="rtl">
         <div v-if="currentDetailModel" style="padding:0 20px;">
             <el-descriptions :column="1" border>
@@ -699,6 +797,21 @@
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item label="更新时间">{{ currentDetailModel.updateTime }}</el-descriptions-item>
+                <!-- 展示自定义属性（带类型） -->
+                <el-descriptions-item label="自定义属性" v-if="currentDetailModel.custom && currentDetailModel.custom.length">
+                    <div v-for="(item, idx) in currentDetailModel.custom" :key="idx" class="drawer-custom-item">
+                        <span class="drawer-custom-key">{{ item.key }} ({{ item.type || 'text' }}) :</span>
+                        <span class="drawer-custom-value">
+                            <span v-if="item.type === 'date' && item.value">{{ item.value | formatDate }}</span>
+                            <span v-else-if="item.type === 'time' && item.value">{{ item.value }}</span>
+                            <span v-else-if="item.type === 'file' && item.value">
+                                <el-link type="primary" :underline="false" @click="downloadFile(item.value)">{{ item.value }}</el-link>
+                            </span>
+                            <span v-else>{{ item.value }}</span>
+                        </span>
+                    </div>
+                </el-descriptions-item>
+                <el-descriptions-item label="自定义属性" v-else>无</el-descriptions-item>
             </el-descriptions>
         </div>
         <template #footer>
@@ -1020,35 +1133,60 @@
             };
 
             // ==================== 模型管理 ====================
-            // 为模型对象添加 config 字段，便于详情展示
+            // 模型列表数据，包含自定义字段（带类型）
             const modelList = ref([
-                { id: 1, name: '意图分类模型', version: 'v2.1', description: '基于BERT', status: 'online', updateTime: '2024-03-01', libraryId: 1, training: false, config: 'fast' },
-                { id: 2, name: '实体识别模型', version: 'v1.5', description: 'LSTM-CRF', status: 'training', updateTime: '2024-03-18', libraryId: 2, training: false, config: 'high' },
+                { id: 1, name: '意图分类模型', version: 'v2.1', description: '基于BERT', status: 'online', updateTime: '2024-03-01', libraryId: 1, training: false, config: 'fast', custom: [{ key: '算法', type: 'text', value: 'BERT' }, { key: '语料', type: 'text', value: '医疗' }] },
+                { id: 2, name: '实体识别模型', version: 'v1.5', description: 'LSTM-CRF', status: 'training', updateTime: '2024-03-18', libraryId: 2, training: false, config: 'high', custom: [] },
             ]);
 
             const modelDialog = reactive({
                 visible: false,
                 title: '',
                 mode: 'add',
-                form: { id: null, name: '', version: '', description: '', libraryId: null, config: 'fast' }
+                form: { id: null, name: '', version: '', description: '', libraryId: null, config: 'fast', customFields: [] } // customFields 包含 key, type, value
             });
+
+            // 添加自定义字段
+            const addCustomField = () => {
+                if (!modelDialog.form.customFields) modelDialog.form.customFields = [];
+                modelDialog.form.customFields.push({ key: '', type: 'text', value: '' });
+            };
+            const removeCustomField = (index) => {
+                modelDialog.form.customFields.splice(index, 1);
+            };
+
+            // 文件选择触发
+            const triggerFileSelect = (index) => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        modelDialog.form.customFields[index].value = file.name; // 存储文件名
+                        ElMessage.success(`已选择文件: ${file.name}`);
+                    }
+                };
+                input.click();
+            };
+
             const showAddModelDialog = () => {
                 modelDialog.title = '新增模型';
                 modelDialog.mode = 'add';
-                modelDialog.form = { id: null, name: '', version: '', description: '', libraryId: null, config: 'fast' };
+                // 重置表单
+                Object.assign(modelDialog.form, { id: null, name: '', version: '', description: '', libraryId: null, config: 'fast', customFields: [] });
                 modelDialog.visible = true;
             };
             const editModel = (row) => {
                 modelDialog.title = '编辑模型';
                 modelDialog.mode = 'edit';
-                modelDialog.form = {
-                    id: row.id,
-                    name: row.name,
-                    version: row.version,
-                    description: row.description,
-                    libraryId: row.libraryId,
-                    config: row.config || 'fast'
-                };
+                modelDialog.form.id = row.id;
+                modelDialog.form.name = row.name;
+                modelDialog.form.version = row.version;
+                modelDialog.form.description = row.description;
+                modelDialog.form.libraryId = row.libraryId;
+                modelDialog.form.config = row.config || 'fast';
+                // 深拷贝 custom 字段，确保每个字段都有 type (默认 text)
+                modelDialog.form.customFields = row.custom ? JSON.parse(JSON.stringify(row.custom)).map(f => ({ key: f.key, type: f.type || 'text', value: f.value })) : [];
                 modelDialog.visible = true;
             };
             const saveModel = () => {
@@ -1057,6 +1195,8 @@
                     return;
                 }
                 const now = new Date().toISOString().slice(0,10);
+                // 构建 custom 数组，保留 type
+                const customToSave = modelDialog.form.customFields.filter(f => f.key.trim() !== ''); // 过滤空 key
                 if (modelDialog.mode === 'add') {
                     const newId = Math.max(...modelList.value.map(i => i.id), 0) + 1;
                     modelList.value.push({
@@ -1068,7 +1208,8 @@
                         status: 'training',
                         updateTime: now,
                         training: false,
-                        config: modelDialog.form.config  // 保存 config
+                        config: modelDialog.form.config,
+                        custom: customToSave
                     });
                     ElMessage.success('模型新增成功');
                 } else {
@@ -1079,7 +1220,8 @@
                         modelList.value[idx].description = modelDialog.form.description;
                         modelList.value[idx].libraryId = modelDialog.form.libraryId;
                         modelList.value[idx].updateTime = now;
-                        modelList.value[idx].config = modelDialog.form.config; // 更新 config
+                        modelList.value[idx].config = modelDialog.form.config;
+                        modelList.value[idx].custom = customToSave;
                         ElMessage.success('模型修改成功');
                     }
                 }
@@ -1093,7 +1235,7 @@
                     }).catch(() => {});
             };
 
-            // 模型详情抽屉相关
+            // 模型详情抽屉
             const modelDetailDrawerVisible = ref(false);
             const currentDetailModel = ref(null);
             const openModelDetailDrawer = (row) => {
@@ -1101,15 +1243,13 @@
                 modelDetailDrawerVisible.value = true;
             };
 
-            // 辅助函数：根据 libraryId 获取语义库名称
+            // 辅助函数
             const getLibraryNameById = (id) => {
                 const lib = libraryList.value.find(l => l.id === id);
                 return lib ? lib.name : '未关联';
             };
 
-            // 原有的 viewModelDetail 不再使用，替换为 openModelDetailDrawer
-            // 为了保持兼容，可以将其指向新函数，但此处直接删除原函数，使用新函数
-
+            // 训练、部署等模拟操作
             const trainModel = (row) => {
                 row.training = true;
                 setTimeout(() => {
@@ -1141,7 +1281,6 @@
                     ElMessage.warning('请输入测试文本');
                     return;
                 }
-                // 模拟测试结果
                 testResult.value = {
                     intent: '查天气',
                     confidence: '0.92',
@@ -1150,12 +1289,16 @@
                 ElMessage.success('测试完成');
             };
 
-            // 知识库菜单状态
-				const kbMenuExpanded = ref(false);
-				
-				const toggleKbSubmenu = () => {
-				    kbMenuExpanded.value = !kbMenuExpanded.value;
-				};
+            // 知识库菜单
+            const kbMenuExpanded = ref(false);
+            const toggleKbSubmenu = () => {
+                kbMenuExpanded.value = !kbMenuExpanded.value;
+            };
+
+            // 文件下载模拟
+            const downloadFile = (fileName) => {
+                ElMessage.info(`模拟下载文件：${fileName}`);
+            };
 
             return {
                 // 侧边栏
@@ -1185,16 +1328,25 @@
                 // 模型管理
                 modelList,
                 modelDialog, showAddModelDialog, editModel, saveModel, deleteModel,
-                // 替换原来的 viewModelDetail 为 openModelDetailDrawer
                 openModelDetailDrawer, trainModel, offlineModel, deployModel,
-                // 抽屉相关
                 modelDetailDrawerVisible, currentDetailModel, getLibraryNameById,
 
                 // 测试
                 testModelId, testInput, testResult, runTest,
-                kbMenuExpanded,
-                toggleKbSubmenu
+                toggleKbSubmenu,
+
+                // 自定义字段方法
+                addCustomField, removeCustomField, triggerFileSelect,
+                downloadFile
             };
+        },
+        // 添加过滤器用于格式化日期（可选）
+        filters: {
+            formatDate(value) {
+                if (!value) return '';
+                // 如果已经是 YYYY-MM-DD 格式，直接返回
+                return value;
+            }
         }
     });
 
