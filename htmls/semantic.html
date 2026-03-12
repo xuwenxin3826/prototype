@@ -11,46 +11,130 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        :root {
-            --primary-color: #1890ff;
-            --primary-light: #e6f7ff;
-            --success-color: #52c41a;
-            --warning-color: #faad14;
-            --error-color: #f5222d;
-            --info-color: #1890ff;
-            --bg-color: #f0f2f5;
-            --sidebar-bg: #001529;
-            --header-bg: #fff;
-            --card-bg: #fff;
-            --text-primary: #000000e0;
-            --text-secondary: #000000a6;
-            --border-color: #f0f0f0;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            overflow-x: hidden;
+            font-family: 'Noto Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F0F2F5;
+            color: #4D4D4D;
+            font-size: 14px;
+        }
+
+        /* 颜色变量 */
+        :root {
+            --sidebar-bg: #E7EDF9;           /* 侧栏背景 */
+            --primary-blue: #3976E4;          /* 主蓝 */
+            --primary-dark: #5387E4;
+            --success-green: #22A06B;
+            --success-bg: #DCFCE7;
+            --warning-orange: #FEB03B;
+            --warning-bg: #FEF9C3;
+            --danger-red: #EF4444;
+            --input-bg: #F5F5F5;
+            --input-border: #B3B3B3;
+            --card-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+            --border-light: #E5E7EB;
+            --text-light: #808080;
+        }
+        .el-button {
+            border-radius: 8px !important;
+            font-weight: 500;
+            border: none !important;
+        }
+        .el-button--default, .el-button:not(.el-button--primary):not(.el-button--danger):not(.el-button--success) {
+            background: #D7E4FA !important;
+            color: #3976E4 !important;
+        }
+        .el-button--default:hover {
+            background: #c1d4f5 !important;
+            color: #2a5fcf !important;
+        }
+        .el-button--primary {
+            background: #3976E4 !important;
+            color: white !important;
+        }
+        .el-button--primary:hover {
+            background: #5387E4 !important;
+        }
+        .el-button--danger {
+            background: #EF4444 !important;
+            color: white !important;
+        }
+        .el-button--success {
+            background: #22A06B !important;
+            color: white !important;
+        }
+
+        /* 输入框 */
+        .el-input__wrapper, .el-textarea__inner {
+            background-color: var(--input-bg) !important;
+            border: 1px solid var(--input-border) !important;
+            box-shadow: none !important;
+            border-radius: 4px !important;
+        }
+
+        /* 表格 */
+        .el-table {
+            border: none !important;
+            background: white !important;
+        }
+        .el-table th.el-table__cell {
+            background: #F5F5F5 !important;
+            color: #4D4D4D !important;
+            font-weight: 500 !important;
+            border-bottom: 1px solid #E0E0E0 !important;
+        }
+        .el-table td.el-table__cell {
+            border-bottom: 1px solid #F0F0F0 !important;
+        }
+
+        /* 标签 */
+        .el-tag {
+            border: none !important;
+            border-radius: 4px !important;
+        }
+        .el-tag--success {
+            background: var(--success-bg) !important;
+            color: #166534 !important;
+        }
+        .el-tag--info, .el-tag--warning {
+            background: var(--warning-bg) !important;
+            color: #B45309 !important;
+        }
+
+        /* 选项卡 */
+        .el-tabs__item.is-active {
+            color: var(--primary-blue) !important;
+        }
+        .el-tabs__active-bar {
+            background-color: var(--primary-blue) !important;
+        }
+
+        /* 对话框/抽屉 */
+        .el-dialog, .el-drawer {
+            border-radius: 10px !important;
+            box-shadow: var(--card-shadow) !important;
         }
 
         .dashboard-container {
             display: flex;
             min-height: 100vh;
+
         }
 
-        /* 侧边栏样式 */
+        /* 侧边栏 */
         .sidebar {
             width: 256px;
-            background-color: var(--sidebar-bg);
+            background-color: rgba(231,237,249,1);
+            margin: 12px 0 12px 31px;
+            height: calc(100vh - 24px);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
             color: rgba(255, 255, 255, 0.85);
             transition: all 0.3s;
-            position: relative;
-            z-index: 10;
-            flex-shrink: 0;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .sidebar-header {
@@ -58,7 +142,7 @@
             display: flex;
             align-items: center;
             padding: 0 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .logo {
@@ -66,143 +150,218 @@
             align-items: center;
             gap: 12px;
         }
-
         .logo i {
             font-size: 24px;
-            color: var(--primary-color);
+            color: #4D4D4D;
         }
-
         .logo-text {
+            font-family: 'Smiley Sans', sans-serif;
+
+            font-style: oblique;
             font-size: 18px;
             font-weight: 600;
-            color: white;
+            color: #000;
         }
 
         .nav-menu {
-            padding: 16px 0;
+            padding: 8px 0;
         }
-
+        .nav-item-wrapper {
+            margin-bottom: 2px;
+        }
         .nav-item {
             display: flex;
             align-items: center;
             padding: 12px 24px;
             cursor: pointer;
-            transition: all 0.3s;
-            color: rgba(255, 255, 255, 0.65);
+            color: #4D4D4D;
             text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+            position: relative;
         }
-
-        .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .nav-item.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
         .nav-item i {
             font-size: 16px;
             margin-right: 12px;
             width: 20px;
-            text-align: center;
+            color: #4D4D4D;
+        }
+        .nav-item:hover {
+            background: rgba(57,118,228,0.08);
+            color: var(--primary-blue);
+        }
+        .nav-item:hover i{
+            color: var(--primary-blue);
+        }
+        .nav-item.active {
+            color: var(--primary-blue);
+        }
+        .nav-item.active i {
+            color: var(--primary-blue);
         }
 
-        .nav-item-wrapper {
-            margin-bottom: 4px;
-        }
-
-        .arrow-icon {
-            margin-left: auto;
-            font-size: 12px;
-            transition: transform 0.3s;
-            opacity: 0.7;
-        }
-
-        .arrow-icon.rotated {
-            transform: rotate(180deg);
-        }
-
+        /* 子菜单 */
         .sub-nav-menu {
-            background-color: rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            transition: all 0.3s ease-in-out;
+            background: rgba(0,0,0,0.02);
         }
-
         .nav-item.sub-item {
-            padding: 10px 24px 10px 48px;
+            padding: 8px 24px 8px 48px;
             font-size: 13px;
-            border-left: 2px solid transparent;
-            margin-left: 0;
         }
 
-        .nav-item.sub-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: white;
-            border-left-color: rgba(255, 255, 255, 0.3);
-        }
-
+        /* 子菜单项选中状态：蓝底白字 */
         .nav-item.sub-item.active {
-            background-color: rgba(24, 144, 255, 0.25);
-            color: #fff;
-            border-left-color: var(--primary-color);
-            font-weight: 500;
+            background: rgb(184, 200, 244);
+            color: white;
+        }
+        .nav-item.sub-item.active i {
+            color: white;
         }
 
-        .nav-item.sub-item i {
-            font-size: 14px;
-            width: 18px;
-            margin-right: 8px;
-        }
-
-        /* 主内容区样式 */
+        /* 主内容区 */
         .main-content {
             flex: 1;
+            margin: 12px 31px 0 31px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
 
-        .header {
-            height: 64px;
-            background-color: var(--header-bg);
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            z-index: 9;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .header-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-info {
+        .top-nav-bar {
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-pill {
+            height: 25px;
+            background: white;
+            opacity: 0.7;
+            border-radius: 4px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            color: #4D4D4D;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .nav-pill.active {
+            background: #00B5FD;
+            color: white;
+            opacity: 1;
+        }
+        .nav-pill i {
+            margin-right: 6px;
         }
 
-        .user-avatar {
-            width: 32px;
-            height: 32px;
+        .top-bg-container {
+            width: 100%;
+            height: 216px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(83,135,228,1);
+            z-index: -1;
+        }
+        .top-bg-pattern {
+            width: 100%;
+            height: 216px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: url("../images/background.png") no-repeat center center / cover;
+            z-index: 0;
+        }
+
+        /* 面包屑 */
+        .breadcrumb {
+            margin: 8px 0 20px 0;
+            color: #4D4D4D;
+            font-size: 14px;
+        }
+        .breadcrumb .active {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* 主内容卡片（圆角+阴影） */
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+            margin-bottom: 24px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        /* 状态徽章 */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 12px;
+        }
+        .status-badge.pending {
+            background: rgba(254,249,195,1);
+            color: #B45309;
+        }
+        .status-badge.approved {
+            background: rgba(220,252,231,1);
+            color: #166534;
+        }
+        .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            margin-right: 6px;
+        }
+        .status-dot.pending { background: #FEB03B; }
+        .status-dot.approved { background: #166534; }
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+        .card-body {
+            padding: 24px 20px;
+        }
+
+        /* 头部图标区 */
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+        }
+        .header-icons i {
+            font-size: 20px;
+            color: #4D4D4D;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+        .header-icons i:hover { opacity: 1; }
+        .divider-vertical {
+            width: 2px; height: 30px;
+            background: white;
+            opacity: 0.5;
+            margin: 0 8px;
+        }
+        .user-avatar {
+            width: 32px; height: 32px;
+            background: var(--primary-blue);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -210,161 +369,77 @@
             font-weight: bold;
         }
 
-        .content-wrapper {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-        }
-
-        /* 卡片样式 */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            overflow: hidden;
-        }
-
-        .card-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .card-body {
-            padding: 24px;
-        }
-
-        /* 上传区域 */
-        .upload-area {
-            border: 2px dashed #d9d9d9;
-            border-radius: 6px;
-            padding: 40px;
-            text-align: center;
-            background: #fafafa;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .upload-area:hover {
-            border-color: var(--primary-color);
-            background: #f0f9ff;
-        }
-        .upload-area i {
-            font-size: 48px;
-            color: #909399;
-            margin-bottom: 12px;
-        }
-
-        /* 自定义滚动条 */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 80px;
-            }
-            .logo-text, .nav-text, .arrow-icon {
-                display: none;
-            }
-            .nav-item {
-                justify-content: center;
-                padding: 16px 0;
-            }
-            .nav-item i {
-                margin-right: 0;
-                font-size: 20px;
-            }
-            .sub-nav-menu {
-                display: none !important;
-            }
-        }
-
-        /* 自定义字段样式 */
+        /* 自定义字段行 */
         .custom-field-row {
             display: flex;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             gap: 8px;
             flex-wrap: wrap;
+            background: #FAFAFA;
+            padding: 8px 12px;
+            border-radius: 6px;
         }
-        .custom-field-row .el-input,
-        .custom-field-row .el-input-number,
-        .custom-field-row .el-date-editor,
-        .custom-field-row .el-time-picker,
-        .custom-field-row .file-input-wrapper {
-            flex: 1 1 180px;
-            min-width: 150px;
-        }
-        .custom-field-row .key-input {
-            width: 140px;
-            flex: 0 0 140px;
-        }
-        .custom-field-row .type-select {
-            width: 110px;
-            flex: 0 0 110px;
-        }
-        .custom-field-row .value-component {
-            flex: 1 1 200px;
-            min-width: 160px;
-        }
-        .custom-field-row .delete-btn {
-            flex-shrink: 0;
-        }
-        .custom-fields-container {
-            margin-top: 8px;
-            margin-bottom: 8px;
-        }
+        .key-input { width: 140px; }
+        .type-select { width: 110px; }
+        .value-component { flex: 1; }
+
+        /* 抽屉自定义属性 */
         .drawer-custom-item {
-            padding: 4px 0;
-            border-bottom: 1px dashed #f0f0f0;
+            padding: 8px 0;
+            border-bottom: 1px dashed #E0E0E0;
             display: flex;
         }
         .drawer-custom-key {
             font-weight: 500;
-            width: 120px;
-            color: #606266;
+            width: 140px;
         }
-        .drawer-custom-value {
-            color: #303133;
-            flex: 1;
+
+        /* 输入框样式 */
+        .el-input__wrapper {
+            background-color: #F5F5F5 !important;
+            border: 1px solid #B3B3B3 !important;
+            box-shadow: none !important;
+            border-radius: 4px !important;
         }
-        .file-input-wrapper {
-            display: flex;
-            gap: 4px;
+        /* 按钮样式（编辑/信息认证） */
+        .el-button--default {
+            background: #D7E4FA !important;
+            color: #3976E4 !important;
+            border-radius: 8px !important;
+            font-weight: 500;
         }
-        .file-input-wrapper .el-input {
-            flex: 1;
+        .el-button--default:hover {
+            background: #c1d4f5 !important;
+            color: #2a5fcf !important;
+        }
+        /* 上传区域文字 */
+        .upload-text {
+            color: #3976E4;
+            font-size: 18px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 箭头图标基础样式 */
+        .arrow-icon {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        /* 旋转 90 度：从向右变成向下 */
+        .arrow-icon.rotated {
+            transform: rotate(90deg);
         }
     </style>
 </head>
 <body>
 <div id="app" class="dashboard-container">
-    <!-- 侧边栏 -->
+    <div class="top-bg-container">
+        <div class="top-bg-pattern"></div>
+    </div>
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="logo">
@@ -373,175 +448,415 @@
             </div>
         </div>
         <div class="nav-menu">
-            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span class="nav-text">首页</span></a>
-            <div class="nav-item-wrapper"><a href="tasks.html" class="nav-item"><i class="fas fa-tasks"></i><span class="nav-text">任务管理</span></a></div>
+            <a href="index.html" class="nav-item" style="text-decoration: none;">
+                <i class="fas fa-home"></i>
+                <span class="nav-text">首页</span>
+            </a>
+            <!-- 任务管理 -->
+            <div class="nav-item-wrapper">
+                <div
+                        class="nav-item"
+                        :class="{ expanded: expandedMenu === 'taskManagement' }"
+                        @click="toggleMenu('taskManagement')"
+                >
+                    <i class="fas fa-tasks"></i>
+                    <span class="nav-text">任务管理</span>
+                    <i
+                            class="fas fa-angle-right arrow-icon"
+                            :class="{ 'rotated': expandedMenu === 'taskManagement' }"
+                    ></i>
+                </div>
+
+                <div class="sub-nav-menu" v-show="expandedMenu === 'taskManagement'">
+                    <a href="tasks.html#templates" class="nav-item sub-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span class="nav-text">模板管理</span>
+                    </a>
+                    <a href="tasks.html#tasks" class="nav-item sub-item">
+                        <i class="fas fa-list-ul"></i>
+                        <span class="nav-text">任务列表</span>
+                    </a>
+                    <a href="tasks.html#scheduling" class="nav-item sub-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="nav-text">计划管理</span>
+                    </a>
+                    <a href="tasks.html#abnormal" class="nav-item sub-item">
+                        <i class="fas fa-eye"></i>
+                        <span class="nav-text">异常处理</span>
+                    </a>
+                </div>
+            </div>
             <a href="robots.html" class="nav-item"><i class="fas fa-robot"></i><span class="nav-text">机器人管理</span></a>
 
             <!-- 知识库管理 -->
             <div class="nav-item-wrapper">
                 <div class="nav-item" :class="{ 'active-parent': ['doc','kb'].includes(activeSubNav) }" @click="toggleKbSubmenu">
                     <i class="fas fa-database"></i><span class="nav-text">知识库管理</span>
-                    <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
+                    <i class="fas fa-angle-right arrow-icon" :class="{ rotated: kbMenuExpanded }"></i>
                 </div>
                 <div class="sub-nav-menu" v-show="kbMenuExpanded">
                     <a href="knowledge.html#doc" class="nav-item sub-item" ><i class="fas fa-file-alt"></i><span class="nav-text">文档管理</span></a>
                     <a href="knowledge.html#kb" class="nav-item sub-item" ><i class="fas fa-layer-group"></i><span class="nav-text">知识库管理</span></a>
                 </div>
             </div>
-
-            <!-- 语义库管理 (当前页面高亮) -->
+            <!-- 语义库管理 -->
             <div class="nav-item-wrapper">
                 <div class="nav-item active" :class="{ expanded: semanticMenuExpanded }" @click="toggleMenu('semanticManagement')">
                     <i class="fas fa-brain"></i><span class="nav-text">语义库管理</span>
-                    <i class="fas fa-chevron-down arrow-icon" :class="{ rotated: semanticMenuExpanded }"></i>
+                    <i class="fas fa-angle-right arrow-icon" :class="{ rotated: semanticMenuExpanded }"></i>
                 </div>
                 <div class="sub-nav-menu" v-show="semanticMenuExpanded">
                     <a href="#semanticList" class="nav-item sub-item" :class="{ active: activeSemanticNav === 'semanticList' }" @click="switchSemanticTab('semanticList')"><i class="fas fa-list-ul"></i><span class="nav-text">语义库列表</span></a>
                     <a href="#semanticModel" class="nav-item sub-item" :class="{ active: activeSemanticNav === 'semanticModel' }" @click="switchSemanticTab('semanticModel')"><i class="fas fa-cog"></i><span class="nav-text">语义模型管理</span></a>
                 </div>
             </div>
+            <!-- 交互应用管理 -->
+            <div class="nav-item-wrapper">
+                <div
+                        class="nav-item"
+                        :class="{ 'active-parent': expandedMenu === 'appManagement', 'expanded': expandedMenu === 'appManagement' }"
+                        @click="toggleMenu('appManagement')"
+                >
+                    <i class="fas fa-cogs"></i>
+                    <span class="nav-text">交互应用管理</span>
+                    <i
+                            class="fas fa-angle-right arrow-icon"
+                            :class="{ 'rotated': expandedMenu === 'appManagement' }"
+                    ></i>
+                </div>
 
-            <div class="nav-item-wrapper"><a href="app.html" class="nav-item"><i class="fas fa-cogs"></i><span class="nav-text">交互应用管理</span></a></div>
-            <div class="nav-item-wrapper"><a href="mode.html" class="nav-item"><i class="fas fa-cogs"></i><span class="nav-text">模式管理</span></a></div>
-            <div class="nav-item-wrapper"><a href="data.html" class="nav-item"><i class="fas fa-chart-line"></i><span class="nav-text">数据管理与分析</span></a></div>
+                <div class="sub-nav-menu" v-show="expandedMenu === 'appManagement'">
+                    <a href="app.html#appLibrary" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'appLibrary' }" @click="setActiveNav('appLibrary')">
+                        <i class="fas fa-th"></i>
+                        <span class="nav-text">应用库管理</span>
+                    </a>
+                    <a href="app.html#appConfig" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'appConfig' }" @click="setActiveNav('appConfig')">
+                        <i class="fas fa-sliders-h"></i>
+                        <span class="nav-text">应用配置管理</span>
+                    </a>
+                    <a href="app.html#appUpdate" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'appUpdate' }" @click="setActiveNav('appUpdate')">
+                        <i class="fas fa-sync-alt"></i>
+                        <span class="nav-text">应用更新管理</span>
+                    </a>
+                    <!-- 新增交互历史列表菜单项 -->
+                    <a href="app.html#interactionHistory" class="nav-item sub-item"
+                       :class="{ active: activeNav === 'interactionHistory' }" @click="setActiveNav('interactionHistory')">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text">交互历史列表</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-item-wrapper">
+                <!-- 模式管理折叠菜单 -->
+                <a
+                        href="mode.html#quick"
+                        class="nav-item"
+                        :class="{ expanded: expandedMenu === 'modeManagement' }"
+                        @click.stop="toggleMenu('modeManagement')"
+                >
+                    <i class="fas fa-cogs"></i>
+                    <span class="nav-text">模式管理</span>
+                    <i
+                            class="fas fa-angle-right arrow-icon"
+                            :class="{ 'rotated': expandedMenu === 'modeManagement' }"
+                    ></i>
+                </a>
+
+                <div class="sub-nav-menu" v-show="expandedMenu === 'modeManagement'">
+                    <a href="mode3.html#quick" class="nav-item sub-item"
+                       :class="{ active: activeModeTab === 'quick' }"
+                       @click.stop="('quick')">
+                        <i class="fas fa-bolt"></i>
+                        <span class="nav-text">快捷操作</span>
+                    </a>
+                    <a href="mode3.html#switch" class="nav-item sub-item"
+                       :class="{ active: activeModeTab === 'switch' }"
+                       @click.stop="('switch')">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span class="nav-text">模式切换</span>
+                    </a>
+                    <a href="mode3.html#schedule" class="nav-item sub-item"
+                       :class="{ active: activeModeTab === 'schedule' }"
+                       @click.stop="('schedule')">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="nav-text">模式排程</span>
+                    </a>
+                    <a href="mode3.html#history" class="nav-item sub-item"
+                       :class="{ active: activeModeTab === 'history' }"
+                       @click.stop="('history')">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text">历史记录</span>
+                    </a>
+                    <a href="mode3.html#edit" class="nav-item sub-item"
+                       :class="{ active: activeModeTab === 'edit' }"
+                       @click.stop="('edit')">
+                        <i class="fas fa-edit"></i>
+                        <span class="nav-text">编辑模式</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 数据管理与分析 - 包含子菜单 -->
+            <div class="nav-item-wrapper">
+                <div
+                        class="nav-item"
+                        :class="{
+                            active: ['data-management', 'data-dashboard', 'metrics-analysis', 'ai-analysis'].includes(activeNav),
+                            expanded: expandedMenu === 'dataAnalysis'
+                        }"
+                        @click="toggleMenu('dataAnalysis')"
+                >
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-text">数据管理与分析</span>
+                    <i
+                            class="fas fa-angle-right arrow-icon"
+                            :class="{ 'rotated': expandedMenu === 'dataAnalysis' }"
+                    ></i>
+                </div>
+
+                <!-- 子菜单 - 指向 data.html -->
+                <div class="sub-nav-menu" v-show="expandedMenu === 'dataAnalysis'">
+                    <a href="data.html#tools" class="nav-item sub-item">
+                        <i class="fas fa-database"></i>
+                        <span class="nav-text">数据管理工具</span>
+                    </a>
+
+                    <a href="data.html" class="nav-item sub-item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span class="nav-text">数据仪表盘</span>
+                    </a>
+
+                    <a href="data.html#metrics" class="nav-item sub-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span class="nav-text">指标分析</span>
+                    </a>
+
+                    <a href="data.html#ai" class="nav-item sub-item">
+                        <i class="fas fa-brain"></i>
+                        <span class="nav-text">AI分析</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 主内容区 -->
+    <!-- ========== 主内容区 ========== -->
     <div class="main-content">
-        <div class="header">
-            <div class="header-left"><span class="header-title">语义库管理</span></div>
-            <div class="header-actions">
-                <div class="user-info"><div class="user-avatar">A</div><span>管理员</span></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <div class="breadcrumb">
+                <span>首页 / </span>
+                <span>语义库管理 / </span>
+                <span class="active">{{ activeSemanticNav === 'semanticList' ? '语义库列表' : '语义模型管理' }}</span>
+            </div>
+            <div class="header-icons">
+                <i class="fas fa-search"></i>
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-cog"></i>
+                <div class="divider-vertical"></div>
+                <div class="user-avatar">A</div>
             </div>
         </div>
 
-        <div class="content-wrapper">
-            <!-- ========== 语义库列表页 ========== -->
+        <div class="top-nav-bar">
+            <a href="index.html" class="nav-pill"><i class="fas fa-home" style="margin-right:6px;"></i>首页</a>
+            <a href="index.html" class="nav-pill active">{{ activeSemanticNav === 'semanticList' ? '语义库列表' : '语义模型管理' }}<i class="fas fa-times-circle"></i></a>
+        </div>
+
+        <div class="content-wrapper" style="padding:0;">
+            <!-- ===== 语义库列表页 ===== -->
             <div v-if="activeSemanticNav === 'semanticList'">
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title"><i class="fas fa-book" style="margin-right:8px;"></i>语义库列表</div>
                         <div>
-                            <el-button type="primary" @click="showAddLibraryDialog">
-                                <i class="fas fa-plus"></i> 新增语义库
-                            </el-button>
+                            <el-button type="primary" @click="showAddLibraryDialog"><i class="fas fa-plus"></i> 新增语义库</el-button>
                         </div>
                     </div>
                     <div class="card-body">
-                        <el-table :data="libraryList" style="width:100%" border>
+                        <div class="filter-bar">
+                            <el-input v-model="librarySearchInput" placeholder="按名称搜索" clearable style="width:200px;"></el-input>
+                            <el-select v-model="libraryStatusFilter" placeholder="全部状态" clearable style="width:120px;" @change="applyLibraryFilter">
+                                <el-option label="已发布" value="published"></el-option>
+                                <el-option label="未发布" value="unpublished"></el-option>
+                            </el-select>
+                            <el-button type="primary" @click="applyLibrarySearch"><i class="fas fa-search"></i>搜索</el-button>
+                            <el-button @click="resetLibraryFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                        </div>
+
+                        <el-table :data="paginatedLibraryList" style="width:100%" border>
                             <el-table-column prop="id" label="ID" width="80"></el-table-column>
-                            <el-table-column prop="name" label="语义库名称" width="200"></el-table-column>
+                            <el-table-column prop="name" label="语义库名称" width="180"></el-table-column>
+                            <el-table-column prop="version" label="版本" width="80"></el-table-column>
                             <el-table-column prop="description" label="描述" min-width="200"></el-table-column>
-                            <el-table-column prop="version" label="版本" width="100"></el-table-column>
-                            <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+                            <el-table-column prop="status" label="状态" width="100">
+                                <template #default="scope">
+                                    <el-tag :type="scope.row.status === 'published' ? 'success' : 'info'">
+                                        {{ scope.row.status === 'published' ? '已发布' : '未发布' }}
+                                    </el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
                             <el-table-column label="操作" width="350" fixed="right">
                                 <template #default="scope">
-                                    <el-button size="small" @click="viewLibraryDetail(scope.row)">详情</el-button>
-                                    <el-button size="small" @click="editLibrary(scope.row)">编辑</el-button>
-                                    <el-button size="small" type="danger" @click="deleteLibrary(scope.row)">删除</el-button>
-                                    <el-button size="small" type="success" @click="publishLibrary(scope.row)">发布</el-button>
+                                    <el-button size="small" @click="viewLibraryDetail(scope.row)"><i class="fas fa-eye"></iclass></i></el-button>
+                                    <el-button size="small" @click="editLibrary(scope.row)"><i class="fas fa-edit"></i></el-button>
+                                    <el-button size="small" type="danger" @click="deleteLibrary(scope.row)"><i class="fas fa-trash"></i></el-button>
+                                    <el-button size="small" type="success" @click="publishLibrary(scope.row)"><i class="fas fa-paper-plane"></i></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
+
+                        <!-- 分页 -->
+                        <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                            <el-pagination
+                                    background
+                                    layout="prev, pager, next, sizes, jumper"
+                                    :total="libraryTotal"
+                                    v-model:current-page="libraryPage"
+                                    v-model:page-size="libraryPageSize"
+                                    :page-sizes="[5, 10, 20]"
+                                    @current-change="handleLibraryPageChange"
+                                    @size-change="handleLibrarySizeChange"></el-pagination>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 当前语义库详情配置卡片 (选中后显示) -->
+                <!-- 当前语义库详情配置卡片 (带状态徽章) -->
                 <div v-if="currentLibrary" class="card" style="margin-top:20px;">
                     <div class="card-header">
                         <div class="card-title">
                             <i class="fas fa-cog" style="margin-right:8px;"></i>配置：{{ currentLibrary.name }}
+                            <span class="status-badge" :class="{ approved: currentLibrary.id === 1 }">
+                                <span class="status-dot" :class="currentLibrary.id === 1 ? 'dot-success' : 'dot-warning'"></span>
+                                {{ currentLibrary.id === 1 ? '已通过' : '待审核' }}
+                            </span>
                         </div>
                     </div>
                     <div class="card-body">
                         <el-tabs v-model="activeLibraryTab">
                             <!-- 实体管理 -->
                             <el-tab-pane label="实体管理" name="entity">
-                                <el-button type="primary" size="small" @click="showEntityDialog('add')" style="margin-bottom:16px;">
-                                    <i class="fas fa-plus"></i> 新增实体
-                                </el-button>
-                                <el-table :data="entityList" border style="width:100%">
+                                <!-- 实体筛选栏 -->
+                                <div class="filter-bar" style="display: flex; align-items: center;">
+                                    <el-input v-model="entitySearchInput" placeholder="按实体名称搜索" clearable style="width:200px;"></el-input>
+                                    <el-button size="small" type="primary" @click="applyEntitySearch"><i class="fas fa-search"></i>搜索</el-button>
+                                    <el-button size="small" @click="resetEntityFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                                    <el-button type="primary" size="small" @click="showEntityDialog('add')" style="margin-right:auto;"><i class="fas fa-plus"></i> 新增实体</el-button>
+                                </div>
+                                <el-table :data="paginatedEntityList" border style="width:100%">
                                     <el-table-column prop="name" label="实体名称" width="200"></el-table-column>
                                     <el-table-column prop="values" label="实体值(逗号分隔)" min-width="300"></el-table-column>
                                     <el-table-column label="操作" width="200">
                                         <template #default="scope">
-                                            <el-button size="small" @click="showEntityDialog('edit', scope.row)">编辑</el-button>
-                                            <el-button size="small" type="danger" @click="deleteEntity(scope.row)">删除</el-button>
+                                            <el-button size="small" @click="showEntityDialog('edit', scope.row)"><i class="fas fa-edit"></i></el-button>
+                                            <el-button size="small" type="danger" @click="deleteEntity(scope.row)"><i class="fas fa-trash"></i></el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
+                                <!-- 分页 -->
+                                <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                                    <el-pagination background layout="prev, pager, next, sizes" :total="entityTotal" v-model:current-page="entityPage" v-model:page-size="entityPageSize" :page-sizes="[5, 10, 20]" @current-change="handleEntityPageChange" @size-change="handleEntitySizeChange" />
+                                </div>
                             </el-tab-pane>
                             <!-- 同义词管理 -->
                             <el-tab-pane label="同义词管理" name="synonym">
-                                <el-button type="primary" size="small" @click="showSynonymDialog('add')" style="margin-bottom:16px;">
-                                    <i class="fas fa-plus"></i> 新增同义词组
-                                </el-button>
-                                <el-table :data="synonymGroups" border style="width:100%">
+                                <div class="filter-bar" style="display: flex; align-items: center;" >
+                                    <el-input v-model="synonymSearchName" placeholder="按词组名称搜索" clearable style="width:200px;"></el-input>
+                                    <el-button size="small" type="primary" @click="applySynonymSearch"><i class="fas fa-search"></i>搜索</el-button>
+                                    <el-button size="small" @click="resetSynonymFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                                    <el-button type="primary" size="small" @click="showSynonymDialog('add')" style="margin-left:auto;" ><i class="fas fa-plus"></i> 新增同义词组</el-button>
+                                </div>
+                                <el-table :data="paginatedSynonymList" border style="width:100%">
                                     <el-table-column prop="groupName" label="词组名称" width="200"></el-table-column>
                                     <el-table-column prop="words" label="同义词(逗号分隔)" min-width="300"></el-table-column>
                                     <el-table-column label="操作" width="200">
                                         <template #default="scope">
-                                            <el-button size="small" @click="showSynonymDialog('edit', scope.row)">编辑</el-button>
-                                            <el-button size="small" type="danger" @click="deleteSynonym(scope.row)">删除</el-button>
+                                            <el-button size="small" @click="showSynonymDialog('edit', scope.row)"><i class="fas fa-edit"></i></el-button>
+                                            <el-button size="small" type="danger" @click="deleteSynonym(scope.row)"><i class="fas fa-trash"></i></el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
+                                <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                                    <el-pagination background layout="prev, pager, next, sizes" :total="synonymTotal" v-model:current-page="synonymPage" v-model:page-size="synonymPageSize" :page-sizes="[5, 10, 20]" @current-change="handleSynonymPageChange" @size-change="handleSynonymSizeChange"></el-pagination>
+                                </div>
                             </el-tab-pane>
                             <!-- 问答对管理 -->
                             <el-tab-pane label="问答对" name="qa">
-                                <el-button type="primary" size="small" @click="showQaDialog('add')" style="margin-bottom:16px;">
-                                    <i class="fas fa-plus"></i> 新增问答
-                                </el-button>
-                                <el-table :data="qaPairs" border style="width:100%">
+                                <div class="filter-bar" style="display: flex; align-items: center;">
+                                    <el-input v-model="qaSearchName" placeholder="按标准问题搜索" clearable style="width:200px;"></el-input>
+                                    <el-button size="small" type="primary" @click="applyQaSearch"><i class="fas fa-search"></i>搜索</el-button>
+                                    <el-button size="small" @click="resetQaFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                                    <el-button type="primary" size="small" @click="showQaDialog('add')" style="margin-left:auto;"><i class="fas fa-plus"></i> 新增问答</el-button>
+                                </div>
+                                <el-table :data="paginatedQaList" border style="width:100%">
                                     <el-table-column prop="standardQuestion" label="标准问题" width="250"></el-table-column>
                                     <el-table-column prop="synonyms" label="同义问题(逗号分隔)" min-width="250"></el-table-column>
                                     <el-table-column prop="answer" label="标准答案" min-width="250"></el-table-column>
                                     <el-table-column label="操作" width="200">
                                         <template #default="scope">
-                                            <el-button size="small" @click="showQaDialog('edit', scope.row)">编辑</el-button>
-                                            <el-button size="small" type="danger" @click="deleteQa(scope.row)">删除</el-button>
+                                            <el-button size="small" @click="showQaDialog('edit', scope.row)"><i class="fas fa-edit"></i></el-button>
+                                            <el-button size="small" type="danger" @click="deleteQa(scope.row)"><i class="fas fa-trash"></i></el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
+                                <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                                    <el-pagination background layout="prev, pager, next, sizes" :total="qaTotal" v-model:current-page="qaPage" v-model:page-size="qaPageSize" :page-sizes="[5, 10, 20]" @current-change="handleQaPageChange" @size-change="handleQaSizeChange"></el-pagination>
+                                </div>
                             </el-tab-pane>
                             <!-- 意图管理 -->
-                            <el-tab-pane label="意图管理" name="intent">
-                                <el-button type="primary" size="small" @click="showIntentDialog('add')" style="margin-bottom:16px;">
-                                    <i class="fas fa-plus"></i> 新增意图
-                                </el-button>
-                                <el-table :data="intentList" border style="width:100%">
+                            <el-tab-pane label="意图管理" name="intent" >
+                                <div class="filter-bar" style="display: flex; align-items: center;">
+                                    <el-input v-model="intentSearchName" placeholder="按意图名称搜索" clearable style="width:200px;"></el-input>
+                                    <el-button size="small" type="primary" @click="applyIntentmSearch"><i class="fas fa-search"></i>>搜索</el-button>
+                                    <el-button size="small" @click="resetIntentFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                                    <el-button type="primary" size="small" @click="showIntentDialog('add')" style="margin-left:auto;"><i class="fas fa-plus"></i> 新增意图</el-button>
+                                </div>
+                                <el-table :data="paginatedIntentList" border style="width:100%">
                                     <el-table-column prop="name" label="意图名称" width="200"></el-table-column>
                                     <el-table-column prop="utterances" label="示例语句(逗号分隔)" min-width="350"></el-table-column>
                                     <el-table-column label="操作" width="200">
                                         <template #default="scope">
-                                            <el-button size="small" @click="showIntentDialog('edit', scope.row)">编辑</el-button>
-                                            <el-button size="small" type="danger" @click="deleteIntent(scope.row)">删除</el-button>
+                                            <el-button size="small" @click="showIntentDialog('edit', scope.row)"><i class="fas fa-edit"></i></el-button>
+                                            <el-button size="small" type="danger" @click="deleteIntent(scope.row)"><i class="fas fa-trash"></i></el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
+                                <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                                    <el-pagination background layout="prev, pager, next, sizes" :total="intentTotal" v-model:current-page="intentPage" v-model:page-size="intentPageSize" :page-sizes="[5, 10, 20]" @current-change="handleIntentPageChange" @size-change="handleIntentSizeChange"></el-pagination>
+                                </div>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
                 </div>
             </div>
 
-            <!-- ========== 语义模型管理页 ========== -->
+            <!-- ===== 语义模型管理页 ===== -->
             <div v-else-if="activeSemanticNav === 'semanticModel'">
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title"><i class="fas fa-cog" style="margin-right:8px;"></i>语义模型管理</div>
-                        <div>
-                            <el-button type="primary" @click="showAddModelDialog">
-                                <i class="fas fa-plus"></i> 新增模型
-                            </el-button>
-                        </div>
+                        <div><el-button type="primary" @click="showAddModelDialog"><i class="fas fa-plus"></i> 新增模型</el-button></div>
                     </div>
                     <div class="card-body">
-                        <el-table :data="modelList" style="width:100%" border>
+                        <!-- 筛选栏：名称搜索 + 状态筛选 + 重置 -->
+                        <div class="filter-bar">
+                            <el-input v-model="modelSearchName" placeholder="按模型名称搜索" clearable style="width:200px;"></el-input>
+                            <el-select v-model="modelStatusFilter" placeholder="全部状态" clearable style="width:120px;" @change="applyModelFilter">
+                                <el-option label="已上线" value="online"></el-option>
+                                <el-option label="训练中" value="training"></el-option>
+                            </el-select>
+                            <el-button type="primary" @click="applyModelSearch"><i class="fas fa-search"></i>搜索</el-button>
+                            <el-button @click="resetModelFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                        </div>
+
+                        <el-table :data="paginatedModelList" style="width:100%" border>
                             <el-table-column prop="id" label="ID" width="80"></el-table-column>
                             <el-table-column prop="name" label="模型名称" width="180"></el-table-column>
-                            <el-table-column prop="version" label="版本" width="100"></el-table-column>
+                            <el-table-column prop="version" label="版本" width="80"></el-table-column>
                             <el-table-column prop="description" label="描述" min-width="200"></el-table-column>
                             <el-table-column label="状态" width="100">
                                 <template #default="scope">
@@ -550,37 +865,36 @@
                                     </el-tag>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
-                            <el-table-column label="操作" width="420" fixed="right">
+                            <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
+                            <el-table-column label="操作" width="350">
                                 <template #default="scope">
-                                    <!-- 详情按钮打开抽屉 -->
-                                    <el-button size="small" @click="openModelDetailDrawer(scope.row)">详情</el-button>
-                                    <el-button size="small" @click="editModel(scope.row)">编辑</el-button>
-                                    <el-button size="small" type="success" @click="trainModel(scope.row)" :loading="scope.row.training">训练</el-button>
-                                    <el-button
-                                            v-if="scope.row.status === 'online'"
-                                            size="small"
-                                            type="warning"
-                                            @click="offlineModel(scope.row)"
-                                    >下线</el-button>
-                                    <el-button
-                                            v-else
-                                            size="small"
-                                            type="primary"
-                                            @click="deployModel(scope.row)"
-                                    >部署</el-button>
-                                    <el-button size="small" type="danger" @click="deleteModel(scope.row)">删除</el-button>
+                                    <el-button size="small" @click="openModelDetailDrawer(scope.row)"><i><i class="fas fa-eye"></i></i></el-button>
+                                    <el-button size="small" @click="editModel(scope.row)"><i class="fas fa-edit"></i></el-button>
+                                    <el-button size="small" type="success" @click="trainModel(scope.row)"><i class="fas fa-brain"></i></el-button>
+                                    <el-button v-if="scope.row.status === 'online'" size="small" type="warning" @click="offlineModel(scope.row)"><i class="fas fa-cloud-download"></i></el-button>
+                                    <el-button v-else size="small" type="primary" @click="deployModel(scope.row)"><i class="fas fa-cloud-upload"></i></el-button>
+                                    <el-button size="small" type="danger" @click="deleteModel(scope.row)"><i class="fas fa-trash"></i></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
+
+                        <!-- 分页 -->
+                        <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                            <el-pagination
+                                    background
+                                    layout="prev, pager, next, sizes, jumper"
+                                    :total="modelTotal"
+                                    v-model:current-page="modelPage"
+                                    v-model:page-size="modelPageSize"
+                                    :page-sizes="[5, 10, 20]"
+                                    @current-change="handleModelPageChange"
+                                    @size-change="handleModelSizeChange"></el-pagination>
+                        </div>
                     </div>
                 </div>
-
-                <!-- 模型测试卡片 -->
+                <!-- 模型测试卡片（保持不变） -->
                 <div class="card" style="margin-top:20px;">
-                    <div class="card-header">
-                        <div class="card-title"><i class="fas fa-flask" style="margin-right:8px;"></i>模型测试</div>
-                    </div>
+                    <div class="card-header"><div class="card-title"><i class="fas fa-flask"></i>模型测试</div></div>
                     <div class="card-body">
                         <el-row :gutter="20">
                             <el-col :span="12">
@@ -591,7 +905,7 @@
                                 <el-button type="primary" style="margin-top:16px;" @click="runTest">运行测试</el-button>
                             </el-col>
                             <el-col :span="12">
-                                <div style="background:#f5f7fa; padding:16px; border-radius:4px;">
+                                <div style="background:#F5F7FA; padding:16px; border-radius:4px;">
                                     <h4>测试结果</h4>
                                     <p v-if="testResult">意图：{{ testResult.intent }}<br>置信度：{{ testResult.confidence }}<br>实体：{{ testResult.entities }}</p>
                                     <p v-else style="color:#999;">暂无测试结果</p>
@@ -603,7 +917,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========== 全局对话框 ========== -->
 
     <!-- 语义库新增/编辑对话框 -->
@@ -820,6 +1133,7 @@
     </el-drawer>
 </div>
 
+
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.8/index.full.min.js"></script>
 <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.8/index.min.css" />
@@ -850,10 +1164,9 @@
 
             // ==================== 语义库数据 ====================
             const libraryList = ref([
-                { id: 1, name: '医疗问答库', description: '医疗领域问答数据', version: 'v1.0', createTime: '2024-01-15' },
-                { id: 2, name: '设备故障库', description: '机器人故障诊断', version: 'v2.1', createTime: '2024-02-20' },
+                { id: 1, name: '医疗问答库', description: '医疗领域问答数据', version: 'v1.0', createTime: '2024-01-15', status: 'published' },
+                { id: 2, name: '设备故障库', description: '机器人故障诊断', version: 'v2.1', createTime: '2024-02-20', status: 'unpublished' },
             ]);
-            const currentLibrary = ref(null); // 当前选中的语义库
 
             // 语义库详情内部数据
             const entityList = ref([
@@ -873,8 +1186,128 @@
                 { id: 2, name: '订闹钟', utterances: '定个闹钟,提醒我明天8点开会' },
             ]);
 
-            // 当前详情标签
+            const currentLibrary = ref(null);
             const activeLibraryTab = ref('entity');
+            const librarySearchInput = ref('');
+            const librarySearchName = ref('');
+            const librarySearchKeyword = ref('');
+            const libraryStatusFilter = ref('');
+            const libraryPage = ref(1);
+            const libraryPageSize = ref(5);
+            const filteredLibraryList = computed(() => {
+                return libraryList.value.filter(item => {
+                    const matchName = !librarySearchKeyword.value || item.name.includes(librarySearchKeyword.value);
+                    const matchStatus = !libraryStatusFilter.value || item.status === libraryStatusFilter.value;
+                    return matchName && matchStatus;
+                });
+            });
+            const libraryTotal = computed(() => filteredLibraryList.value.length);
+            const paginatedLibraryList = computed(() => {
+                const start = (libraryPage.value - 1) * libraryPageSize.value;
+                return filteredLibraryList.value.slice(start, start + libraryPageSize.value);
+            });
+            const handleLibrarySearch = () => { libraryPage.value = 1; };
+            const handleLibraryPageChange = (page) => { libraryPage.value = page; };
+            const handleLibrarySizeChange = (size) => { libraryPageSize.value = size; libraryPage.value = 1; };
+
+            // ---- 实体 ----
+            const entitySearchName = ref('');
+            const entityPage = ref(1);
+            const entitySearchInput = ref('');
+            const entityPageSize = ref(5);
+            const filteredEntityList = computed(() => {
+                return entityList.value.filter(item => !entitySearchName.value || item.name.includes(entitySearchName.value));
+            });
+            const entityTotal = computed(() => filteredEntityList.value.length);
+            const paginatedEntityList = computed(() => {
+                const start = (entityPage.value - 1) * entityPageSize.value;
+                return filteredEntityList.value.slice(start, start + entityPageSize.value);
+            });
+            const handleEntitySearch = () => { entityPage.value = 1; };
+            const resetEntityFilter = () => { entitySearchName.value = ''; entityPage.value = 1; };
+            const handleEntityPageChange = (page) => { entityPage.value = page; };
+            const handleEntitySizeChange = (size) => { entityPageSize.value = size; entityPage.value = 1; };
+
+            // ---- 同义词 ----
+            const synonymSearchName = ref('');
+            const synonymPage = ref(1);
+            const synonymPageSize = ref(5);
+            const filteredSynonymList = computed(() => {
+                return synonymGroups.value.filter(item => !synonymSearchName.value || item.groupName.includes(synonymSearchName.value));
+            });
+            const synonymTotal = computed(() => filteredSynonymList.value.length);
+            const paginatedSynonymList = computed(() => {
+                const start = (synonymPage.value - 1) * synonymPageSize.value;
+                return filteredSynonymList.value.slice(start, start + synonymPageSize.value);
+            });
+            const handleSynonymSearch = () => { synonymPage.value = 1; };
+            const resetSynonymFilter = () => { synonymSearchName.value = ''; synonymPage.value = 1; };
+            const handleSynonymPageChange = (page) => { synonymPage.value = page; };
+            const handleSynonymSizeChange = (size) => { synonymPageSize.value = size; synonymPage.value = 1; };
+
+            // ---- 问答对 ----
+            const qaSearchName = ref('');
+            const qaPage = ref(1);
+            const qaPageSize = ref(5);
+            const filteredQaList = computed(() => {
+                return qaPairs.value.filter(item => !qaSearchName.value || item.standardQuestion.includes(qaSearchName.value));
+            });
+            const qaTotal = computed(() => filteredQaList.value.length);
+            const paginatedQaList = computed(() => {
+                const start = (qaPage.value - 1) * qaPageSize.value;
+                return filteredQaList.value.slice(start, start + qaPageSize.value);
+            });
+            const handleQaSearch = () => { qaPage.value = 1; };
+            const resetQaFilter = () => { qaSearchName.value = ''; qaPage.value = 1; };
+            const handleQaPageChange = (page) => { qaPage.value = page; };
+            const handleQaSizeChange = (size) => { qaPageSize.value = size; qaPage.value = 1; };
+
+            // ---- 意图 ----
+            const intentSearchName = ref('');
+            const intentPage = ref(1);
+            const intentPageSize = ref(5);
+            const filteredIntentList = computed(() => {
+                return intentList.value.filter(item => !intentSearchName.value || item.name.includes(intentSearchName.value));
+            });
+            const intentTotal = computed(() => filteredIntentList.value.length);
+            const paginatedIntentList = computed(() => {
+                const start = (intentPage.value - 1) * intentPageSize.value;
+                return filteredIntentList.value.slice(start, start + intentPageSize.value);
+            });
+            const handleIntentSearch = () => { intentPage.value = 1; };
+            const resetIntentFilter = () => { intentSearchName.value = ''; intentPage.value = 1; };
+            const handleIntentPageChange = (page) => { intentPage.value = page; };
+            const handleIntentSizeChange = (size) => { intentPageSize.value = size; intentPage.value = 1; };
+
+            // ---- 模型列表 ----
+            const modelList = ref([
+                { id: 1, name: '意图分类模型', version: 'v2.1', description: '基于BERT', status: 'online', updateTime: '2024-03-01', libraryId: 1, training: false, config: 'fast', custom: [{ key: '算法', type: 'text', value: 'BERT' }, { key: '语料', type: 'text', value: '医疗' }] },
+                { id: 2, name: '实体识别模型', version: 'v1.5', description: 'LSTM-CRF', status: 'training', updateTime: '2024-03-18', libraryId: 2, training: false, config: 'high', custom: [] },
+            ]);
+            const modelSearchName = ref('');
+            const modelStatusFilter = ref('');
+            const modelPage = ref(1);
+            const modelPageSize = ref(5);
+            const filteredModelList = computed(() => {
+                return modelList.value.filter(item => {
+                    const matchName = !modelSearchName.value || item.name.includes(modelSearchName.value);
+                    const matchStatus = !modelStatusFilter.value || item.status === modelStatusFilter.value;
+                    return matchName && matchStatus;
+                });
+            });
+            const modelTotal = computed(() => filteredModelList.value.length);
+            const paginatedModelList = computed(() => {
+                const start = (modelPage.value - 1) * modelPageSize.value;
+                return filteredModelList.value.slice(start, start + modelPageSize.value);
+            });
+            const handleModelSearch = () => { modelPage.value = 1; };
+            const resetModelFilter = () => {
+                modelSearchName.value = '';
+                modelStatusFilter.value = '';
+                modelPage.value = 1;
+            };
+            const handleModelPageChange = (page) => { modelPage.value = page; };
+            const handleModelSizeChange = (size) => { modelPageSize.value = size; modelPage.value = 1; };
 
             // 语义库对话框
             const libraryDialog = reactive({
@@ -1133,11 +1566,6 @@
             };
 
             // ==================== 模型管理 ====================
-            // 模型列表数据，包含自定义字段（带类型）
-            const modelList = ref([
-                { id: 1, name: '意图分类模型', version: 'v2.1', description: '基于BERT', status: 'online', updateTime: '2024-03-01', libraryId: 1, training: false, config: 'fast', custom: [{ key: '算法', type: 'text', value: 'BERT' }, { key: '语料', type: 'text', value: '医疗' }] },
-                { id: 2, name: '实体识别模型', version: 'v1.5', description: 'LSTM-CRF', status: 'training', updateTime: '2024-03-18', libraryId: 2, training: false, config: 'high', custom: [] },
-            ]);
 
             const modelDialog = reactive({
                 visible: false,
@@ -1299,7 +1727,58 @@
             const downloadFile = (fileName) => {
                 ElMessage.info(`模拟下载文件：${fileName}`);
             };
+            const applyLibrarySearch = () => {
+                librarySearchKeyword.value = librarySearchInput.value;
+                libraryPage.value = 1;
+            };
+            const applyLibraryFilter = () => {
+                libraryPage.value = 1;
+            };
+            const resetLibraryFilter = () => {
+                librarySearchInput.value = '';
+                librarySearchKeyword.value = '';
+                libraryStatusFilter.value = '';
+                libraryPage.value = 1;
+            };
+            const applyEntitySearch = () => {
+                entitySearchKeyword.value = entitySearchInput.value;
+                entityPage.value = 1;
+            };
+            const synonymSearchInput = ref('');
+            const synonymSearchKeyword = ref('');
 
+            const applySynonymSearch = () => {
+                synonymSearchKeyword.value = synonymSearchInput.value;
+                synonymPage.value = 1;
+            };
+
+            // 问答对
+            const qaSearchInput = ref('');
+            const qaSearchKeyword = ref('');
+
+            const applyQaSearch = () => {
+                qaSearchKeyword.value = qaSearchInput.value;
+                qaPage.value = 1;
+            };
+            // 意图
+            const intentSearchInput = ref('');
+            const intentSearchKeyword = ref('');
+
+            const applyIntentSearch = () => {
+                intentSearchKeyword.value = intentSearchInput.value;
+                intentPage.value = 1;
+            };
+
+            const modelSearchInput = ref('');
+            const modelSearchKeyword = ref('');
+
+            const applyModelSearch = () => {
+                modelSearchKeyword.value = modelSearchInput.value;
+                modelPage.value = 1;
+            };
+            const applyModelFilter = () => {
+                modelPage.value = 1;
+            };
             return {
                 // 侧边栏
                 expandedMenu, kbMenuExpanded, semanticMenuExpanded,
@@ -1337,7 +1816,57 @@
 
                 // 自定义字段方法
                 addCustomField, removeCustomField, triggerFileSelect,
-                downloadFile
+                downloadFile,
+
+                // 语义库列表及分页筛选
+                librarySearchName, libraryStatusFilter, libraryPage, libraryPageSize,
+                filteredLibraryList, libraryTotal, paginatedLibraryList,
+                handleLibrarySearch, resetLibraryFilter, handleLibraryPageChange, handleLibrarySizeChange,
+
+                // 实体分页筛选
+                entitySearchName, entityPage, entityPageSize, filteredEntityList, entityTotal, paginatedEntityList,
+                handleEntitySearch, resetEntityFilter, handleEntityPageChange, handleEntitySizeChange,
+
+                // 同义词分页筛选
+                synonymSearchName, synonymPage, synonymPageSize, filteredSynonymList, synonymTotal, paginatedSynonymList,
+                handleSynonymSearch, resetSynonymFilter, handleSynonymPageChange, handleSynonymSizeChange,
+
+                // 问答对分页筛选
+                qaSearchName, qaPage, qaPageSize, filteredQaList, qaTotal, paginatedQaList,
+                handleQaSearch, resetQaFilter, handleQaPageChange, handleQaSizeChange,
+
+                // 意图分页筛选
+                intentSearchName, intentPage, intentPageSize, filteredIntentList, intentTotal, paginatedIntentList,
+                handleIntentSearch, resetIntentFilter, handleIntentPageChange, handleIntentSizeChange,
+
+                // 模型分页筛选
+                modelSearchName,
+                filteredModelList,
+                handleModelSearch,
+
+                librarySearchInput,
+                applyLibrarySearch, applyLibraryFilter,
+
+                // 实体
+                entitySearchInput,
+                applyEntitySearch,
+
+                // 同义词
+                synonymSearchInput,
+                applySynonymSearch,
+
+                // 问答对
+                qaSearchInput,
+                applyQaSearch,
+
+                // 意图
+                intentSearchInput,
+                applyIntentSearch,
+                // 模型
+                modelSearchInput, modelStatusFilter, modelPage, modelPageSize,
+                modelTotal, paginatedModelList,
+                applyModelSearch, applyModelFilter, resetModelFilter,
+                handleModelPageChange, handleModelSizeChange,
             };
         },
         // 添加过滤器用于格式化日期（可选）
