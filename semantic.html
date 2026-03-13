@@ -270,7 +270,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            background: url("../images/background.png") no-repeat center center / cover;
+            background: url("images/background.png") no-repeat center center / cover;
             z-index: 0;
         }
 
@@ -433,6 +433,8 @@
         .arrow-icon.rotated {
             transform: rotate(90deg);
         }
+
+        .filter-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
     </style>
 </head>
 <body>
@@ -678,13 +680,13 @@
                     </div>
                     <div class="card-body">
                         <div class="filter-bar">
-                            <el-input v-model="librarySearchInput" placeholder="按名称搜索" clearable style="width:200px;"></el-input>
+                            <el-input v-model="librarySearchName" placeholder="按名称搜索" clearable style="width:200px;"></el-input>
                             <el-select v-model="libraryStatusFilter" placeholder="全部状态" clearable style="width:120px;" @change="applyLibraryFilter">
                                 <el-option label="已发布" value="published"></el-option>
                                 <el-option label="未发布" value="unpublished"></el-option>
                             </el-select>
-                            <el-button type="primary" @click="applyLibrarySearch"><i class="fas fa-search"></i>搜索</el-button>
-                            <el-button @click="resetLibraryFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                            <!--el-button type="primary" @click="applyLibrarySearch"><i class="fas fa-search"></i>搜索</el-button>
+                            <el-button @click="resetLibraryFilter"><i class="fas fa-sync-alt"></i>重置</el-button-->
                         </div>
 
                         <el-table :data="paginatedLibraryList" style="width:100%" border>
@@ -702,7 +704,7 @@
                             <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
                             <el-table-column label="操作" width="350" fixed="right">
                                 <template #default="scope">
-                                    <el-button size="small" @click="viewLibraryDetail(scope.row)"><i class="fas fa-eye"></iclass></i></el-button>
+                                    <el-button size="small" @click="viewLibraryDetail(scope.row)"><i class="fas fa-eye"></i></el-button>
                                     <el-button size="small" @click="editLibrary(scope.row)"><i class="fas fa-edit"></i></el-button>
                                     <el-button size="small" type="danger" @click="deleteLibrary(scope.row)"><i class="fas fa-trash"></i></el-button>
                                     <el-button size="small" type="success" @click="publishLibrary(scope.row)"><i class="fas fa-paper-plane"></i></el-button>
@@ -742,10 +744,10 @@
                             <el-tab-pane label="实体管理" name="entity">
                                 <!-- 实体筛选栏 -->
                                 <div class="filter-bar" style="display: flex; align-items: center;">
-                                    <el-input v-model="entitySearchInput" placeholder="按实体名称搜索" clearable style="width:200px;"></el-input>
-                                    <el-button size="small" type="primary" @click="applyEntitySearch"><i class="fas fa-search"></i>搜索</el-button>
-                                    <el-button size="small" @click="resetEntityFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
-                                    <el-button type="primary" size="small" @click="showEntityDialog('add')" style="margin-right:auto;"><i class="fas fa-plus"></i> 新增实体</el-button>
+                                    <el-input v-model="entitySearchName" placeholder="按实体名称搜索" clearable style="width:200px;"></el-input>
+                                    <!--el-button size="small" type="primary" @click="applyEntitySearch"><i class="fas fa-search"></i>搜索</el-button-->
+                                    <!--el-button size="small" @click="resetEntityFilter"><i class="fas fa-sync-alt"></i>重置</el-button-->
+                                    <el-button type="primary" size="small" @click="showEntityDialog('add')" style="margin-left:auto;"><i class="fas fa-plus"></i> 新增实体</el-button>
                                 </div>
                                 <el-table :data="paginatedEntityList" border style="width:100%">
                                     <el-table-column prop="name" label="实体名称" width="200"></el-table-column>
@@ -766,8 +768,8 @@
                             <el-tab-pane label="同义词管理" name="synonym">
                                 <div class="filter-bar" style="display: flex; align-items: center;" >
                                     <el-input v-model="synonymSearchName" placeholder="按词组名称搜索" clearable style="width:200px;"></el-input>
-                                    <el-button size="small" type="primary" @click="applySynonymSearch"><i class="fas fa-search"></i>搜索</el-button>
-                                    <el-button size="small" @click="resetSynonymFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                                    <!--el-button size="small" type="primary" @click="applySynonymSearch"><i class="fas fa-search"></i>搜索</el-button>
+                                    <el-button size="small" @click="resetSynonymFilter"><i class="fas fa-sync-alt"></i>重置</el-button-->
                                     <el-button type="primary" size="small" @click="showSynonymDialog('add')" style="margin-left:auto;" ><i class="fas fa-plus"></i> 新增同义词组</el-button>
                                 </div>
                                 <el-table :data="paginatedSynonymList" border style="width:100%">
@@ -788,8 +790,8 @@
                             <el-tab-pane label="问答对" name="qa">
                                 <div class="filter-bar" style="display: flex; align-items: center;">
                                     <el-input v-model="qaSearchName" placeholder="按标准问题搜索" clearable style="width:200px;"></el-input>
-                                    <el-button size="small" type="primary" @click="applyQaSearch"><i class="fas fa-search"></i>搜索</el-button>
-                                    <el-button size="small" @click="resetQaFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                                    <!--el-button size="small" type="primary" @click="applyQaSearch"><i class="fas fa-search"></i>搜索</el-button>
+                                    <el-button size="small" @click="resetQaFilter"><i class="fas fa-sync-alt"></i>重置</el-button-->
                                     <el-button type="primary" size="small" @click="showQaDialog('add')" style="margin-left:auto;"><i class="fas fa-plus"></i> 新增问答</el-button>
                                 </div>
                                 <el-table :data="paginatedQaList" border style="width:100%">
@@ -811,8 +813,8 @@
                             <el-tab-pane label="意图管理" name="intent" >
                                 <div class="filter-bar" style="display: flex; align-items: center;">
                                     <el-input v-model="intentSearchName" placeholder="按意图名称搜索" clearable style="width:200px;"></el-input>
-                                    <el-button size="small" type="primary" @click="applyIntentmSearch"><i class="fas fa-search"></i>>搜索</el-button>
-                                    <el-button size="small" @click="resetIntentFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                                    <!--el-button size="small" type="primary" @click="applyIntentmSearch"><i class="fas fa-search"></i>>搜索</el-button>
+                                    <el-button size="small" @click="resetIntentFilter"><i class="fas fa-sync-alt"></i>重置</el-button-->
                                     <el-button type="primary" size="small" @click="showIntentDialog('add')" style="margin-left:auto;"><i class="fas fa-plus"></i> 新增意图</el-button>
                                 </div>
                                 <el-table :data="paginatedIntentList" border style="width:100%">
@@ -844,13 +846,13 @@
                     <div class="card-body">
                         <!-- 筛选栏：名称搜索 + 状态筛选 + 重置 -->
                         <div class="filter-bar">
-                            <el-input v-model="modelSearchName" placeholder="按模型名称搜索" clearable style="width:200px;"></el-input>
+                            <el-input v-model="modelSearchName" placeholder="按模型名称搜索" clearable style="width:200px;" ></el-input>
                             <el-select v-model="modelStatusFilter" placeholder="全部状态" clearable style="width:120px;" @change="applyModelFilter">
                                 <el-option label="已上线" value="online"></el-option>
                                 <el-option label="训练中" value="training"></el-option>
                             </el-select>
-                            <el-button type="primary" @click="applyModelSearch"><i class="fas fa-search"></i>搜索</el-button>
-                            <el-button @click="resetModelFilter"><i class="fas fa-sync-alt"></i>重置</el-button>
+                            <!--el-button type="primary" @click="applyModelSearch"><i class="fas fa-search"></i>搜索</el-button>
+                            <el-button @click="resetModelFilter"><i class="fas fa-sync-alt"></i>重置</el-button-->
                         </div>
 
                         <el-table :data="paginatedModelList" style="width:100%" border>
@@ -1064,7 +1066,7 @@
                             <!-- 文本 -->
                             <el-input v-if="field.type === 'text'" v-model="field.value" placeholder="文本值" size="small"></el-input>
                             <!-- 数字 -->
-                            <el-input-number v-else-if="field.type === 'number'" v-model="field.value" :min="0" :step="1" size="small"></el-input-number>
+                            <el-input-number v-else-if="field.type === 'number'" v-model="field.value" :min="0" :step="1" size="small" style="width:100%;"></el-input-number>
                             <!-- 日期 -->
                             <el-date-picker v-else-if="field.type === 'date'" v-model="field.value" type="date" value-format="YYYY-MM-DD" placeholder="选择日期" size="small" style="width:100%;"></el-date-picker>
                             <!-- 时间 -->
@@ -1196,7 +1198,7 @@
             const libraryPageSize = ref(5);
             const filteredLibraryList = computed(() => {
                 return libraryList.value.filter(item => {
-                    const matchName = !librarySearchKeyword.value || item.name.includes(librarySearchKeyword.value);
+                    const matchName = !librarySearchName.value || item.name.includes(librarySearchName.value);
                     const matchStatus = !libraryStatusFilter.value || item.status === libraryStatusFilter.value;
                     return matchName && matchStatus;
                 });
@@ -1740,6 +1742,7 @@
                 libraryStatusFilter.value = '';
                 libraryPage.value = 1;
             };
+            const entitySearchKeyword = ref('');
             const applyEntitySearch = () => {
                 entitySearchKeyword.value = entitySearchInput.value;
                 entityPage.value = 1;
@@ -1780,100 +1783,62 @@
                 modelPage.value = 1;
             };
             return {
-                // 侧边栏
                 expandedMenu, kbMenuExpanded, semanticMenuExpanded,
                 activeSubNav, activeSemanticNav,
                 toggleMenu, switchKbTab, switchSemanticTab,
-
-                // 语义库列表
                 libraryList, currentLibrary,
                 libraryDialog, showAddLibraryDialog, editLibrary, saveLibrary, deleteLibrary,
                 viewLibraryDetail, publishLibrary,
                 exportLibrary, showImportDialog, trainLibrary, handleFileChange,
-
-                // 详情标签
                 activeLibraryTab,
                 entityList, synonymGroups, qaPairs, intentList,
-
-                // 实体
                 entityDialog, showEntityDialog, saveEntity, deleteEntity,
-                // 同义词
                 synonymDialog, showSynonymDialog, saveSynonym, deleteSynonym,
-                // 问答
                 qaDialog, showQaDialog, saveQa, deleteQa,
-                // 意图
                 intentDialog, showIntentDialog, saveIntent, deleteIntent,
-
-                // 模型管理
                 modelList,
                 modelDialog, showAddModelDialog, editModel, saveModel, deleteModel,
                 openModelDetailDrawer, trainModel, offlineModel, deployModel,
                 modelDetailDrawerVisible, currentDetailModel, getLibraryNameById,
-
-                // 测试
                 testModelId, testInput, testResult, runTest,
                 toggleKbSubmenu,
-
-                // 自定义字段方法
                 addCustomField, removeCustomField, triggerFileSelect,
                 downloadFile,
-
-                // 语义库列表及分页筛选
                 librarySearchName, libraryStatusFilter, libraryPage, libraryPageSize,
                 filteredLibraryList, libraryTotal, paginatedLibraryList,
                 handleLibrarySearch, resetLibraryFilter, handleLibraryPageChange, handleLibrarySizeChange,
-
-                // 实体分页筛选
                 entitySearchName, entityPage, entityPageSize, filteredEntityList, entityTotal, paginatedEntityList,
                 handleEntitySearch, resetEntityFilter, handleEntityPageChange, handleEntitySizeChange,
-
-                // 同义词分页筛选
                 synonymSearchName, synonymPage, synonymPageSize, filteredSynonymList, synonymTotal, paginatedSynonymList,
                 handleSynonymSearch, resetSynonymFilter, handleSynonymPageChange, handleSynonymSizeChange,
-
-                // 问答对分页筛选
                 qaSearchName, qaPage, qaPageSize, filteredQaList, qaTotal, paginatedQaList,
                 handleQaSearch, resetQaFilter, handleQaPageChange, handleQaSizeChange,
-
-                // 意图分页筛选
                 intentSearchName, intentPage, intentPageSize, filteredIntentList, intentTotal, paginatedIntentList,
                 handleIntentSearch, resetIntentFilter, handleIntentPageChange, handleIntentSizeChange,
-
-                // 模型分页筛选
                 modelSearchName,
                 filteredModelList,
                 handleModelSearch,
 
                 librarySearchInput,
                 applyLibrarySearch, applyLibraryFilter,
-
-                // 实体
                 entitySearchInput,
                 applyEntitySearch,
-
-                // 同义词
                 synonymSearchInput,
                 applySynonymSearch,
-
-                // 问答对
                 qaSearchInput,
                 applyQaSearch,
-
-                // 意图
                 intentSearchInput,
                 applyIntentSearch,
-                // 模型
                 modelSearchInput, modelStatusFilter, modelPage, modelPageSize,
                 modelTotal, paginatedModelList,
                 applyModelSearch, applyModelFilter, resetModelFilter,
                 handleModelPageChange, handleModelSizeChange,
             };
         },
-        // 添加过滤器用于格式化日期（可选）
+        // 过滤器用于格式化日期
         filters: {
             formatDate(value) {
                 if (!value) return '';
-                // 如果已经是 YYYY-MM-DD 格式，直接返回
                 return value;
             }
         }
